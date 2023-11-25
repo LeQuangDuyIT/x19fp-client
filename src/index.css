@@ -1,0 +1,36 @@
+/* globals.css */
+@import 'antd/dist/reset.css';
+
+/* fix Tailwind CSS border styles, form Tailwind CSS's preflight */
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: theme('borderColor.DEFAULT', currentColor); /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -webkit-appearance: none; /* Safari and Chrome */
+  -moz-appearance: none; /* Firefox */
+  -ms-appearance: none; /* Internet Explorer */
+  appearance: none; /* Standard */
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
