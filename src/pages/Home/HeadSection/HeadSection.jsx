@@ -28,7 +28,7 @@ const HeadSection = () => {
       {/* Background */}
       <div
         className={clsx('ct-home-head-section-bg absolute top-0 left-0 w-full h-full', {
-          'opacity-60 duration-[2s]': bgImg
+          'opacity-80 duration-[2s]': bgImg
         })}
       ></div>
       <div

@@ -1,49 +1,50 @@
+import BiologyThumbnailImg from '~/assets/category-thumbnail/biology.png';
+import ChemistryThumbnailImg from '~/assets/category-thumbnail/chemistry.png';
+import EnglishThumbnailImg from '~/assets/category-thumbnail/english.png';
+import GameThumbnailImg from '~/assets/category-thumbnail/game.png';
+import GeographyThumbnailImg from '~/assets/category-thumbnail/geography.png';
+import HistoryThumbnailImg from '~/assets/category-thumbnail/history.png';
+import InformationTechnologyThumbnailImg from '~/assets/category-thumbnail/information-technology.png';
+import LiteratureThumbnailImg from '~/assets/category-thumbnail/literature.png';
+import PhysicsThumbnailImg from '~/assets/category-thumbnail/physics.png';
+
 export const topSearchKeywords = ['Học sinh giỏi quốc gia', 'Tìm hiểu lịch sử', 'Javascript'];
 
 export const categories = [
   {
     title: 'Anh văn',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: EnglishThumbnailImg
   },
   {
     title: 'Địa lý',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: GeographyThumbnailImg
   },
   {
     title: 'Game',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: GameThumbnailImg
   },
   {
     title: 'Hóa học',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: ChemistryThumbnailImg
   },
   {
     title: 'Lịch sử',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: HistoryThumbnailImg
   },
   {
     title: 'Ngữ văn',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: LiteratureThumbnailImg
   },
   {
     title: 'Sinh học',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: BiologyThumbnailImg
   },
   {
     title: 'Tin học',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: InformationTechnologyThumbnailImg
   },
   {
     title: 'Vật lý',
-    thumbnail:
-      'https://img.freepik.com/free-photo/environmental-engineers-working-together_23-2149352243.jpg?w=1380&t=st=1700909802~exp=1700910402~hmac=efbbaf9da6c11b7e0a926905494144ee9dd23e54fe460f2ffd87261b1694eda4'
+    thumbnail: PhysicsThumbnailImg
   }
 ];
