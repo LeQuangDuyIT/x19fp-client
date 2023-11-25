@@ -1,3 +1,4 @@
+import Home from '~/pages/Home';
 import Authen from '~/pages/Authen';
 
 export const PATH = {
@@ -6,6 +7,7 @@ export const PATH = {
 };
 
 const publicRoutes = [
+  { path: '/', component: Home },
   { path: PATH.LOGIN, component: Authen },
   { path: PATH.SIGNUP, component: Authen }
 ];
