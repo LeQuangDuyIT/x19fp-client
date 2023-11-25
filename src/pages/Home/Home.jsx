@@ -1,8 +1,10 @@
+import HeadSection from './HeadSection';
+
 const Home = () => {
   return (
-    <div>
-      <p>Home</p>
-    </div>
+    <>
+      <HeadSection />
+    </>
   );
 };
 

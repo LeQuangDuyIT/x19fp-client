@@ -4,7 +4,7 @@ import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
-    <>
+    <div className='text-base'>
       <Routes>
         {routes.map(route => {
           const Page = route.component;
@@ -15,7 +15,7 @@ function App() {
           return <Route key={route.path} path={route.path} element={routeElement} />;
         })}
       </Routes>
-    </>
+    </div>
   );
 }
 
