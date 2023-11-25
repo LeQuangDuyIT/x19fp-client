@@ -1,4 +1,4 @@
-export const topSearchKey = ['Học sinh giỏi quốc gia', 'Tìm hiểu lịch sử', 'Javascript'];
+export const topSearchKeywords = ['Học sinh giỏi quốc gia', 'Tìm hiểu lịch sử', 'Javascript'];
 
 export const categories = [
   {
