@@ -3,7 +3,7 @@ import { categories } from '~/utils/rendering';
 
 const Categories = () => {
   return (
-    <div className='w-[480px] flex flex-wrap gap-y-2 items-start'>
+    <div className='w-[600px] flex flex-wrap gap-y-4 items-start'>
       {categories.map(item => (
         <Button
           key={item.title}
