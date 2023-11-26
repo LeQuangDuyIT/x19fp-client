@@ -4,6 +4,7 @@ import Container from '~/components/Container';
 import Header from '~/components/Header';
 import CategorySlider from './_CategorySlider';
 import SearchBar from './_SearchBar';
+import TopSearchKeywords from './_TopSearchKeywords';
 
 const HeadSection = () => {
   const [bgImg, setBgImg] = useState(null);
@@ -20,7 +21,7 @@ const HeadSection = () => {
             </h2>
           </div>
           <SearchBar />
-          <topSearchKeywords />
+          <TopSearchKeywords />
           <CategorySlider setBgImg={setBgImg} />
         </div>
       </Container>

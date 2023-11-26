@@ -2,7 +2,7 @@ import { Tag } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { topSearchKeywords } from './_rendering';
 
-const _TopSearchKeywords = () => {
+const TopSearchKeywords = () => {
   return (
     <div className='flex justify-center gap-1 z-10'>
       {topSearchKeywords.map(searchKey => (
@@ -18,4 +18,4 @@ const _TopSearchKeywords = () => {
   );
 };
 
-export default _TopSearchKeywords;
+export default TopSearchKeywords;

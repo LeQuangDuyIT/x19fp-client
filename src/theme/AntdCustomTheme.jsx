@@ -1,25 +1,25 @@
 import { ConfigProvider } from 'antd';
+import { forwardRef } from 'react';
 
-const AntdCustomTheme = ({
-  children,
-  colorPrimary = '#2E6BED',
-  colorTextBase = 'black',
-  ...rest
-}) => {
-  return (
-    <ConfigProvider
-      theme={{
-        token: {
-          algorithm: true,
-          colorPrimary,
-          colorTextBase,
-          ...rest
-        }
-      }}
-    >
-      {children}
-    </ConfigProvider>
-  );
-};
+const AntdCustomTheme = forwardRef(
+  ({ children, className, colorPrimary = '#2E6BED', colorTextBase = 'black', ...rest }, ref) => {
+    return (
+      <ConfigProvider
+        theme={{
+          token: {
+            algorithm: true,
+            colorPrimary,
+            colorTextBase,
+            ...rest
+          }
+        }}
+      >
+        <div ref={ref} className={className}>
+          {children}
+        </div>
+      </ConfigProvider>
+    );
+  }
+);
 
 export default AntdCustomTheme;

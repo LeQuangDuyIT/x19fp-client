@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import clsx from 'clsx';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
-import { categories } from './_rendering';
+import { categories } from '~/utils/rendering';
 import CategoryThumbnail from './__CategoryThumbnail';
 import 'swiper/css';
 import 'swiper/css/pagination';
