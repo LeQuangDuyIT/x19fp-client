@@ -1,8 +1,9 @@
-import { Button, Popover, Tag } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Button, Tag } from 'antd';
+import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { headerMenu } from './_rendering';
 import AntdCustomTheme from '~/theme/AntdCustomTheme';
 import SubMenuWrapper from './SubMenu/SubMenuWrapper';
+import Create from './SubMenu/_Create';
 
 const Header = () => {
   return (
@@ -11,23 +12,12 @@ const Header = () => {
         <h2 className='font-bold cursor-pointer'>TEST BANK</h2>
         <div className='flex'>
           {headerMenu.map(item => {
-            const SubMenu = item.subMenu;
+            const SubMenuContent = item.subMenu;
             return (
               <AntdCustomTheme key={item.title} colorTextBase='white'>
-                <Popover
-                  content={
-                    SubMenu ? (
-                      <SubMenuWrapper>
-                        <SubMenu />
-                      </SubMenuWrapper>
-                    ) : undefined
-                  }
-                  title={
-                    item.subMenuTitle ? <p className='font-bold'>{item.subMenuTitle}</p> : undefined
-                  }
-                  color='black'
-                  overlayInnerStyle={{ padding: '18px' }}
-                  placement='bottomLeft'
+                <SubMenuWrapper
+                  content={item.subMenu ? <SubMenuContent /> : undefined}
+                  title={item.subMenuTitle}
                 >
                   <Button
                     type='text'
@@ -39,7 +29,7 @@ const Header = () => {
                     )}
                     <DownOutlined className='text-[10px]' />
                   </Button>
-                </Popover>
+                </SubMenuWrapper>
               </AntdCustomTheme>
             );
           })}
@@ -47,6 +37,12 @@ const Header = () => {
       </div>
       <AntdCustomTheme className='z-10' colorTextBase='white' colorPrimary='white'>
         <div className='flex gap-2'>
+          <SubMenuWrapper content={<Create />} title='Bạn muốn tạo?' placement='bottomRight'>
+            <Button icon={<PlusOutlined />} ghost className='flex items-center font-bold'>
+              <span>Tạo mới</span>
+              <DownOutlined className='text-[10px]' />
+            </Button>
+          </SubMenuWrapper>
           <Button type='text' className='border-none font-bold'>
             Đăng nhập
           </Button>

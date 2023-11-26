@@ -2,7 +2,17 @@ import { ConfigProvider } from 'antd';
 import { forwardRef } from 'react';
 
 const AntdCustomTheme = forwardRef(
-  ({ children, className, colorPrimary = '#2E6BED', colorTextBase = 'black', ...rest }, ref) => {
+  (
+    {
+      children,
+      className,
+      colorPrimary = '#2E6BED',
+      colorTextBase = 'black',
+      fontFamily = 'Inter',
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <ConfigProvider
         theme={{
@@ -10,6 +20,7 @@ const AntdCustomTheme = forwardRef(
             algorithm: true,
             colorPrimary,
             colorTextBase,
+            fontFamily,
             ...rest
           }
         }}

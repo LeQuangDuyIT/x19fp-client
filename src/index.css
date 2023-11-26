@@ -1,5 +1,6 @@
 /* globals.css */
 @import 'antd/dist/reset.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* fix Tailwind CSS border styles, form Tailwind CSS's preflight */
 *,
@@ -44,6 +45,12 @@ p {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
 
 .ct-home-head-section-bg {
   @apply bg-gradient-to-br from-blue-600 via-blue-600 to-blue-300;
