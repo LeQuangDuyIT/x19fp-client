@@ -17,7 +17,12 @@ const Login = () => {
         setError(null);
         const response = await authApi.login(values);
         console.log(response);
-      } catch (error) {}
+      } catch (error) {
+        // console.log(error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
     },
     validationSchema: validationSchema.loginValidationSchema
   });
