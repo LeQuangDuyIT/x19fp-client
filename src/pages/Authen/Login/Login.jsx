@@ -16,7 +16,7 @@ const Login = () => {
         setLoading(true);
         setError(null);
         const response = await authApi.login(values);
-        console.log(response);
+        console.log('response', response);
       } catch (error) {
         // console.log(error.message);
         setError(error.message);

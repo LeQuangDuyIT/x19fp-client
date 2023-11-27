@@ -4,8 +4,8 @@ import { TOKEN_TYPES } from '~/utils/constants';
 
 const SERVER_DOMAIN = import.meta.env.VITE_SERVER_DOMAIN;
 console.log('DOMAIN', SERVER_DOMAIN);
-// const BASE_API_URL = `${SERVER_DOMAIN}/api/v1`;
-const BASE_API_URL = 'http://localhost:3001/api/v1';
+const BASE_API_URL = `${SERVER_DOMAIN}/api/v1`;
+// const BASE_API_URL = 'http://localhost:3001/api/v1';
 
 const api = axios.create({
   baseURL: BASE_API_URL,

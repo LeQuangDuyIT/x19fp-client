@@ -15,44 +15,45 @@ import {
 import { validationSchema } from '~/validationSchema/authValidationSchema';
 import { Schema } from 'yup';
 import { StoreContext } from '~/context/storeContext/StoreContext';
+import authApi from '~/services/authAPI';
 
 const Signup = () => {
   const { loading, setLoading, error, setError } = useContext(StoreContext);
   const { Option } = Select;
-  const residences = [
-    {
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [
-        {
-          value: 'hangzhou',
-          label: 'Hangzhou',
-          children: [
-            {
-              value: 'xihu',
-              label: 'West Lake'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [
-        {
-          value: 'nanjing',
-          label: 'Nanjing',
-          children: [
-            {
-              value: 'zhonghuamen',
-              label: 'Zhong Hua Men'
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  // const residences = [
+  //   {
+  //     value: 'zhejiang',
+  //     label: 'Zhejiang',
+  //     children: [
+  //       {
+  //         value: 'hangzhou',
+  //         label: 'Hangzhou',
+  //         children: [
+  //           {
+  //             value: 'xihu',
+  //             label: 'West Lake'
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     value: 'jiangsu',
+  //     label: 'Jiangsu',
+  //     children: [
+  //       {
+  //         value: 'nanjing',
+  //         label: 'Nanjing',
+  //         children: [
+  //           {
+  //             value: 'zhonghuamen',
+  //             label: 'Zhong Hua Men'
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ];
   const formItemLayout = {
     labelCol: {
       xs: {
@@ -91,7 +92,8 @@ const Signup = () => {
       setError(null);
       console.log('Received values of form: ', values);
       const validateValues = await validationSchema.signupValidationSchema.validate(values);
-
+      const response = await authApi.signup(values);
+      // const responseData = response.message;
       // if (!validateValues) {
       //   throw new Error();
       // }
@@ -135,6 +137,9 @@ const Signup = () => {
     label: website,
     value: website
   }));
+
+  const handleSendVerifyMail = () => {};
+
   return (
     <div className='flex justify-center w-full'>
       <div className='w-8/12 h-screen'>
@@ -153,6 +158,7 @@ const Signup = () => {
           style={{
             maxWidth: 600
           }}
+          layout='vertical'
           scrollToFirstError
         >
           <Form.Item
@@ -165,7 +171,7 @@ const Signup = () => {
               }
             ]}
           >
-            <Input />
+            <Input width='full' />
           </Form.Item>
           <Form.Item
             name='lastName'
@@ -177,7 +183,7 @@ const Signup = () => {
               }
             ]}
           >
-            <Input />
+            <Input width='full' />
           </Form.Item>
 
           <Form.Item
