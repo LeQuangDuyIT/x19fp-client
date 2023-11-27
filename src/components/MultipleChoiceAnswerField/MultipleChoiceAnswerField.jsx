@@ -17,10 +17,10 @@ const MultipleChoiceAnswerField = ({ index, name, content, onInputChange }) => {
         </div>
         <div
           className={clsx(
-            'relative w-full border-b-[2px] before:absolute before:h-[2px] before:bottom-[-3px] before:left-1/2 before:-translate-x-1/2 before:bg-[#2563EB]',
+            'relative w-full border-b-[2px] before:absolute before:h-[2px] before:bottom-[-2px] before:left-1/2 before:-translate-x-1/2 before:bg-[#2563EB] before:opacity-0',
             {
               'border-b-[#ccc]/60 before:w-0': !isFocusing,
-              'before:w-full before:duration-700': isFocusing
+              'before:w-full before:opacity-100 before:duration-700': isFocusing
             }
           )}
         >
