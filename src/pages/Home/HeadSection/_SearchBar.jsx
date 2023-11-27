@@ -1,6 +1,5 @@
 import { Button, Divider, Select } from 'antd';
-import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
-import { FaRegLightbulb } from 'react-icons/fa';
+import { SearchOutlined, CloseOutlined, BulbOutlined } from '@ant-design/icons';
 
 const SearchBar = () => {
   return (
@@ -34,7 +33,7 @@ const SearchBar = () => {
         </form>
       </div>
       <Button className='flex items-center h-full'>
-        <FaRegLightbulb className='text-xl' />
+        <BulbOutlined className='text-xl' />
         <span className='px-2'>Danh mục đề gợi ý</span>
       </Button>
     </div>

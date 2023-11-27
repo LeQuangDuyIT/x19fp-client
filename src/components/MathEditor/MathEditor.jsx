@@ -18,6 +18,8 @@ import 'mathquill4quill/mathquill4quill.css';
 
 // demo page
 import { useEffect, useRef, useState } from 'react';
+import parse from 'html-react-parser';
+
 
 const CUSTOM_OPERATORS = [
   ['\\pm', '\\pm'],
@@ -47,6 +49,7 @@ const MathEditor = () => {
 
   const onInputChange = value => {
     setInputValue(value);
+    console.log(parse(value));
   };
 
   const toolbarOptions = [
@@ -65,17 +68,19 @@ const MathEditor = () => {
   ];
 
   return (
-    <ReactQuill
-      ref={reactQuillRef}
-      modules={{
-        formula: true,
-        toolbar: toolbarOptions
-      }}
-      theme='snow'
-      className='h-[calc(100%-52px-16px-1px)]'
-      value={inputValue}
-      onChange={onInputChange}
-    />
+    <div>
+      <p>{parse(inputValue)}</p>
+      <ReactQuill
+        ref={reactQuillRef}
+        modules={{
+          formula: true,
+          toolbar: toolbarOptions
+        }}
+        theme='snow'
+        value={inputValue}
+        onChange={onInputChange}
+      />
+    </div>
   );
 };
 
