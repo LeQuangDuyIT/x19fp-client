@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Form } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
@@ -15,6 +15,7 @@ const ContentField = ({
   refreshField
 }) => {
   const [isFocusing, setIsFocusing] = useState(false);
+  const inputElementRef = useRef(null);
   const bottomBorderHeightClasses =
     minRows > 1
       ? 'border-b-[3px] before:h-[3px] before:bottom-[-3px]'
@@ -26,7 +27,7 @@ const ContentField = ({
   };
 
   return (
-    <Form.Item name={name} validateStatus={isError ? 'error' : undefined} className='w-full'>
+    <div className='flex flex-col w-full mb-4'>
       <div
         className={clsx(
           'relative w-full before:absolute before:left-1/2 before:-translate-x-1/2 before:bg-[#2563EB] before:opacity-0',
@@ -39,20 +40,23 @@ const ContentField = ({
           }
         )}
       >
-        <TextArea
-          autoSize={{ minRows }}
-          placeholder={placeholder}
-          value={value}
-          className={clsx('rounded-b-none border-none border-b border-b-black', {
-            'bg-[#ccc]/20': !isFocusing && !transparent,
-            'bg-[#2564eb15]/[0.04]': isFocusing && !isError,
-            'bg-red-50': isError
-          })}
-          onChange={onChange}
-          onFocus={() => setIsFocusing(true)}
-          onBlur={() => setIsFocusing(false)}
-          onInput={onInputField}
-        />
+        <Form.Item name={name} validateStatus={isError ? 'error' : undefined} className='mb-0'>
+          <TextArea
+            ref={inputElementRef}
+            autoSize={{ minRows }}
+            placeholder={placeholder}
+            value={value}
+            className={clsx('rounded-b-none border-none border-b border-b-black', {
+              'bg-[#ccc]/20': !isFocusing && !transparent,
+              'bg-[#2564eb15]/[0.04]': isFocusing && !isError,
+              'bg-red-50': isError
+            })}
+            onChange={onChange}
+            onFocus={() => setIsFocusing(true)}
+            onBlur={() => setIsFocusing(false)}
+            onInput={onInputField}
+          />
+        </Form.Item>
       </div>
       {isError && (
         <div className='mt-1 flex items-center gap-1 text-red-400'>
@@ -60,7 +64,7 @@ const ContentField = ({
           <p>Trường dữ liệu không hợp lệ</p>
         </div>
       )}
-    </Form.Item>
+    </div>
   );
 };
 

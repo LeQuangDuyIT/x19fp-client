@@ -39,6 +39,11 @@ const MultipleChoiceCreator = ({ form, handleSubmit }) => {
     setErrors(errorFields);
   };
 
+  const handleDeleteAnswer = answerId => {
+    const newFields = answers.filter(answer => answer.id !== answerId);
+    setAnswers(newFields);
+  };
+
   return (
     <div>
       <div>
@@ -57,11 +62,12 @@ const MultipleChoiceCreator = ({ form, handleSubmit }) => {
               <MultipleChoiceAnswerField
                 key={answer.id}
                 index={index}
-                name={`answer${index}`}
+                name={`answer-${answer.id}`}
                 value={answer.content}
                 onInputChange={onAnswerInputChange}
-                isError={errors.includes(`answer${index}`)}
-                refreshField={() => handleRefreshField(`answer${index}`)}
+                isError={errors.includes(`answer-${answer.id}`)}
+                refreshField={() => handleRefreshField(`answer-${answer.id}`)}
+                deleteAnswer={() => handleDeleteAnswer(answer.id)}
               />
             ))}
           </div>

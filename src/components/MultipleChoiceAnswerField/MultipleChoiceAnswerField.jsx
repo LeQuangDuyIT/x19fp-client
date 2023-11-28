@@ -2,6 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { FaRegCircle } from 'react-icons/fa';
 import { alphabet } from '~/utils/constants';
 import ContentField from '../ContentField';
+import { Popconfirm } from 'antd';
 
 const MultipleChoiceAnswerField = ({
   index,
@@ -9,7 +10,8 @@ const MultipleChoiceAnswerField = ({
   value,
   isError,
   onInputChange,
-  refreshField
+  refreshField,
+  deleteAnswer
 }) => {
   return (
     <div className='flex items-start gap-1'>
@@ -26,7 +28,16 @@ const MultipleChoiceAnswerField = ({
         refreshField={refreshField}
       />
       <div className='pl-1 pt-1'>
-        <CloseOutlined className='cursor-pointer opacity-60 hover:opacity-100' />
+        <Popconfirm
+          title='Xóa đáp án'
+          description='Bạn chắc chắn muốn xóa đáp án này?'
+          okText='Xóa'
+          cancelText='Đóng'
+          okButtonProps={{ danger: true }}
+          onConfirm={deleteAnswer}
+        >
+          <CloseOutlined className='cursor-pointer opacity-60 hover:opacity-100' />
+        </Popconfirm>
       </div>
     </div>
   );
