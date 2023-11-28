@@ -1,5 +1,7 @@
 import Home from '~/pages/Home';
 import Authen from '~/pages/Authen';
+import Login from '~/pages/Authen/Login';
+import Signup from '~/pages/Authen/Signup';
 import Create from '~/pages/Create';
 
 export const PATH = {
@@ -12,8 +14,8 @@ export const PATH = {
 
 const publicRoutes = [
   { path: '/', component: Home },
-  { path: PATH.LOGIN, component: Authen },
-  { path: PATH.SIGNUP, component: Authen }
+  { path: PATH.LOGIN, component: Login },
+  { path: PATH.SIGNUP, component: Signup }
 ];
 
 const privateRoutes = [
