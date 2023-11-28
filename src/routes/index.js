@@ -3,10 +3,11 @@ import Authen from '~/pages/Authen';
 import Login from '~/pages/Authen/Login';
 import Signup from '~/pages/Authen/Signup';
 import Create from '~/pages/Create';
+import LogInOut from '~/pages/Authen/LogInOut/LogInOut';
 
 export const PATH = {
-  LOGIN: '/login',
-  SIGNUP: '/signup',
+  LOGIN: '/auth/login',
+  SIGNUP: '/auth/signup',
   CREATE_QUESTION: '/create/question',
   CREATE_TEST: '/create/test',
   CREATE_QUIZ_GAME: '/create/quiz-game'
@@ -14,8 +15,14 @@ export const PATH = {
 
 const publicRoutes = [
   { path: '/', component: Home },
-  { path: PATH.LOGIN, component: Login },
-  { path: PATH.SIGNUP, component: Signup }
+  {
+    path: '/auth',
+    component: LogInOut,
+    authRoute: [
+      { path: PATH.LOGIN, component: Login },
+      { path: PATH.SIGNUP, component: Signup }
+    ]
+  }
 ];
 
 const privateRoutes = [

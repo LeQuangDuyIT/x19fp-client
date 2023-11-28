@@ -3,11 +3,11 @@ import api from './axiosInstance';
 
 const authApi = {
   login: body => {
-    const url = `/auth${PATH.LOGIN}`;
+    const url = `${PATH.LOGIN}`;
     return api.post(url, body);
   },
   signup: body => {
-    const url = `auth${PATH.SIGNUP}`;
+    const url = `${PATH.SIGNUP}`;
     return api.post(url, body);
   },
   getCode: body => {
