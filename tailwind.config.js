@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      boxShadow: {
+        'input-blue': '0 0 0 1px rgba(5,145,255,.1)',
+        'input-red': '0 0 0 1px rgba(255,38,5,.08)'
+      },
       animation: {
         'head-section-bg-fade-in': 'fade-in 2s ease-in-out'
       },

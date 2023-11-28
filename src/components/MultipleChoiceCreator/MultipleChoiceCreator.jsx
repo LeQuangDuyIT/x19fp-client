@@ -51,9 +51,9 @@ const MultipleChoiceCreator = ({ form, handleSubmit }) => {
           <ContentField
             name='topic'
             value={topic}
+            textarea
             onChange={e => setTopic(e.target.value)}
             placeholder='Câu hỏi/đề bài'
-            minRows={5}
             isError={errors.includes('topic')}
             refreshField={() => handleRefreshField('topic')}
           />

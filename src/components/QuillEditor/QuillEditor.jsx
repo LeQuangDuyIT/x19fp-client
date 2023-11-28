@@ -17,8 +17,9 @@ import mathquill4quill from 'mathquill4quill';
 import 'mathquill4quill/mathquill4quill.css';
 
 // demo page
-import { useEffect, useRef, useState } from 'react';
-import parse from 'html-react-parser';
+import { useEffect, useRef } from 'react';
+import styles from './quill.module.css';
+import clsx from 'clsx';
 
 const CUSTOM_OPERATORS = [
   ['\\pm', '\\pm'],
@@ -33,8 +34,17 @@ const CUSTOM_OPERATORS = [
   ['\\binom{n}{k}', '\\binom']
 ];
 
-const MathEditor = () => {
-  const [inputValue, setInputValue] = useState('');
+const QuillEditor = ({
+  value,
+  placeholder,
+  isExtendingToolbar,
+  onChange,
+  onFocus,
+  onBlur,
+  onKeyDown,
+  textarea,
+  labelClicked
+}) => {
   const reactQuillRef = useRef(null);
   const isCreated = useRef(false);
 
@@ -46,29 +56,32 @@ const MathEditor = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onInputChange = value => {
-    setInputValue(value);
-    console.log(parse(value));
-  };
+  useEffect(() => {
+    if (!labelClicked) return;
+    if (reactQuillRef.current) reactQuillRef.current.focus();
+  }, [labelClicked]);
 
   const toolbarOptions = [
-    [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
     [{ size: ['small', false, 'large', 'huge'] }],
     [{ align: [] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ color: [] }, { background: [] }],
     ['formula', 'blockquote', 'code-block'],
-    ['link', 'image'],
-    [{ script: 'sub' }, { script: 'super' }],
+    // ['link', 'image'],
+    // [{ script: 'sub' }, { script: 'super' }],
     [{ indent: '-1' }, { indent: '+1' }],
     [{ list: 'ordered' }, { list: 'bullet' }],
     ['clean']
   ];
 
   return (
-    <div>
-      <p>{parse(inputValue)}</p>
+    <div
+      className={clsx(styles.customEditor, styles.customToolbar, {
+        [styles.hiddenToolbar]: !isExtendingToolbar,
+        [styles.showToolbar]: isExtendingToolbar,
+        [styles.asTextarea]: textarea
+      })}
+    >
       <ReactQuill
         ref={reactQuillRef}
         modules={{
@@ -76,11 +89,15 @@ const MathEditor = () => {
           toolbar: toolbarOptions
         }}
         theme='snow'
-        value={inputValue}
-        onChange={onInputChange}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onKeyDown={onKeyDown}
       />
     </div>
   );
 };
 
-export default MathEditor;
+export default QuillEditor;

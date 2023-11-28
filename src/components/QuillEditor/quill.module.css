@@ -1,0 +1,47 @@
+.customEditor {
+  :global(.ql-container) {
+    border-color: transparent;
+  }
+  :global(.ql-editor) {
+    padding: 8px 8px 4px 8px;
+
+    font-size: 16px;
+  }
+}
+
+.asTextarea {
+  :global(.ql-editor) {
+    min-height: 127px;
+  }
+}
+
+.customToolbar {
+  :global(.ql-toolbar) {
+    position: absolute;
+    bottom: 0;
+
+    background-color: white;
+  }
+}
+
+.hiddenToolbar {
+  :global(.ql-toolbar) {
+    display: none;
+  }
+}
+
+.showToolbar {
+  :global(.ql-toolbar) {
+    animation: jumpFromTop 0.3s ease-in-out forwards;
+  }
+}
+
+@keyframes jumpFromTop {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(calc(100% + 8px));
+    opacity: 1;
+  }
+}

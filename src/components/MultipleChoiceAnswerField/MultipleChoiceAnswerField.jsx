@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { FaRegCircle } from 'react-icons/fa';
 import { alphabet } from '~/utils/constants';
@@ -13,11 +14,21 @@ const MultipleChoiceAnswerField = ({
   refreshField,
   deleteAnswer
 }) => {
+  const [labelClicked, setLabelClicked] = useState(false);
+
+  useEffect(() => {
+    if (labelClicked) {
+      setLabelClicked(false);
+    }
+  }, [labelClicked]);
+
   return (
     <div className='flex items-start gap-1'>
-      <div className='flex items-center gap-4'>
+      <div className='flex items-center gap-4 pt-1'>
         <FaRegCircle className='cursor-pointer text-xl text-[#ccc]/50' />
-        <h4 className='w-7 text-xl'>{alphabet[index]}.</h4>
+        <h4 className='w-7 text-xl cursor-default' onClick={() => setLabelClicked(true)}>
+          {alphabet[index]}.
+        </h4>
       </div>
       <ContentField
         name={name}
@@ -26,6 +37,7 @@ const MultipleChoiceAnswerField = ({
         isError={isError}
         transparent
         refreshField={refreshField}
+        labelClicked={labelClicked}
       />
       <div className='pl-1 pt-1'>
         <Popconfirm
