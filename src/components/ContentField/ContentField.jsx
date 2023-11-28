@@ -2,6 +2,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { Form } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const ContentField = ({
   value,
@@ -25,7 +26,7 @@ const ContentField = ({
   };
 
   return (
-    <Form.Item name={name} className='w-full'>
+    <Form.Item name={name} validateStatus={isError ? 'error' : undefined} className='w-full'>
       <div
         className={clsx(
           'relative w-full before:absolute before:left-1/2 before:-translate-x-1/2 before:bg-[#2563EB] before:opacity-0',
@@ -53,6 +54,12 @@ const ContentField = ({
           onInput={onInputField}
         />
       </div>
+      {isError && (
+        <div className='mt-1 flex items-center gap-1 text-red-400'>
+          <ExclamationCircleOutlined />
+          <p>Trường dữ liệu không hợp lệ</p>
+        </div>
+      )}
     </Form.Item>
   );
 };
