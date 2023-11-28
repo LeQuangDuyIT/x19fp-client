@@ -38,7 +38,7 @@ const ContentField = ({
       <ClickOutsideObserver onClickOutside={() => setIsExtendingToolbar(false)}>
         <div
           className={clsx('flex flex-col w-full mb-4', {
-            'mb-[72px]': isExtendingToolbar
+            'mb-[72px] duration-500': isExtendingToolbar
           })}
         >
           <div
@@ -55,19 +55,19 @@ const ContentField = ({
               }
             )}
           >
-            <Form.Item name={name} validateStatus={isError ? 'error' : undefined} className='mb-0'>
-              <QuillEditor
-                value={value}
-                placeholder={placeholder}
-                isExtendingToolbar={isExtendingToolbar}
-                onChange={onChange}
-                onFocus={() => setIsFocusing(true)}
-                onBlur={() => setIsFocusing(false)}
-                onKeyDown={onInputField}
-                textarea={textarea}
-                labelClicked={labelClicked}
-              />
-            </Form.Item>
+            {/* <Form.Item name={name} validateStatus={isError ? 'error' : undefined} className='mb-0'> */}
+            <QuillEditor
+              value={value}
+              placeholder={placeholder}
+              isExtendingToolbar={isExtendingToolbar}
+              onChange={onChange}
+              onFocus={() => setIsFocusing(true)}
+              onBlur={() => setIsFocusing(false)}
+              onKeyDown={onInputField}
+              textarea={textarea}
+              labelClicked={labelClicked}
+            />
+            {/* </Form.Item> */}
           </div>
           {isError && (
             <div className='mt-1 flex items-center gap-1 text-red-400'>
@@ -76,13 +76,6 @@ const ContentField = ({
             </div>
           )}
         </div>
-        {/* {isOpenEditor && (
-        <div className='fixed bottom-4 left-1/2 -translate-x-1/2 bg-white z-10'>
-          <UnmountOnClickOutside onClickOutside={() => setIsOpenEditor(false)}>
-            <MathEditor />
-          </UnmountOnClickOutside>
-        </div>
-      )} */}
       </ClickOutsideObserver>
     </>
   );

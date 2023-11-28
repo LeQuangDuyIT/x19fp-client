@@ -19,8 +19,11 @@
   :global(.ql-toolbar) {
     position: absolute;
     bottom: 0;
+    z-index: 10;
 
     background-color: white;
+
+    transform: translateY(calc(100% + 8px));
   }
 }
 
@@ -30,18 +33,7 @@
   }
 }
 
-.showToolbar {
+/* .showToolbar {
   :global(.ql-toolbar) {
-    animation: jumpFromTop 0.3s ease-in-out forwards;
   }
-}
-
-@keyframes jumpFromTop {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(calc(100% + 8px));
-    opacity: 1;
-  }
-}
+} */

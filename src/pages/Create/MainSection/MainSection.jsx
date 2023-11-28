@@ -7,7 +7,7 @@ const MainSection = () => {
   const [form] = Form.useForm();
 
   const handleCreateQuestion = formValue => {
-    console.log(formValue);
+    // console.log(formValue);
   };
 
   return (

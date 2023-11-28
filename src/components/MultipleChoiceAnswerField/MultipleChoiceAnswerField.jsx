@@ -7,6 +7,7 @@ import { Popconfirm } from 'antd';
 
 const MultipleChoiceAnswerField = ({
   index,
+  id,
   name,
   value,
   isError,
@@ -33,7 +34,7 @@ const MultipleChoiceAnswerField = ({
       <ContentField
         name={name}
         value={value}
-        onChange={e => onInputChange(index, e.target.value)}
+        onChange={value => onInputChange(id, value)}
         isError={isError}
         transparent
         refreshField={refreshField}

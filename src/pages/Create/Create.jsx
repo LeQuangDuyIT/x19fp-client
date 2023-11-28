@@ -3,6 +3,7 @@ import Container from '~/components/Container';
 import CreateHeader from './CreateHeader';
 import AsideSection from './AsideSection';
 import MainSection from './MainSection';
+import QuestionCreator from '~/components/QuestionCreator';
 
 const Create = () => {
   return (
@@ -15,7 +16,9 @@ const Create = () => {
               <AsideSection />
             </Col>
             <Col span={18}>
-              <MainSection />
+              {/* <MainSection /> */}
+              <QuestionCreator />
+              <QuestionCreator />
             </Col>
           </Row>
         </Container>
