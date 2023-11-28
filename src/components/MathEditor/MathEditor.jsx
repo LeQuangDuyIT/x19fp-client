@@ -20,7 +20,6 @@ import 'mathquill4quill/mathquill4quill.css';
 import { useEffect, useRef, useState } from 'react';
 import parse from 'html-react-parser';
 
-
 const CUSTOM_OPERATORS = [
   ['\\pm', '\\pm'],
   ['\\sqrt{x}', '\\sqrt'],
