@@ -1,11 +1,16 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Checkbox, Col, Form, Input, Row, Select } from 'antd';
 import { validationSchema } from '~/validationSchema/authValidationSchema';
 import { StoreContext } from '~/context/storeContext/StoreContext';
 import authApi from '~/services/authAPI';
+import LoadingState from '~/components/LoadingState/LoadingState';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  const { setLoading, error, setError } = useContext(StoreContext);
+  const [email, setEmail] = useState('');
+  const [authCode, setAuthCode] = useState(null);
+  const { loading, setLoading, setContextError, contextError } = useContext(StoreContext);
+  const navigate = useNavigate();
   const { Option } = Select;
   const formItemLayout = {
     labelCol: {
@@ -13,7 +18,7 @@ const Signup = () => {
         span: 24
       },
       sm: {
-        span: 8
+        span: 'full'
       }
     },
     wrapperCol: {
@@ -21,7 +26,7 @@ const Signup = () => {
         span: 24
       },
       sm: {
-        span: 16
+        span: 'full'
       }
     }
   };
@@ -40,16 +45,45 @@ const Signup = () => {
   const margin = {
     margin: '0px'
   };
+  const getEmail = e => {
+    setEmail(e.target.value);
+  };
 
+  const hanleGetVeriCode = async signupEmail => {
+    try {
+      setLoading(true);
+      setContextError(null);
+      if (!signupEmail) {
+        return setContextError('Bạn chưa nhập email');
+      }
+      const sendCode = await authApi.getCode(signupEmail);
+      const code = sendCode.data?.message?.code;
+      setAuthCode(code);
+
+      // setTimeout(() => {
+      //   setAuthCode(null);
+      // }, 180000);
+    } catch (error) {
+      setContextError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const [form] = Form.useForm();
   const onFinish = async values => {
     try {
       setLoading(true);
-      setError(null);
-      await validationSchema.signupValidationSchema.validate(values);
-      await authApi.signup(values);
+      setContextError(null);
+      const { captcha } = values;
+      if (+captcha === +authCode) {
+        await validationSchema.signupValidationSchema.validate(values);
+        await authApi.signup(values);
+        return navigate('/login');
+      } else {
+        return setContextError('Mã không hợp lệ');
+      }
     } catch (error) {
-      setError(error.message);
+      setContextError(error.message);
     } finally {
       setLoading(false);
     }
@@ -71,7 +105,7 @@ const Signup = () => {
       </div>
       <div className='w-4/12 p-5 flex justify-center items-center '>
         <div>
-          {error && <div>{error} </div>}
+          {contextError && <div>{contextError} </div>}
           <Form
             {...formItemLayout}
             form={form}
@@ -126,7 +160,7 @@ const Signup = () => {
                 }
               ]}
             >
-              <Input />
+              <Input value={email} onChange={getEmail} />
             </Form.Item>
 
             <Form.Item
@@ -217,7 +251,7 @@ const Signup = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item label='Captcha' extra='We must make sure that your are a human.'>
+            <Form.Item label='Mã xác thực' extra=''>
               <Row gutter={8}>
                 <Col span={12}>
                   <Form.Item
@@ -226,15 +260,23 @@ const Signup = () => {
                     rules={[
                       {
                         required: true,
-                        message: 'Please input the captcha you got!'
+                        message: 'Hãy nhập mã xác thực của bạn '
                       }
                     ]}
                   >
                     <Input />
                   </Form.Item>
+                  <Col span={40}>
+                    <div className='h-3 text-[15px] text-red-500 '> {contextError}</div>
+                  </Col>
                 </Col>
+
                 <Col span={12}>
-                  <Button>Get captcha</Button>
+                  {loading ? (
+                    <LoadingState />
+                  ) : (
+                    <Button onClick={() => hanleGetVeriCode(email)}>Lấy mã xác thực</Button>
+                  )}
                 </Col>
               </Row>
             </Form.Item>
@@ -260,6 +302,13 @@ const Signup = () => {
               </Button>
             </Form.Item>
           </Form>
+          <div className='text-center font-bold '>
+            Already have an account ?
+            <Link to='/login' className='text-blue-500 no-underline font-bold'>
+              {' '}
+              Login{' '}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

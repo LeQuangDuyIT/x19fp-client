@@ -3,14 +3,17 @@ import api from './axiosInstance';
 
 const authApi = {
   login: body => {
-    console.log('body', body);
     const url = `/auth${PATH.LOGIN}`;
     return api.post(url, body);
   },
   signup: body => {
-    console.log('body', body);
     const url = `auth${PATH.SIGNUP}`;
     return api.post(url, body);
+  },
+  getCode: body => {
+    const url = 'auth/verify-mail';
+    const mail = { receiverMail: body };
+    return api.post(url, mail);
   }
 };
 

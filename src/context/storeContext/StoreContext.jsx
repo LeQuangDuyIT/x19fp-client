@@ -4,12 +4,15 @@ export const StoreContext = createContext();
 
 const MyStoreContext = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [contextError, setContextError] = useState(null);
+  const [changPage, setChangePage] = useState(null);
   const value = {
     loading,
     setLoading,
-    error,
-    setError
+    contextError,
+    setContextError,
+    changPage,
+    setChangePage
   };
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 };
