@@ -1,9 +1,5 @@
-import React from 'react'
-
 const EsayCreator = () => {
-  return (
-    <div>EsayCreator</div>
-  )
-}
+  return <div>EsayCreator</div>;
+};
 
-export default EsayCreator
+export default EsayCreator;

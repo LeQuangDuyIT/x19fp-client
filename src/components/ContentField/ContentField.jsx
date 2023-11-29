@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Tooltip } from 'antd';
+import { Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { FaRegImage } from 'react-icons/fa6';
 import QuillEditor from '../QuillEditor';
 import ClickOutsideObserver from '../ClickOutsideObserver';
 
 const UploadImageButton = () => (
-  <div className='flex justify-center items-center absolute left-[calc(656px+4px)] bottom-[-51px] h-[43.38px] aspect-square'>
-    <Tooltip title='Thêm hình ảnh'>
-      <FaRegImage className='text-2xl text-gray-500 hover:text-[#2e6bed] cursor-pointer' />
-    </Tooltip>
-  </div>
+  <Button
+    icon={<FaRegImage className='text-xl' />}
+    className={clsx(
+      'absolute left-[calc(656px+6px)] bottom-0 translate-y-[calc(100%+8px)]',
+      'flex items-center text-gray-500 h-[43.38px]',
+      'bg-transparent border border-[#ccc] rounded-none cursor-pointer'
+    )}
+  >
+    UPLOAD
+  </Button>
 );
 
 const ContentField = ({

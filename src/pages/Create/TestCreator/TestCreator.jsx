@@ -1,9 +1,5 @@
-import React from 'react'
-
 const TestCreator = () => {
-  return (
-    <div>TestCreator</div>
-  )
-}
+  return <div>TestCreator</div>;
+};
 
-export default TestCreator
+export default TestCreator;
