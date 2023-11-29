@@ -1,17 +1,10 @@
 import { useContext } from 'react';
 import MultipleChoiceAnswerField from '~/components/MultipleChoiceAnswerField';
 import ContentField from '../ContentField';
-import { CreateQuestionContext } from '../QuestionCreator';
+import { CreateQuestionContext } from '../QuestionCreatorBox';
 const MultipleChoiceCreator = () => {
-  const {
-    topic,
-    answers,
-    errors,
-    onAnswerInputChange,
-    onTopicInputChange,
-    handleRefreshField,
-    handleDeleteAnswer
-  } = useContext(CreateQuestionContext);
+  const { topic, answers, errors, onAnswerInputChange, onTopicInputChange, handleRefreshField } =
+    useContext(CreateQuestionContext);
 
   return (
     <div>
@@ -31,12 +24,11 @@ const MultipleChoiceCreator = () => {
               key={answer.id}
               id={answer.id}
               index={index}
-              name={`answer-${answer.id}`}
+              isCorrect={answer.isCorrect}
               value={answer.content}
               onInputChange={onAnswerInputChange}
               isError={errors.includes(answer.id)}
               refreshField={() => handleRefreshField(answer.id)}
-              deleteAnswer={() => handleDeleteAnswer(answer.id)}
             />
           ))}
         </div>

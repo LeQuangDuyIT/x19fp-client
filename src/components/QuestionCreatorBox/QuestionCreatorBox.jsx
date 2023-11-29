@@ -1,7 +1,7 @@
 import { useState, createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import parser from 'html-react-parser';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, message } from 'antd';
 import { CheckSquareOutlined, CaretDownOutlined } from '@ant-design/icons';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import MultipleChoiceCreator from '~/components/MultipleChoiceCreator';
@@ -11,13 +11,14 @@ export const CreateQuestionContext = createContext();
 const initialAnswers = Array.from({ length: 4 }, () => ({
   id: uuidv4(),
   content: '',
-  isTrue: false
+  isCorrect: false
 }));
 
-const QuestionCreator = () => {
+const QuestionCreatorBox = () => {
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
+  const [isCorrectRequired, setIsCorrectRequired] = useState(false);
 
   const onAnswerInputChange = (idChange, value) => {
     const newAnswers = answers.map(answer =>
@@ -27,27 +28,46 @@ const QuestionCreator = () => {
   };
 
   const handleCreateMultipleChoice = () => {
-    const emptyFields = answers
+    const isValid = handleValidate();
+    if (!isValid) return;
+    // eslint-disable-next-line no-console
+    console.log(topic);
+    // eslint-disable-next-line no-console
+    console.log(answers);
+  };
+
+  const handleValidate = () => {
+    const errorFields = answers
       .filter(answer => !answer.content || parser(answer.content) === '')
       .map(answer => answer.id);
-    if (!topic || parser(topic) === '') emptyFields.push('topic');
+    if (!topic || parser(topic) === '') errorFields.push('topic');
 
-    if (emptyFields.length > 0) {
-      setErrors(emptyFields);
-    } else {
-      console.log(topic);
-      console.log(answers);
+    const correctAnswer = answers.find(answer => answer.isCorrect);
+    if (!correctAnswer) {
+      message.error('Chưa chọn đáp án đúng');
+      setIsCorrectRequired(true);
     }
+    if (errorFields.length > 0) setErrors(errorFields);
+    return errorFields.length === 0 && correctAnswer;
   };
 
   const handleRefreshField = fieldName => {
     const errorFields = errors.filter(field => field !== fieldName);
     setErrors(errorFields);
+    setIsCorrectRequired(false);
   };
 
   const handleDeleteAnswer = answerId => {
     const newFields = answers.filter(answer => answer.id !== answerId);
     setAnswers(newFields);
+  };
+
+  const handleSetCorrect = answerId => {
+    const newFields = answers.map(answer =>
+      answer.id === answerId ? { ...answer, isCorrect: true } : { ...answer, isCorrect: false }
+    );
+    setAnswers(newFields);
+    setIsCorrectRequired(false);
   };
 
   return (
@@ -56,11 +76,13 @@ const QuestionCreator = () => {
         topic,
         answers,
         errors,
+        isCorrectRequired,
         onAnswerInputChange,
         onTopicInputChange: value => setTopic(value),
         handleCreateMultipleChoice,
         handleRefreshField,
-        handleDeleteAnswer
+        handleDeleteAnswer,
+        handleSetCorrect
       }}
     >
       <BlockSectionWrapper className='h-auto'>
@@ -86,4 +108,4 @@ const QuestionCreator = () => {
   );
 };
 
-export default QuestionCreator;
+export default QuestionCreatorBox;

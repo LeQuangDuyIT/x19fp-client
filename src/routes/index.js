@@ -4,12 +4,16 @@ import Login from '~/pages/Authen/Login';
 import Signup from '~/pages/Authen/Signup';
 import Create from '~/pages/Create';
 
+export const END_POINT = {
+  CREATE_QUESTION: 'question',
+  CREATE_TEST: 'test',
+  CREATE_QUIZ_GAME: 'quiz-game'
+};
+
 export const PATH = {
   LOGIN: '/login',
   SIGNUP: '/signup',
-  CREATE_QUESTION: '/create/question',
-  CREATE_TEST: '/create/test',
-  CREATE_QUIZ_GAME: '/create/quiz-game'
+  CREATE: endPoint => `/create/${endPoint}`
 };
 
 const publicRoutes = [
@@ -18,11 +22,7 @@ const publicRoutes = [
   { path: PATH.SIGNUP, component: Signup }
 ];
 
-const privateRoutes = [
-  { path: PATH.CREATE_QUESTION, component: Create },
-  { path: PATH.CREATE_TEST, component: Create },
-  { path: PATH.CREATE_QUIZ_GAME, component: Create }
-];
+const privateRoutes = [{ path: '/create/:type', component: Create }];
 
 const privateRoutesMapping = privateRoutes.map(route => ({ ...route, isPrivated: true }));
 

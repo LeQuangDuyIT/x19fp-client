@@ -19,7 +19,6 @@
   :global(.ql-toolbar) {
     position: absolute;
     bottom: 0;
-    z-index: 10;
 
     background-color: white;
 

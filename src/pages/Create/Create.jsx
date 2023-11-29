@@ -1,28 +1,19 @@
-import { Col, Row } from 'antd';
-import Container from '~/components/Container';
+import { useParams } from 'react-router-dom';
 import CreateHeader from './CreateHeader';
-import AsideSection from './AsideSection';
-import MainSection from './MainSection';
-import QuestionCreator from '~/components/QuestionCreator';
+import { END_POINT } from '~/routes';
+import QuestioncCreator from './QuestioncCreator';
+import TestCreator from './TestCreator';
 
 const Create = () => {
+  const { type } = useParams();
+  let Creator;
+  if (type === END_POINT.CREATE_QUESTION) Creator = QuestioncCreator;
+  if (type === END_POINT.CREATE_TEST) Creator = TestCreator;
+
   return (
     <div>
       <CreateHeader />
-      <div className='bg-[#f4f5f8] pt-[60px]'>
-        <Container>
-          <Row gutter={60} className='justify-between min-h-screen'>
-            <Col span={6}>
-              <AsideSection />
-            </Col>
-            <Col span={18}>
-              {/* <MainSection /> */}
-              <QuestionCreator />
-              <QuestionCreator />
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <Creator />
     </div>
   );
 };

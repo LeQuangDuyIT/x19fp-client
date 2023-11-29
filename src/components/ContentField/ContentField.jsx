@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Form } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import QuillEditor from '../QuillEditor';
 import ClickOutsideObserver from '../ClickOutsideObserver';
 
 const ContentField = ({
   value,
-  name,
   onChange,
   textarea,
   placeholder,
@@ -38,7 +36,7 @@ const ContentField = ({
       <ClickOutsideObserver onClickOutside={() => setIsExtendingToolbar(false)}>
         <div
           className={clsx('flex flex-col w-full mb-4', {
-            'mb-[72px] duration-500': isExtendingToolbar
+            'mb-[88px] duration-500': isExtendingToolbar
           })}
         >
           <div
@@ -55,7 +53,6 @@ const ContentField = ({
               }
             )}
           >
-            {/* <Form.Item name={name} validateStatus={isError ? 'error' : undefined} className='mb-0'> */}
             <QuillEditor
               value={value}
               placeholder={placeholder}
@@ -67,7 +64,6 @@ const ContentField = ({
               textarea={textarea}
               labelClicked={labelClicked}
             />
-            {/* </Form.Item> */}
           </div>
           {isError && (
             <div className='mt-1 flex items-center gap-1 text-red-400'>

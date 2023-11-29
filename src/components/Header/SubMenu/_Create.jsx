@@ -4,16 +4,20 @@ import clsx from 'clsx';
 import QuestionImg from '~/assets/symbols/create-question.png';
 import TestImg from '~/assets/symbols/create-test.png';
 import QuizImg from '~/assets/symbols/create-quiz.png';
-import { PATH } from '~/routes';
+import { END_POINT, PATH } from '~/routes';
 
 const Create = () => {
   const [hovering, setHovering] = useState(null);
   const navigate = useNavigate();
 
   const creatingType = [
-    { title: 'Câu hỏi, bài tập', symbol: QuestionImg, path: PATH.CREATE_QUESTION },
-    { title: 'Đề thi, kiểm tra', symbol: TestImg, path: PATH.CREATE_TEST },
-    { title: 'Game trắc nghiệm', symbol: QuizImg, path: PATH.CREATE_QUIZ_GAME }
+    {
+      title: 'Câu hỏi, bài tập',
+      symbol: QuestionImg,
+      path: PATH.CREATE(END_POINT.CREATE_QUESTION)
+    },
+    { title: 'Đề thi, kiểm tra', symbol: TestImg, path: PATH.CREATE(END_POINT.CREATE_TEST) },
+    { title: 'Game trắc nghiệm', symbol: QuizImg, path: PATH.CREATE(END_POINT.CREATE_QUIZ_GAME) }
   ];
 
   return (

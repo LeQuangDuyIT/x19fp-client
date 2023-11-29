@@ -1,20 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { FaRegCircle } from 'react-icons/fa';
+import { MdRadioButtonUnchecked, MdCheckCircle } from 'react-icons/md';
+
 import { alphabet } from '~/utils/constants';
 import ContentField from '../ContentField';
-import { Popconfirm } from 'antd';
+import { Button, Popconfirm } from 'antd';
+import { CreateQuestionContext } from '../QuestionCreatorBox';
+import clsx from 'clsx';
 
 const MultipleChoiceAnswerField = ({
   index,
   id,
-  name,
   value,
+  isCorrect,
   isError,
   onInputChange,
-  refreshField,
-  deleteAnswer
+  refreshField
 }) => {
+  const { isCorrectRequired, handleSetCorrect, handleDeleteAnswer } =
+    useContext(CreateQuestionContext);
   const [labelClicked, setLabelClicked] = useState(false);
 
   useEffect(() => {
@@ -26,7 +30,21 @@ const MultipleChoiceAnswerField = ({
   return (
     <div className='flex items-start gap-1'>
       <div className='flex items-center gap-4 pt-1'>
-        <FaRegCircle className='cursor-pointer text-xl text-[#ccc]/50' />
+        <Button
+          className='flex items-center w-fit h-fit rounded-full border-none p-0'
+          onClick={() => handleSetCorrect(id)}
+        >
+          {isCorrect ? (
+            <MdCheckCircle className='text-xl text-blue-600' />
+          ) : (
+            <MdRadioButtonUnchecked
+              className={clsx('text-xl rounded-full', {
+                'text-[#ccc]/50': !isCorrectRequired,
+                'text-red-500 bg-red-50': isCorrectRequired
+              })}
+            />
+          )}
+        </Button>
         <h4 className='w-7 text-xl cursor-default' onClick={() => setLabelClicked(true)}>
           {alphabet[index]}.
         </h4>
@@ -47,7 +65,7 @@ const MultipleChoiceAnswerField = ({
           okText='Xóa'
           cancelText='Đóng'
           okButtonProps={{ danger: true }}
-          onConfirm={deleteAnswer}
+          onConfirm={() => handleDeleteAnswer(id)}
         >
           <CloseOutlined className='cursor-pointer opacity-60 hover:opacity-100' />
         </Popconfirm>
