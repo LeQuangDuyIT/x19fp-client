@@ -1,3 +1,4 @@
+import { GoogleLogin } from '@react-oauth/google';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -24,6 +25,7 @@ const Login = () => {
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
+
   return (
     <div>
       <Form
@@ -92,15 +94,27 @@ const Login = () => {
             {loading ? <LoadingState /> : 'Đăng nhập'}
           </Button>
         </Form.Item>
-        <div className='text-center text-sm font-bold '>
-          Don&apos;t you have a account ?
+        <div className='text-center mb-3 text-sm font-bold items-center '>
+          Bạn chưa có tài khoản ?
           <Link to='/auth/signup' className='text-blue-500 no-underline font-bold'>
-            Signup
+            Đăng ký
           </Link>
+        </div>
+        <div className='flex items-center justify-center flex-col'>
+          <div className='text-sm font-bold mb-3 text-center'> hoặc đăng nhập với </div>
+          <GoogleLogin
+            onSuccess={async credentialResponse => {
+              console.log(credentialResponse);
+              await authApi.verifyGoogleCount(credentialResponse);
+              // navigate('/');
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
         </div>
       </Form>
     </div>
   );
 };
-
 export default Login;
