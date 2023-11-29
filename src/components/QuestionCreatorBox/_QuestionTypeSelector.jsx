@@ -36,7 +36,7 @@ const QuestionTypeSelector = () => {
     []
   );
 
-  const typeTitle = questionTypes.find(type => type.value === questionType);
+  const currentType = questionTypes.find(type => type.value === questionType);
 
   return (
     <SubMenuWrapper
@@ -49,8 +49,8 @@ const QuestionTypeSelector = () => {
     >
       <Button className='w-full h-[56px] p-4 flex gap-4 justify-between items-center border border-[#ccc] rounded-md text-base cursor-pointer'>
         <div className='flex items-center gap-3'>
-          <CheckSquareOutlined />
-          <span>{typeTitle?.title}</span>
+          {currentType?.icon}
+          <span>{currentType?.title}</span>
         </div>
         <CaretDownOutlined />
       </Button>

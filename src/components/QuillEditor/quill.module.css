@@ -21,6 +21,8 @@
     bottom: 0;
     z-index: 1;
 
+    border-radius: 6px;
+
     background-color: white;
 
     transform: translateY(calc(100% + 8px));

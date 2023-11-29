@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { Tooltip } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { FaRegImage } from 'react-icons/fa6';
 import QuillEditor from '../QuillEditor';
 import ClickOutsideObserver from '../ClickOutsideObserver';
+
+const UploadImageButton = () => (
+  <div className='flex justify-center items-center absolute left-[calc(656px+4px)] bottom-[-51px] h-[43.38px] aspect-square'>
+    <Tooltip title='Thêm hình ảnh'>
+      <FaRegImage className='text-2xl text-gray-500 hover:text-[#2e6bed] cursor-pointer' />
+    </Tooltip>
+  </div>
+);
 
 const ContentField = ({
   value,
@@ -12,7 +22,8 @@ const ContentField = ({
   transparent,
   isError,
   refreshField,
-  labelClicked
+  labelClicked,
+  allowUploadImage
 }) => {
   const [isFocusing, setIsFocusing] = useState(false);
   const [isExtendingToolbar, setIsExtendingToolbar] = useState(false);
@@ -64,6 +75,7 @@ const ContentField = ({
               textarea={textarea}
               labelClicked={labelClicked}
             />
+            {isExtendingToolbar && allowUploadImage && <UploadImageButton />}
           </div>
           {isError && (
             <div className='mt-1 flex items-center gap-1 text-red-400'>

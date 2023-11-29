@@ -16,6 +16,7 @@ const MultipleChoiceCreator = () => {
           placeholder='Câu hỏi/đề bài'
           isError={errors.includes('topic')}
           refreshField={() => handleRefreshField('topic')}
+          allowUploadImage
         />
         <div className='flex flex-col gap-1 mt-4'>
           {answers.map((answer, index) => (

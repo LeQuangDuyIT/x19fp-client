@@ -4,7 +4,7 @@ import clsx from 'clsx';
 const Container = ({ children, className }) => {
   return (
     <div
-      className={clsx('w-full 2xl:max-w-screen-2xl lg:px-[5%] px-4 2xl:px-1 mx-auto', {
+      className={clsx('w-full max-w-screen-2xl min-w-[1536px] lg:px-[5%] px-4 2xl:px-1 mx-auto', {
         [className]: className
       })}
     >

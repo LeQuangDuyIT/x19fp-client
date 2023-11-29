@@ -67,8 +67,6 @@ const QuillEditor = ({
     ['bold', 'italic', 'underline', 'strike'],
     [{ color: [] }, { background: [] }],
     ['formula', 'blockquote', 'code-block'],
-    // ['link', 'image'],
-    // [{ script: 'sub' }, { script: 'super' }],
     [{ indent: '-1' }, { indent: '+1' }],
     [{ list: 'ordered' }, { list: 'bullet' }],
     ['clean']
