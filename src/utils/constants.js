@@ -2,6 +2,12 @@ export const TOKEN_TYPES = {
   ACCESS_TOKEN: 'accessToken'
 };
 
+export const QUESTION_TYPE = {
+  CHOICE: 'multiple-choice',
+  ESSAY: 'essay',
+  CHECK: 'check-box'
+};
+
 export const alphabet = [
   'A',
   'B',

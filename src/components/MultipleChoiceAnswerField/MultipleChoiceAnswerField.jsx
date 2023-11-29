@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { Button, Popconfirm } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { MdRadioButtonUnchecked, MdCheckCircle } from 'react-icons/md';
-
 import { alphabet } from '~/utils/constants';
 import ContentField from '../ContentField';
-import { Button, Popconfirm } from 'antd';
 import { CreateQuestionContext } from '../QuestionCreatorBox';
-import clsx from 'clsx';
 
 const MultipleChoiceAnswerField = ({
   index,
@@ -50,7 +49,6 @@ const MultipleChoiceAnswerField = ({
         </h4>
       </div>
       <ContentField
-        name={name}
         value={value}
         onChange={value => onInputChange(id, value)}
         isError={isError}

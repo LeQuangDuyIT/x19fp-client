@@ -19,10 +19,14 @@
   :global(.ql-toolbar) {
     position: absolute;
     bottom: 0;
+    z-index: 1;
 
     background-color: white;
 
     transform: translateY(calc(100% + 8px));
+  }
+  :global(.ql-tooltip) {
+    z-index: 2;
   }
 }
 

@@ -1,8 +1,18 @@
 import { Divider, Popover } from 'antd';
 
-const SubMenuWrapper = ({ children, title, content, placement = 'bottomLeft' }) => {
+const SubMenuWrapper = ({
+  children,
+  trigger,
+  title,
+  content,
+  color = 'black',
+  placement = 'bottomLeft',
+  style,
+  arrow = true
+}) => {
   return (
     <Popover
+      trigger={trigger}
       content={
         content ? (
           <>
@@ -11,10 +21,11 @@ const SubMenuWrapper = ({ children, title, content, placement = 'bottomLeft' }) 
           </>
         ) : undefined
       }
-      title={title ? <p className='font-bold'>{title}</p> : undefined}
-      color='black'
-      overlayInnerStyle={{ padding: '18px' }}
+      title={title ? <p className='text-white font-bold'>{title}</p> : undefined}
+      color={color}
+      overlayInnerStyle={{ padding: '18px', ...style }}
       placement={placement}
+      arrow={arrow}
     >
       {children}
     </Popover>

@@ -1,10 +1,13 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useMemo } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import parser from 'html-react-parser';
 import { Button, Col, Row, message } from 'antd';
-import { CheckSquareOutlined, CaretDownOutlined } from '@ant-design/icons';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import MultipleChoiceCreator from '~/components/MultipleChoiceCreator';
+import QuestionTypeSelector from './_QuestionTypeSelector';
+import CheckboxCreator from '~/components/CheckboxCreator';
+import EsayCreator from '../EsayCreator';
+import { QUESTION_TYPE } from '~/utils/constants';
 
 export const CreateQuestionContext = createContext();
 
@@ -15,6 +18,7 @@ const initialAnswers = Array.from({ length: 4 }, () => ({
 }));
 
 const QuestionCreatorBox = () => {
+  const [questionType, setQuestionType] = useState(QUESTION_TYPE.CHOICE);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
@@ -70,13 +74,21 @@ const QuestionCreatorBox = () => {
     setIsCorrectRequired(false);
   };
 
+  const MainSection = useMemo(() => {
+    if (questionType === QUESTION_TYPE.CHOICE) return MultipleChoiceCreator;
+    if (questionType === QUESTION_TYPE.CHECK) return CheckboxCreator;
+    if (questionType === QUESTION_TYPE.ESSAY) return EsayCreator;
+  }, [questionType]);
+
   return (
     <CreateQuestionContext.Provider
       value={{
+        questionType,
         topic,
         answers,
         errors,
         isCorrectRequired,
+        handleChangeType: value => setQuestionType(value),
         onAnswerInputChange,
         onTopicInputChange: value => setTopic(value),
         handleCreateMultipleChoice,
@@ -88,16 +100,10 @@ const QuestionCreatorBox = () => {
       <BlockSectionWrapper className='h-auto'>
         <Row gutter={16}>
           <Col span={18} className='flex flex-col gap-8'>
-            <MultipleChoiceCreator handleSubmit={handleCreateMultipleChoice} />
+            <MainSection />
           </Col>
           <Col span={6} className='flex flex-col gap-2'>
-            <Button className='w-full h-[56px] p-4 flex gap-4 justify-between items-center border border-[#ccc] rounded-md text-base cursor-pointer'>
-              <div className='flex items-center gap-3'>
-                <CheckSquareOutlined />
-                <span>Trắc nghiệm 1 đáp án</span>
-              </div>
-              <CaretDownOutlined />
-            </Button>
+            <QuestionTypeSelector key={questionType} />
             <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
               Lưu
             </Button>

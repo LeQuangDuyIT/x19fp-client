@@ -10,7 +10,6 @@ const MultipleChoiceCreator = () => {
     <div>
       <form>
         <ContentField
-          name='topic'
           value={topic}
           textarea
           onChange={onTopicInputChange}

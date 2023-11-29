@@ -2,10 +2,13 @@ import { Button, Tag } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { headerMenu } from './_rendering';
 import AntdCustomTheme from '~/theme/AntdCustomTheme';
-import SubMenuWrapper from './SubMenu/SubMenuWrapper';
+import SubMenuWrapper from '../SubMenuWrapper';
 import Create from './SubMenu/_Create';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '~/routes';
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <div className='h-[64px] flex justify-between items-center'>
       <div className='flex items-center gap-8 z-10'>
@@ -43,10 +46,14 @@ const Header = () => {
               <DownOutlined className='text-[10px]' />
             </Button>
           </SubMenuWrapper>
-          <Button type='text' className='border-none font-bold'>
+          <Button
+            type='text'
+            className='border-none font-bold'
+            onClick={() => navigate(PATH.LOGIN)}
+          >
             Đăng nhập
           </Button>
-          <Button ghost className='font-bold'>
+          <Button ghost className='font-bold' onClick={() => navigate(PATH.SIGNUP)}>
             Đăng ký
           </Button>
         </div>
