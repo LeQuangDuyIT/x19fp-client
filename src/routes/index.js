@@ -3,6 +3,7 @@ import Authen from '~/pages/Authen';
 import Login from '~/pages/Authen/Login';
 import Signup from '~/pages/Authen/Signup';
 import Create from '~/pages/Create';
+import Question from '~/pages/Question';
 
 export const END_POINT = {
   CREATE_QUESTION: 'question',
@@ -19,7 +20,8 @@ export const PATH = {
 const publicRoutes = [
   { path: '/', component: Home },
   { path: PATH.LOGIN, component: Login },
-  { path: PATH.SIGNUP, component: Signup }
+  { path: PATH.SIGNUP, component: Signup },
+  { path: '/question/:id', component: Question }
 ];
 
 const privateRoutes = [{ path: '/create/:type', component: Create }];

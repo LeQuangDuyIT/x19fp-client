@@ -25,8 +25,17 @@
 
     transform: translateY(calc(100% + 8px));
   }
+
   :global(.ql-tooltip) {
     z-index: 2;
+  }
+
+  :global(.ql-tooltip[data-mode='formula']::before) {
+    content: 'Công thức:';
+  }
+
+  :global(.ql-tooltip.ql-editing a.ql-action::after) {
+    content: 'Lưu';
   }
 }
 

@@ -1,4 +1,5 @@
 import { useState, createContext, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import parser from 'html-react-parser';
 import { Button, Col, Row, message } from 'antd';
@@ -8,6 +9,7 @@ import QuestionTypeSelector from './_QuestionTypeSelector';
 import CheckboxCreator from '~/components/CheckboxCreator';
 import EsayCreator from '../EsayCreator';
 import { QUESTION_TYPE } from '~/utils/constants';
+import QuestionAPI from '~/services/questionAPI';
 
 export const CreateQuestionContext = createContext();
 
@@ -23,6 +25,7 @@ const QuestionCreatorBox = () => {
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
   const [isCorrectRequired, setIsCorrectRequired] = useState(false);
+  const navigate = useNavigate();
 
   const onAnswerInputChange = (idChange, value) => {
     const newAnswers = answers.map(answer =>
@@ -31,13 +34,23 @@ const QuestionCreatorBox = () => {
     setAnswers(newAnswers);
   };
 
-  const handleCreateMultipleChoice = () => {
+  const handleCreateMultipleChoice = async () => {
     const isValid = handleValidate();
     if (!isValid) return;
-    // eslint-disable-next-line no-console
-    console.log(topic);
-    // eslint-disable-next-line no-console
-    console.log(answers);
+
+    const reqBody = {
+      topic,
+      answers,
+      type: questionType
+    };
+
+    try {
+      const res = await QuestionAPI.createMultipleChoice(reqBody);
+      navigate(`/question/${res.data.id}`);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
 
   const handleValidate = () => {

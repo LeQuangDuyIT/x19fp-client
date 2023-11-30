@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import CreateHeader from './CreateHeader';
+import SimpleHeader from '~/layouts/SimpleHeader';
 import { END_POINT } from '~/routes';
 import QuestioncCreator from './QuestioncCreator';
 import TestCreator from './TestCreator';
@@ -12,7 +12,7 @@ const Create = () => {
 
   return (
     <div>
-      <CreateHeader />
+      <SimpleHeader />
       <Creator />
     </div>
   );

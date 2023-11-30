@@ -11,7 +11,7 @@ const QuestioncCreator = () => {
           <Col span={6}>
             <AsideSection />
           </Col>
-          <Col span={18}>
+          <Col span={18} className='mx-auto'>
             <QuestionCreatorBox />
           </Col>
         </Row>

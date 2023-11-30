@@ -19,7 +19,7 @@ const BackHomeButton = () => {
   );
 };
 
-const CreateHeader = () => {
+const SimpleHeader = () => {
   return (
     <div className='bg-[#2563EB]'>
       <Container>
@@ -42,4 +42,4 @@ const CreateHeader = () => {
   );
 };
 
-export default CreateHeader;
+export default SimpleHeader;
