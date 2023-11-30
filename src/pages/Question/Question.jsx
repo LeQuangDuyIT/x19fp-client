@@ -1,12 +1,11 @@
-import parser from 'html-react-parser';
-import { Col, Row } from 'antd';
+import { Col, Collapse, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import Container from '~/components/Container';
 import SimpleHeader from '~/layouts/SimpleHeader';
 import QuestionAPI from '~/services/questionAPI';
-import { alphabet } from '~/utils/constants';
+import MultipleChoice from './_MultipleChoice';
 
 const Question = () => {
   const [question, setQuestion] = useState(null);
@@ -41,20 +40,32 @@ const Question = () => {
             </Col>
             <Col span={16} className='mx-auto'>
               <div className='flex flex-col gap-4 text-base'>
+                <MultipleChoice question={question} />
                 <BlockSectionWrapper>
-                  <p className=''>{parser(question.topic)}</p>
+                  <Collapse
+                    size='large'
+                    items={[
+                      {
+                        key: '1',
+                        label: 'Xem gợi ý',
+                        children: <p>sdfdsfds</p>
+                      }
+                    ]}
+                    className='border-none'
+                  />
                 </BlockSectionWrapper>
                 <BlockSectionWrapper>
-                  <div className='flex flex-col gap-4'>
-                    {question.answers.map((answer, index) => (
-                      <div key={answer.id}>
-                        <p className='flex'>
-                          <span className='w-6'>{alphabet[index]}.</span>
-                          {parser(answer.content)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+                  <Collapse
+                    size='large'
+                    items={[
+                      {
+                        key: '1',
+                        label: 'Xem bài giải',
+                        children: <p>sdfdsfds</p>
+                      }
+                    ]}
+                    className='border-none'
+                  />
                 </BlockSectionWrapper>
               </div>
             </Col>

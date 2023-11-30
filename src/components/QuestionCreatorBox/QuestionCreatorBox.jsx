@@ -111,7 +111,7 @@ const QuestionCreatorBox = () => {
       }}
     >
       <BlockSectionWrapper className='h-auto'>
-        <Row gutter={16}>
+        <Row gutter={16} className='p-4'>
           <Col span={18} className='flex flex-col gap-8'>
             <MainSection />
           </Col>

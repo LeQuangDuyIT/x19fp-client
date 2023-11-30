@@ -8,7 +8,7 @@ const BlockSectionWrapper = ({ children, title, className }) => {
           <h3 className='font-bold'>{title}</h3>
         </div>
       )}
-      <div className='p-4'>{children}</div>
+      <div>{children}</div>
     </div>
   );
 };
