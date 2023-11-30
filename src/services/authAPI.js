@@ -15,6 +15,10 @@ const authApi = {
     const mail = { receiverMail: body };
     return api.post(url, mail);
   },
+  fetchCurrentUser: () => {
+    const url = '/auth/current-user';
+    return api.get(url);
+  },
   verifyGoogleCount: body => {
     const url = 'auth/verify-google-account';
     return api.post(url, body);
