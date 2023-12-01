@@ -1,113 +1,178 @@
-import { useFormik } from 'formik';
-import { useContext } from 'react';
+import FacebookLogin from '@greatsumini/react-facebook-login';
+import { GoogleLogin } from '@react-oauth/google';
+import { Button, Checkbox, Form, Input } from 'antd';
+import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { Link } from 'react-router-dom';
+import LoadingState from '~/components/LoadingState/LoadingState';
 import { StoreContext } from '~/context/storeContext/StoreContext';
+import { login } from '~/redux/Auth/authSlice';
 import authApi from '~/services/authAPI';
+import { TOKEN_TYPES } from '~/utils/constants';
 import { validationSchema } from '~/validationSchema/authValidationSchema';
+
 const Login = () => {
-  const { loading, setLoading, error, setError } = useContext(StoreContext);
-
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: ''
-    },
-    onSubmit: async values => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await authApi.login(values);
-        console.log('response', response);
-      } catch (error) {
-        // console.log(error.message);
-        setError(error.message);
-      } finally {
-        setLoading(false);
+  const { loading, setLoading, setContextError, contextError, navigate } = useContext(StoreContext);
+  const dispatch = useDispatch();
+  const onFinish = async values => {
+    try {
+      setLoading(true);
+      setContextError(null);
+      await validationSchema.loginValidationSchema.validate(values);
+      const response = await authApi.login(values);
+      const accessToken = response?.data?.accessToken;
+      if (accessToken) {
+        localStorage.setItem(TOKEN_TYPES.ACCESS_TOKEN, accessToken);
+        const getCurrentUser = await authApi.fetchCurrentUser();
+        const currentUser = getCurrentUser?.data;
+        const payload = {
+          user: currentUser
+        };
+        dispatch(login(payload));
+        navigate('/');
       }
-    },
-    validationSchema: validationSchema.loginValidationSchema
-  });
-
-  const { handleChange, handleSubmit, errors } = formik;
+    } catch (error) {
+      setContextError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo);
+  };
   return (
-    <>
-      <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
-        <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-          <img
-            className='mx-auto h-10 w-auto'
-            src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-            alt='Your Company'
-          />
-          <h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
-            Sign in to your account
-          </h2>
+    <div>
+      <Form
+        name='basic'
+        labelCol={{
+          span: 30
+        }}
+        wrapperCol={{
+          span: 30
+        }}
+        style={{
+          minWidth: 300
+        }}
+        layout='vertical'
+        initialValues={{
+          remember: true
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete='off'
+      >
+        <div className='h-4'>
+          {contextError && (
+            <div className='text-center text-red-500 text-sm '> {contextError} </div>
+          )}
         </div>
+        <Form.Item
+          label='Email'
+          name='email'
+          rules={[
+            {
+              required: true,
+              message: 'Hãy nhập email của bạn!'
+            }
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label='Mật khẩu'
+          name='password'
+          rules={[
+            {
+              required: true,
+              message: 'Hãy nhập mật khẩu của bạn!'
+            }
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
 
-        <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-          <form onSubmit={handleSubmit} className='space-y-6' action='#' method='POST'>
-            <div>
-              <label htmlFor='email' className='block text-sm font-medium leading-6 text-gray-900'>
-                Email address
-              </label>
-              <div className='mt-2'>
-                <input
-                  id='email'
-                  name='email'
-                  type='email'
-                  autoComplete='email'
-                  onChange={handleChange}
-                  required
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                />
-              </div>
-            </div>
+        <Form.Item
+          name='remember'
+          valuePropName='checked'
+          wrapperCol={{
+            offset: 8,
+            span: 16
+          }}
+        >
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
 
-            <div>
-              <div className='flex items-center justify-between'>
-                <label
-                  htmlFor='password'
-                  className='block text-sm font-medium leading-6 text-gray-900'
-                >
-                  Password
-                </label>
-                <div className='text-sm'>
-                  <a href='#' className='font-semibold text-indigo-600 hover:text-indigo-500'>
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className='mt-2'>
-                <input
-                  id='password'
-                  name='password'
-                  type='password'
-                  autoComplete='current-password'
-                  onChange={handleChange}
-                  required
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type='submit'
-                className='flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-              >
-                Sign in
-              </button>
-            </div>
-          </form>
-
-          <p className='mt-10 text-center text-sm text-gray-500'>
-            Not a member?{' '}
-            <a href='#' className='font-semibold leading-6 text-indigo-600 hover:text-indigo-500'>
-              Start a 14 day free trial
-            </a>
-          </p>
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16
+          }}
+        >
+          <Button type='primary' htmlType='submit'>
+            {loading ? <LoadingState /> : 'Đăng nhập'}
+          </Button>
+        </Form.Item>
+        <div className='text-center mb-3 text-sm font-bold items-center '>
+          Bạn chưa có tài khoản ?
+          <Link to='/auth/signup' className='text-blue-500 no-underline font-bold'>
+            Đăng ký
+          </Link>
         </div>
-      </div>
-    </>
+        <div className='flex items-center justify-center flex-col'>
+          <div className='text-sm font-bold mb-3 text-center'> hoặc đăng nhập với </div>
+          <div className='mb-3'>
+            <GoogleLogin
+              onSuccess={async credentialResponse => {
+                try {
+                  const verifyUser = await authApi.verifyGoogleCount(credentialResponse);
+                  const accessToken = verifyUser?.data?.accessToken;
+                  if (accessToken) {
+                    localStorage.setItem(TOKEN_TYPES.ACCESS_TOKEN, accessToken);
+                    const user = await authApi.fetchCurrentUser();
+                    const userData = user.data;
+                    const payload = {
+                      user: userData
+                    };
+                    dispatch(login(payload));
+                    navigate('/');
+                  }
+                } catch (error) {
+                  setContextError(error.message);
+                }
+              }}
+            />
+          </div>
+          <div className='border rounded	 border-[#e5e7eb] border-solid px-2 '>
+            <img
+              src='../src/assets/facebook-logo/facebook.png'
+              className=' h-6  rounded-full bg-blue-500'
+            />
+            <FacebookLogin
+              appId='1348215319416652'
+              style={{
+                backgroundColor: 'white',
+                color: 'black',
+                fontSize: '12px',
+                fontWeight: '500',
+                padding: '9px 12px',
+                border: 'none',
+                borderRadius: '4px'
+              }}
+              onSuccess={async response => {
+                console.log('Login Success!', response);
+              }}
+              onFail={error => {
+                console.log('Login Failed!', error);
+              }}
+              onProfileSuccess={async response => {
+                console.log('Get Profile Success!', response);
+              }}
+            />
+          </div>
+        </div>
+      </Form>
+    </div>
   );
 };
-
 export default Login;
