@@ -33,7 +33,7 @@ const Header = () => {
           <DownOutlined className='text-[10px]' />
         </Button>
       </SubMenuWrapper>
-      <SubMenuWrapper content={<User />} placement='bottomRight'>
+      <SubMenuWrapper content={<User />} title='Tùy chọn người dùng' placement='bottomRight'>
         <div>
           <UserAvatarButton user={currentUser} />
         </div>
