@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '~/routes';
 import { useSelector } from 'react-redux';
 import UserAvatarButton from '../UserAvatarButton';
+import User from './SubMenu/_User';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -32,7 +33,11 @@ const Header = () => {
           <DownOutlined className='text-[10px]' />
         </Button>
       </SubMenuWrapper>
-      <UserAvatarButton user={currentUser} />
+      <SubMenuWrapper content={<User />} placement='bottomRight'>
+        <div>
+          <UserAvatarButton user={currentUser} />
+        </div>
+      </SubMenuWrapper>
     </>
   );
 

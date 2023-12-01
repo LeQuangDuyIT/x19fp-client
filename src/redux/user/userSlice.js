@@ -25,6 +25,7 @@ const userSlice = createSlice({
       localStorage.removeItem(TOKEN_TYPES.ACCESS_TOKEN);
       state.isAuthenticated = false;
       state.currentUser = {};
+      state.reload = Math.random();
     }
   },
   extraReducers: builder =>
