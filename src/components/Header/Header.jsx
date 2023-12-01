@@ -7,6 +7,7 @@ import Create from './SubMenu/_Create';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '~/routes';
 import { useSelector } from 'react-redux';
+import UserAvatarButton from '../UserAvatarButton';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -25,15 +26,13 @@ const Header = () => {
 
   const privateComponent = (
     <>
-      <div className=' flex text-center items-center justify-center gap-1 '>
-        <div>
-          <img
-            className='rounded-full h-7 w-7 '
-            src={currentUser.picture || '../src/assets/default-avatar/user.png'}
-          />
-        </div>
-        {currentUser.lastName + ' ' + currentUser.firstName}
-      </div>
+      <SubMenuWrapper content={<Create />} title='Bạn muốn tạo?' placement='bottomRight'>
+        <Button icon={<PlusOutlined />} ghost className='flex items-center font-bold'>
+          <span>Tạo mới</span>
+          <DownOutlined className='text-[10px]' />
+        </Button>
+      </SubMenuWrapper>
+      <UserAvatarButton user={currentUser} />
     </>
   );
 
@@ -67,13 +66,7 @@ const Header = () => {
         </div>
       </div>
       <AntdCustomTheme className='z-10' colorTextBase='white' colorPrimary='white'>
-        <div className='flex gap-2'>
-          <SubMenuWrapper content={<Create />} title='Bạn muốn tạo?' placement='bottomRight'>
-            <Button icon={<PlusOutlined />} ghost className='flex items-center font-bold'>
-              <span>Tạo mới</span>
-              <DownOutlined className='text-[10px]' />
-            </Button>
-          </SubMenuWrapper>
+        <div className='flex items-center gap-4'>
           {isAuthenticated ? privateComponent : publicComponent}
         </div>
       </AntdCustomTheme>

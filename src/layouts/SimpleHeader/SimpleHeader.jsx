@@ -1,8 +1,8 @@
-import { Avatar } from 'antd';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import Container from '~/components/Container';
-import { DownOutlined } from '@ant-design/icons';
+import UserAvatarButton from '~/components/UserAvatarButton';
+import { useSelector } from 'react-redux';
 
 const BackHomeButton = () => {
   const navigate = useNavigate();
@@ -20,22 +20,14 @@ const BackHomeButton = () => {
 };
 
 const SimpleHeader = () => {
+  const { currentUser } = useSelector(state => state.user);
   return (
     <div className='bg-[#2563EB]'>
       <Container>
         <div className='h-[113px] flex justify-between items-center'>
           <BackHomeButton />
           <h2 className='text-white font-bold'>TEST BANK</h2>
-          <div className='flex items-center gap-3 text-white cursor-pointer'>
-            <Avatar
-              style={{ backgroundColor: 'orange', verticalAlign: 'middle', fontWeight: 'bold' }}
-              size='large'
-            >
-              D
-            </Avatar>
-            <h4>Lê Quang Duy</h4>
-            <DownOutlined className='text-[10px]' />
-          </div>
+          <UserAvatarButton user={currentUser} large />
         </div>
       </Container>
     </div>

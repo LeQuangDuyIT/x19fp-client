@@ -1,8 +1,7 @@
 import { useContext, useState } from 'react';
 import { Button, Checkbox, Col, Form, Input, Row, Select } from 'antd';
-import { validationSchema } from '~/validationSchema/authValidationSchema';
 import { StoreContext } from '~/context/storeContext/StoreContext';
-import authApi from '~/services/authAPI';
+import AuthAPI from '~/services/authAPI';
 import LoadingState from '~/components/LoadingState/LoadingState';
 import { Link } from 'react-router-dom';
 
@@ -55,7 +54,7 @@ const Signup = () => {
       if (!signupEmail) {
         return setContextError('Bạn chưa nhập email');
       }
-      const sendCode = await authApi.getCode(signupEmail);
+      const sendCode = await AuthAPI.getCode(signupEmail);
       const code = sendCode.data?.message?.code;
       setAuthCode(code);
 
@@ -75,8 +74,7 @@ const Signup = () => {
       setContextError(null);
       const { captcha } = values;
       if (+captcha === +authCode) {
-        await validationSchema.signupValidationSchema.validate(values);
-        await authApi.signup(values);
+        await AuthAPI.signup(values);
         navigate('/login');
       } else {
         throw new Error('Mã không hợp lệ');
@@ -295,7 +293,7 @@ const Signup = () => {
       </Form>
       <div className='text-center text-xs font-bold '>
         Already have an account ?{' '}
-        <Link to='/auth/login' className='text-blue-500 no-underline font-bold'>
+        <Link to='/login' className='text-blue-500 no-underline font-bold'>
           Login
         </Link>
       </div>
