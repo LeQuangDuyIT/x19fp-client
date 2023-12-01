@@ -72,13 +72,13 @@ const Signup = () => {
     try {
       setLoading(true);
       setContextError(null);
-      const { captcha } = values;
-      if (+captcha === +authCode) {
-        await AuthAPI.signup(values);
-        navigate('/login');
-      } else {
-        throw new Error('Mã không hợp lệ');
-      }
+      // const { captcha } = values;
+      // if (+captcha === +authCode) {
+      //   await AuthAPI.signup(values);
+      //   navigate('/login');
+      // } else {
+      //   throw new Error('Mã không hợp lệ');
+      // }
     } catch (error) {
       setContextError(error.message);
     } finally {
@@ -250,6 +250,12 @@ const Signup = () => {
                   {
                     required: true,
                     message: 'Hãy nhập mã xác thực của bạn '
+                  },
+                  {
+                    validator: (_, value) =>
+                      +value === +authCode
+                        ? Promise.resolve()
+                        : Promise.reject(new Error('Mã không hợp lệ'))
                   }
                 ]}
               >
