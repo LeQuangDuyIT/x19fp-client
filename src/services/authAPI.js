@@ -1,7 +1,7 @@
 import { PATH } from '~/routes';
 import api from './axiosInstance';
 
-const authApi = {
+const AuthAPI = {
   login: body => {
     const url = `/auth/${PATH.LOGIN}`;
     return api.post(url, body);
@@ -25,4 +25,4 @@ const authApi = {
   }
 };
 
-export default authApi;
+export default AuthAPI;

@@ -1,5 +1,5 @@
 export const TOKEN_TYPES = {
-  ACCESS_TOKEN: 'accessToken'
+  ACCESS_TOKEN: 'x19fp-accessToken'
 };
 
 export const QUESTION_TYPE = {

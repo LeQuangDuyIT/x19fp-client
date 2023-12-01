@@ -10,7 +10,8 @@ import { useSelector } from 'react-redux';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, currentUser } = useSelector(state => state.auth);
+  const { isAuthenticated, currentUser } = useSelector(state => state.user);
+
   const publicComponent = (
     <>
       <Button type='text' className='border-none font-bold' onClick={() => navigate(PATH.LOGIN)}>
@@ -21,6 +22,7 @@ const Header = () => {
       </Button>
     </>
   );
+
   const privateComponent = (
     <>
       <div className=' flex text-center items-center justify-center gap-1 '>
@@ -72,7 +74,6 @@ const Header = () => {
               <DownOutlined className='text-[10px]' />
             </Button>
           </SubMenuWrapper>
-
           {isAuthenticated ? privateComponent : publicComponent}
         </div>
       </AntdCustomTheme>

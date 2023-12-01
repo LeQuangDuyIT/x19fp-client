@@ -2,34 +2,51 @@ import { Route, Routes } from 'react-router-dom';
 import routes from './routes';
 import PrivateRoute from './components/PrivateRoute';
 import MyStoreContext from './context/storeContext/StoreContext';
-import LogInOut from './pages/Authen/LogInOut/LogInOut';
 import { TOKEN_TYPES } from './utils/constants';
-import authApi from './services/authAPI';
-import { useDispatch } from 'react-redux';
-import { login } from './redux/Auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-function App() {
-  const dispatch = useDispatch();
+import { fetchCurrentUser } from '~/redux/user/userAction';
 
-  const fetchCurrentUser = async () => {
+const App = () => {
+  const dispatch = useDispatch();
+  const { isAuthenticated, reload: userReload } = useSelector(state => state.user);
+
+  useEffect(() => {
     const accessToken = localStorage.getItem(TOKEN_TYPES.ACCESS_TOKEN);
     if (accessToken) {
-      try {
-        const currentUser = await authApi.fetchCurrentUser();
-        const currentUserData = currentUser.data;
-        const payload = {
-          user: currentUserData
-        };
-        dispatch(login(payload));
-      } catch (error) {
-        if (error) {
-          throw new error();
-        }
-      }
+      dispatch(fetchCurrentUser());
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
-    fetchCurrentUser();
+    if (isAuthenticated) {
+      dispatch(fetchCurrentUser());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userReload]);
+
+  // const fetchCurrentUser = async () => {
+  //   const accessToken = localStorage.getItem(TOKEN_TYPES.ACCESS_TOKEN);
+  //   if (accessToken) {
+  //     try {
+  //       const currentUser = await authApi.fetchCurrentUser();
+  //       const currentUserData = currentUser.data;
+  //       const payload = {
+  //         user: currentUserData
+  //       };
+  //       dispatch(login(payload));
+  //     } catch (error) {
+  //       if (error) {
+  //         throw new error();
+  //       }
+  //     }
+  //   }
+  // };
+
+  useEffect(() => {
+    // fetchCurrentUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -44,17 +61,10 @@ function App() {
             }
             return <Route key={route.path} path={route.path} element={routeElement} />;
           })}
-          <Route path='/auth' element={<LogInOut />}>
-            {routes
-              .find(route => route.path === '/auth')
-              .authRoute.map(route => (
-                <Route key={route.path} path={route.path} element={<route.component />} />
-              ))}
-          </Route>
         </Routes>
       </div>
     </MyStoreContext>
   );
-}
+};
 
 export default App;

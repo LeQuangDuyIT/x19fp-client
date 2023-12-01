@@ -77,7 +77,7 @@ const Signup = () => {
       if (+captcha === +authCode) {
         await validationSchema.signupValidationSchema.validate(values);
         await authApi.signup(values);
-        navigate('/auth/login');
+        navigate('/login');
       } else {
         throw new Error('Mã không hợp lệ');
       }
@@ -87,6 +87,7 @@ const Signup = () => {
       setLoading(false);
     }
   };
+
   const prefixSelector = (
     <Form.Item name='prefix' noStyle>
       <Select

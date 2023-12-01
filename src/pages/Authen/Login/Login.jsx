@@ -1,16 +1,14 @@
 import FacebookLogin from '@greatsumini/react-facebook-login';
 import { GoogleLogin } from '@react-oauth/google';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Link } from 'react-router-dom';
 import LoadingState from '~/components/LoadingState/LoadingState';
 import { StoreContext } from '~/context/storeContext/StoreContext';
-import { login } from '~/redux/Auth/authSlice';
+import { login } from '~/redux/user/userSlice';
 import authApi from '~/services/authAPI';
 import { TOKEN_TYPES } from '~/utils/constants';
-import { validationSchema } from '~/validationSchema/authValidationSchema';
 
 const Login = () => {
   const { loading, setLoading, setContextError, contextError, navigate } = useContext(StoreContext);
@@ -19,8 +17,8 @@ const Login = () => {
     try {
       setLoading(true);
       setContextError(null);
-      await validationSchema.loginValidationSchema.validate(values);
       const response = await authApi.login(values);
+
       const accessToken = response?.data?.accessToken;
       if (accessToken) {
         localStorage.setItem(TOKEN_TYPES.ACCESS_TOKEN, accessToken);
@@ -38,9 +36,12 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   const onFinishFailed = errorInfo => {
+    // eslint-disable-next-line no-console
     console.log('Failed:', errorInfo);
   };
+
   return (
     <div>
       <Form
@@ -160,12 +161,15 @@ const Login = () => {
                 borderRadius: '4px'
               }}
               onSuccess={async response => {
+                // eslint-disable-next-line no-console
                 console.log('Login Success!', response);
               }}
               onFail={error => {
+                // eslint-disable-next-line no-console
                 console.log('Login Failed!', error);
               }}
               onProfileSuccess={async response => {
+                // eslint-disable-next-line no-console
                 console.log('Get Profile Success!', response);
               }}
             />
