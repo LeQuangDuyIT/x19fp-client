@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { FaRegImage } from 'react-icons/fa6';
-import QuillEditor from '../QuillEditor';
+import QuillEditor from './QuillEditor';
 import ClickOutsideObserver from '../ClickOutsideObserver';
 
 const UploadImageButton = () => (

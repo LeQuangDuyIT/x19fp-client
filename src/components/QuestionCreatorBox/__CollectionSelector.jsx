@@ -9,7 +9,7 @@ const CollectionSelector = () => {
   const { collections } = useSelector(state => state.collection);
 
   const options = useMemo(() => {
-    const labelClasses = 'flex items-center w-full h-[calc(56px-10px)]';
+    const labelClasses = 'flex items-center w-full h-[40px]';
     const collectionOptions = collections.map(collection => ({
       value: collection._id,
       label: <div className={labelClasses}>{collection.name}</div>
@@ -25,6 +25,7 @@ const CollectionSelector = () => {
       onChange={value => handleChangeControlValue('collection', value)}
       className='w-full h-[56px]'
       suffixIcon={<CaretDownOutlined />}
+      listHeight='fit-content'
     />
   );
 };

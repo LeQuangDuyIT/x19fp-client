@@ -22,7 +22,7 @@ const CollectionCreator = () => {
 
   return (
     <>
-      <div className='p-4 py-0'>
+      <div className='p-4 pt-0'>
         {!openForm && (
           <Button
             type='text'
@@ -55,7 +55,7 @@ const CollectionCreator = () => {
             </div>
           </Form>
         )}
-        <Divider className='my-1' />
+        <Divider className='mt-4 mb-0' />
       </div>
     </>
   );

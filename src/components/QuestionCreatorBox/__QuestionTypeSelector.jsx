@@ -19,7 +19,7 @@ const QuestionTypeSelector = () => {
       questionTypes.map(type => ({
         value: type.value,
         label: (
-          <div className='flex items-center gap-3 w-full h-[calc(56px-10px)]'>
+          <div className='flex items-center gap-3 w-full h-[40px]'>
             {type.icon}
             <span>{type.title}</span>
           </div>

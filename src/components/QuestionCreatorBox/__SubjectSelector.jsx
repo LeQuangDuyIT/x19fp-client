@@ -9,7 +9,7 @@ const SubjectSelector = () => {
     useContext(CreateQuestionContext);
 
   const options = useMemo(() => {
-    const labelClasses = 'flex items-center w-full h-[calc(56px-10px)]';
+    const labelClasses = 'flex items-center w-full h-[40px]';
     const subjects = categories.map(subject => ({
       value: subject.title,
       label: <div className={labelClasses}>{subject.title}</div>

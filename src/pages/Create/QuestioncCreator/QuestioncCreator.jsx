@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Col, Row } from 'antd';
 import Container from '~/components/Container';
-import AsideSection from './_AsideSection';
 import QuestionCreatorBox from '~/components/QuestionCreatorBox';
+import CollectionSection from '~/components/CollectionSection';
 import { fetchCollections } from '~/redux/collection/collectionAction';
 
 const QuestioncCreator = () => {
@@ -19,7 +19,7 @@ const QuestioncCreator = () => {
       <Container>
         <Row gutter={60} className='justify-between min-h-screen'>
           <Col span={6}>
-            <AsideSection />
+            <CollectionSection />
           </Col>
           <Col span={18} className='mx-auto'>
             <QuestionCreatorBox />

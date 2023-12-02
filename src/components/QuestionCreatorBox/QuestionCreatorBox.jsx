@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import parser from 'html-react-parser';
 import { Col, Row, message } from 'antd';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
-import MultipleChoiceCreator from '~/components/MultipleChoiceCreator';
+import MultipleChoiceCreator from './MultipleChoiceCreator';
 import CheckboxCreator from '~/components/CheckboxCreator';
 import EsayCreator from '../EsayCreator';
 import { QUESTION_TYPE } from '~/utils/constants';

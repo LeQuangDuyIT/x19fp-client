@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import MultipleChoiceAnswerField from '~/components/MultipleChoiceAnswerField';
-import ContentField from '../ContentField';
-import { CreateQuestionContext } from '../QuestionCreatorBox';
+import MultipleChoiceAnswerField from '../MultipleChoiceAnswerField';
+import ContentField from '~/components/ContentField';
+import { CreateQuestionContext } from '..';
 
 const MultipleChoiceCreator = () => {
   const {

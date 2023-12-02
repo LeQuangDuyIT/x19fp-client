@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '~/routes';
 import { useSelector } from 'react-redux';
 import UserAvatarButton from '../UserAvatarButton';
-import User from '../UserAvatarButton/_User';
 
 const Header = () => {
   const navigate = useNavigate();
