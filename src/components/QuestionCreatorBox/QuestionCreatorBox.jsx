@@ -2,7 +2,7 @@ import { useState, createContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import parser from 'html-react-parser';
-import { Button, Col, Row, message } from 'antd';
+import { Button, Col, Divider, Row, message } from 'antd';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import MultipleChoiceCreator from '~/components/MultipleChoiceCreator';
 import QuestionTypeSelector from './_QuestionTypeSelector';
@@ -10,6 +10,7 @@ import CheckboxCreator from '~/components/CheckboxCreator';
 import EsayCreator from '../EsayCreator';
 import { QUESTION_TYPE } from '~/utils/constants';
 import QuestionAPI from '~/services/questionAPI';
+import SubjectSelector from './_SubjectSelector';
 
 export const CreateQuestionContext = createContext();
 
@@ -21,10 +22,12 @@ const initialAnswers = Array.from({ length: 4 }, () => ({
 
 const QuestionCreatorBox = () => {
   const [questionType, setQuestionType] = useState(QUESTION_TYPE.CHOICE);
+  const [subject, setSubject] = useState(null);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
   const [isCorrectRequired, setIsCorrectRequired] = useState(false);
+  const [isSubjectRequired, setIsSubjectRequired] = useState(false);
   const navigate = useNavigate();
 
   const onAnswerInputChange = (idChange, value) => {
@@ -64,8 +67,12 @@ const QuestionCreatorBox = () => {
       message.error('Chưa chọn đáp án đúng');
       setIsCorrectRequired(true);
     }
+    if (!subject) {
+      message.error('Chưa chọn môn');
+      setIsSubjectRequired(true);
+    }
     if (errorFields.length > 0) setErrors(errorFields);
-    return errorFields.length === 0 && correctAnswer;
+    return errorFields.length === 0 && correctAnswer && subject;
   };
 
   const handleRefreshField = fieldName => {
@@ -87,6 +94,11 @@ const QuestionCreatorBox = () => {
     setIsCorrectRequired(false);
   };
 
+  const handleChangeSubject = value => {
+    setSubject(value);
+    if (isSubjectRequired) setIsSubjectRequired(false);
+  };
+
   const MainSection = useMemo(() => {
     if (questionType === QUESTION_TYPE.CHOICE) return MultipleChoiceCreator;
     if (questionType === QUESTION_TYPE.CHECK) return CheckboxCreator;
@@ -97,11 +109,14 @@ const QuestionCreatorBox = () => {
     <CreateQuestionContext.Provider
       value={{
         questionType,
+        subject,
         topic,
         answers,
         errors,
         isCorrectRequired,
+        isSubjectRequired,
         handleChangeType: value => setQuestionType(value),
+        handleChangeSubject,
         onAnswerInputChange,
         onTopicInputChange: value => setTopic(value),
         handleCreateMultipleChoice,
@@ -116,7 +131,9 @@ const QuestionCreatorBox = () => {
             <MainSection />
           </Col>
           <Col span={6} className='flex flex-col gap-2'>
-            <QuestionTypeSelector key={questionType} />
+            <QuestionTypeSelector />
+            <SubjectSelector />
+            <Divider />
             <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
               Lưu
             </Button>

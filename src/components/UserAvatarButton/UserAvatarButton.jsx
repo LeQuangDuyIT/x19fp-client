@@ -10,7 +10,7 @@ const UserAvatarButton = React.forwardRef(({ user, large }, ref) => {
         style={{ backgroundColor: 'orange', verticalAlign: 'middle', fontWeight: 'bold' }}
         size={large ? 'large' : undefined}
       >
-        {user?.firstName[0]}
+        {user?.firstName && user?.firstName[0]}
       </Avatar>
       <h4 className={clsx({ 'text-sm': !large, 'text-base': large })}>
         {user.firstName} {user.lastName}

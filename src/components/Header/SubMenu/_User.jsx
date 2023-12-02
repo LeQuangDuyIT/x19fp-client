@@ -15,7 +15,7 @@ const User = () => {
         className='w-full text-left text-white/60 font-bold hover:text-white'
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
-          <span className='pr-4'>Kho câu hỏi/bài tập</span>
+          <span className='pr-3'>Kho câu hỏi/bài tập</span>
         </Badge>
       </Button>
       <Button
@@ -24,7 +24,7 @@ const User = () => {
         className='w-full text-left text-white/60 font-bold hover:text-white'
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
-          <span className='pr-4'>Kho đề thi/kiểm tra</span>
+          <span className='pr-3'>Kho đề thi/kiểm tra</span>
         </Badge>
       </Button>
       <Button
@@ -33,7 +33,7 @@ const User = () => {
         className='w-full text-left text-white/60 font-bold hover:text-white'
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
-          <span className='pr-4'>Kho game</span>
+          <span className='pr-3'>Kho game</span>
         </Badge>
       </Button>
       <Divider className='bg-slate-100/20 my-0' />
