@@ -72,13 +72,8 @@ const Signup = () => {
     try {
       setLoading(true);
       setContextError(null);
-      // const { captcha } = values;
-      // if (+captcha === +authCode) {
-      //   await AuthAPI.signup(values);
-      //   navigate('/login');
-      // } else {
-      //   throw new Error('Mã không hợp lệ');
-      // }
+      await AuthAPI.signup(values);
+      navigate('/login');
     } catch (error) {
       setContextError(error.message);
     } finally {
@@ -262,7 +257,16 @@ const Signup = () => {
                 <Input />
               </Form.Item>
               <Col span={40}>
-                <div className='h-3 text-[15px] text-red-500 '> {contextError}</div>
+                <div className='h-3  '>
+                  {' '}
+                  <div className='text-[13px] text-red-500 '> {contextError}</div>
+                  {!loading && authCode && (
+                    <div className=' text-[13px] text-green-500 animate-get-code-success-bg-fade-in '>
+                      {' '}
+                      Vui lòng kiểm tra email{' '}
+                    </div>
+                  )}
+                </div>
               </Col>
             </Col>
 

@@ -8,7 +8,8 @@ export default {
         'input-red': '0 0 0 1px rgba(255,38,5,.08)'
       },
       animation: {
-        'head-section-bg-fade-in': 'fade-in 2s ease-in-out'
+        'head-section-bg-fade-in': 'fade-in 2s ease-in-out',
+        'get-code-success-bg-fade-in': 'fade-in 1s ease-in-out'
       },
       keyframes: {
         'fade-in': {

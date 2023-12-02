@@ -9,6 +9,10 @@ const User = () => {
   const dispatch = useDispatch();
   return (
     <div className='flex flex-col gap-y-4 items-start'>
+      <Button type='text' className='w-full text-left text-white/60 font-bold hover:text-white'>
+        <span className='pr-4'>Hồ sơ </span>
+      </Button>
+      <Divider className='bg-slate-100/20 my-0' />
       <Button
         type='text'
         icon={<RiQuestionAnswerLine />}
