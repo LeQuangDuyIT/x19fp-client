@@ -12,7 +12,7 @@ const questionTypes = [
 ];
 
 const QuestionTypeSelector = () => {
-  const { questionType, handleChangeType } = useContext(CreateQuestionContext);
+  const { controlValue, handleChangeControlValue } = useContext(CreateQuestionContext);
 
   const options = useMemo(
     () =>
@@ -32,8 +32,9 @@ const QuestionTypeSelector = () => {
   return (
     <Select
       options={options}
-      value={questionType}
-      onChange={value => handleChangeType(value)}
+      name='type'
+      value={controlValue.type}
+      onChange={value => handleChangeControlValue('type', value)}
       className='h-[56px]'
       suffixIcon={<CaretDownOutlined />}
     />

@@ -1,23 +1,28 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
+import { CreateQuestionContext } from '.';
 
 const CollectionSelector = () => {
+  const { controlValue, handleChangeControlValue } = useContext(CreateQuestionContext);
   const { collections } = useSelector(state => state.collection);
 
-  const collectionOptions = useMemo(() => {
+  const options = useMemo(() => {
     const labelClasses = 'flex items-center w-full h-[calc(56px-10px)]';
-    return collections.map(collection => ({
+    const collectionOptions = collections.map(collection => ({
       value: collection._id,
       label: <div className={labelClasses}>{collection.name}</div>
     }));
+    return collectionOptions;
   }, [collections]);
 
   return (
     <Select
       placeholder='Chọn bộ sưu tập'
-      options={collectionOptions}
+      options={options}
+      value={controlValue.collection}
+      onChange={value => handleChangeControlValue('collection', value)}
       className='w-full h-[56px]'
       suffixIcon={<CaretDownOutlined />}
     />

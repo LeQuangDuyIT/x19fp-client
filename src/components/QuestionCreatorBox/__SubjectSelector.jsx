@@ -5,7 +5,8 @@ import { CreateQuestionContext } from '.';
 import { categories } from '~/utils/rendering';
 
 const SubjectSelector = () => {
-  const { subject, handleChangeSubject, isSubjectRequired } = useContext(CreateQuestionContext);
+  const { controlValue, handleChangeControlValue, isSubjectRequired } =
+    useContext(CreateQuestionContext);
 
   const options = useMemo(() => {
     const labelClasses = 'flex items-center w-full h-[calc(56px-10px)]';
@@ -25,8 +26,8 @@ const SubjectSelector = () => {
   return (
     <Select
       options={options}
-      value={subject}
-      onChange={value => handleChangeSubject(value)}
+      value={controlValue.subject}
+      onChange={value => handleChangeControlValue('subject', value)}
       className='h-[56px]'
       suffixIcon={<CaretDownOutlined />}
       placeholder='Chọn môn'

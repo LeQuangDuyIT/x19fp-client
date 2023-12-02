@@ -1,17 +1,15 @@
-import { useState, createContext, useMemo } from 'react';
+import { useState, createContext, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import parser from 'html-react-parser';
-import { Button, Col, Divider, Row, message } from 'antd';
+import { Col, Row, message } from 'antd';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import MultipleChoiceCreator from '~/components/MultipleChoiceCreator';
-import QuestionTypeSelector from './_QuestionTypeSelector';
 import CheckboxCreator from '~/components/CheckboxCreator';
 import EsayCreator from '../EsayCreator';
 import { QUESTION_TYPE } from '~/utils/constants';
 import QuestionAPI from '~/services/questionAPI';
-import SubjectSelector from './_SubjectSelector';
-import CollectionSelector from './_CollectionSelector';
+import ControlSection from './_ControlSection';
 
 export const CreateQuestionContext = createContext();
 
@@ -22,8 +20,12 @@ const initialAnswers = Array.from({ length: 4 }, () => ({
 }));
 
 const QuestionCreatorBox = () => {
-  const [questionType, setQuestionType] = useState(QUESTION_TYPE.CHOICE);
-  const [subject, setSubject] = useState(null);
+  const [controlValue, setControlValue] = useState({
+    type: QUESTION_TYPE.CHOICE,
+    subject: null,
+    collection: null,
+    isPrivate: false
+  });
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
@@ -45,11 +47,15 @@ const QuestionCreatorBox = () => {
       setIsShowingError(true);
       return;
     }
+    console.log(controlValue);
+    const { type, subject, collection, isPrivate } = controlValue;
     const reqBody = {
       topic,
       answers,
       subject,
-      type: questionType
+      type,
+      collection,
+      isPrivate
     };
     try {
       const res = await QuestionAPI.createMultipleChoice(reqBody);
@@ -71,12 +77,12 @@ const QuestionCreatorBox = () => {
       message.error('Chưa chọn đáp án đúng');
       setIsCorrectRequired(true);
     }
-    if (!subject) {
+    if (!controlValue.subject) {
       message.error('Chưa chọn môn');
       setIsSubjectRequired(true);
     }
     if (errorFields.length > 0) setErrors(errorFields);
-    return errorFields.length === 0 && correctAnswer && subject;
+    return errorFields.length === 0 && correctAnswer && controlValue.subject;
   };
 
   const handleRefreshField = fieldName => {
@@ -98,11 +104,6 @@ const QuestionCreatorBox = () => {
     setIsCorrectRequired(false);
   };
 
-  const handleChangeSubject = value => {
-    setSubject(value);
-    if (isSubjectRequired) setIsSubjectRequired(false);
-  };
-
   const handleResetAll = () => {
     setIsCorrectRequired(false);
     setIsSubjectRequired(false);
@@ -110,30 +111,40 @@ const QuestionCreatorBox = () => {
     setIsShowingError(false);
   };
 
+  const handleChangeControlValue = (name, value) => {
+    const newControlValue = { ...controlValue, [name]: value };
+    setControlValue(newControlValue);
+  };
+
+  useEffect(() => {
+    if (isSubjectRequired) setIsSubjectRequired(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controlValue.subject]);
+
   const MainSection = useMemo(() => {
-    if (questionType === QUESTION_TYPE.CHOICE) return MultipleChoiceCreator;
-    if (questionType === QUESTION_TYPE.CHECK) return CheckboxCreator;
-    if (questionType === QUESTION_TYPE.ESSAY) return EsayCreator;
-  }, [questionType]);
+    if (controlValue.type === QUESTION_TYPE.CHOICE) return MultipleChoiceCreator;
+    if (controlValue.type === QUESTION_TYPE.CHECK) return CheckboxCreator;
+    if (controlValue.type === QUESTION_TYPE.ESSAY) return EsayCreator;
+  }, [controlValue.type]);
 
   return (
     <CreateQuestionContext.Provider
       value={{
-        questionType,
-        subject,
+        controlValue,
         topic,
         answers,
         errors,
         isCorrectRequired,
         isSubjectRequired,
-        handleChangeType: value => setQuestionType(value),
-        handleChangeSubject,
+        isShowingError,
+        handleChangeControlValue,
         onAnswerInputChange,
         onTopicInputChange: value => setTopic(value),
         handleCreateMultipleChoice,
         handleRefreshField,
         handleDeleteAnswer,
-        handleSetCorrect
+        handleSetCorrect,
+        handleResetAll
       }}
     >
       <BlockSectionWrapper className='h-auto'>
@@ -142,18 +153,7 @@ const QuestionCreatorBox = () => {
             <MainSection />
           </Col>
           <Col span={6} className='flex flex-col gap-2'>
-            <QuestionTypeSelector />
-            <SubjectSelector />
-            <Divider />
-            <CollectionSelector />
-            <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
-              Lưu
-            </Button>
-            {isShowingError && (
-              <Button className='w-full h-[56px]' onClick={handleResetAll}>
-                Trở về
-              </Button>
-            )}
+            <ControlSection />
           </Col>
         </Row>
       </BlockSectionWrapper>
