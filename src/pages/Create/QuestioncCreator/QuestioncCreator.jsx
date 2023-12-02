@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Col, Row } from 'antd';
 import Container from '~/components/Container';
 import AsideSection from './_AsideSection';
@@ -7,7 +7,6 @@ import QuestionCreatorBox from '~/components/QuestionCreatorBox';
 import { fetchCollections } from '~/redux/collection/collectionAction';
 
 const QuestioncCreator = () => {
-  const { collections } = useSelector(state => state.collection);
   const dispatch = useDispatch();
 
   useEffect(() => {

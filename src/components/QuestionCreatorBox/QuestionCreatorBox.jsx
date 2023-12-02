@@ -19,13 +19,15 @@ const initialAnswers = Array.from({ length: 4 }, () => ({
   isCorrect: false
 }));
 
+const initalControlValue = {
+  type: QUESTION_TYPE.CHOICE,
+  subject: null,
+  collection: null,
+  isPrivate: false
+};
+
 const QuestionCreatorBox = () => {
-  const [controlValue, setControlValue] = useState({
-    type: QUESTION_TYPE.CHOICE,
-    subject: null,
-    collection: null,
-    isPrivate: false
-  });
+  const [controlValue, setControlValue] = useState(initalControlValue);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
   const [errors, setErrors] = useState([]);
@@ -47,7 +49,6 @@ const QuestionCreatorBox = () => {
       setIsShowingError(true);
       return;
     }
-    console.log(controlValue);
     const { type, subject, collection, isPrivate } = controlValue;
     const reqBody = {
       topic,
@@ -91,7 +92,16 @@ const QuestionCreatorBox = () => {
     setIsCorrectRequired(false);
   };
 
+  const handleAddAnwer = () => {
+    const newAnswer = { id: uuidv4(), content: '', isCorrect: false };
+    setAnswers([...answers, newAnswer]);
+  };
+
   const handleDeleteAnswer = answerId => {
+    if (answers.length === 2) {
+      message.error('Câu trắc nghiệm không thể ít hơn 2 lựa chọn');
+      return;
+    }
     const newFields = answers.filter(answer => answer.id !== answerId);
     setAnswers(newFields);
   };
@@ -118,7 +128,7 @@ const QuestionCreatorBox = () => {
 
   useEffect(() => {
     if (isSubjectRequired) setIsSubjectRequired(false);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [controlValue.subject]);
 
   const MainSection = useMemo(() => {
@@ -137,6 +147,7 @@ const QuestionCreatorBox = () => {
         isCorrectRequired,
         isSubjectRequired,
         isShowingError,
+        handleAddAnwer,
         handleChangeControlValue,
         onAnswerInputChange,
         onTopicInputChange: value => setTopic(value),
