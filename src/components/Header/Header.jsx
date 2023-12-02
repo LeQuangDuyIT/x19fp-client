@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '~/routes';
 import { useSelector } from 'react-redux';
 import UserAvatarButton from '../UserAvatarButton';
-import User from './SubMenu/_User';
+import User from '../UserAvatarButton/_User';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -33,18 +33,16 @@ const Header = () => {
           <DownOutlined className='text-[10px]' />
         </Button>
       </SubMenuWrapper>
-      <SubMenuWrapper content={<User />} title='Tùy chọn người dùng' placement='bottomRight'>
-        <div>
-          <UserAvatarButton user={currentUser} />
-        </div>
-      </SubMenuWrapper>
+      <UserAvatarButton user={currentUser} />
     </>
   );
 
   return (
     <div className='h-[64px] flex justify-between items-center'>
       <div className='flex items-center gap-8 z-10'>
-        <h2 className='font-bold cursor-pointer'>TEST BANK</h2>
+        <h2 className='font-bold cursor-pointer text-white' onClick={() => navigate('/')}>
+          TEST BANK
+        </h2>
         <div className='flex'>
           {headerMenu.map(item => {
             const SubMenuContent = item.subMenu;

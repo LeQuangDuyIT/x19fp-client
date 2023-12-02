@@ -2,6 +2,7 @@ import Home from '~/pages/Home';
 import Authen from '~/pages/Authen';
 import Create from '~/pages/Create';
 import Question from '~/pages/Question';
+import MyQuestions from '~/pages/MyQuestions';
 
 export const END_POINT = {
   CREATE_QUESTION: 'question',
@@ -22,7 +23,10 @@ const publicRoutes = [
   { path: '/question/:id', component: Question }
 ];
 
-const privateRoutes = [{ path: '/create/:type', component: Create }];
+const privateRoutes = [
+  { path: '/create/:type', component: Create },
+  { path: '/question/mine', component: MyQuestions }
+];
 
 const privateRoutesMapping = privateRoutes.map(route => ({ ...route, isPrivated: true }));
 

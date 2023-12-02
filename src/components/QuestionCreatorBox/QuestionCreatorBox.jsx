@@ -11,6 +11,7 @@ import EsayCreator from '../EsayCreator';
 import { QUESTION_TYPE } from '~/utils/constants';
 import QuestionAPI from '~/services/questionAPI';
 import SubjectSelector from './_SubjectSelector';
+import CollectionSelector from './_CollectionSelector';
 
 export const CreateQuestionContext = createContext();
 
@@ -28,6 +29,7 @@ const QuestionCreatorBox = () => {
   const [errors, setErrors] = useState([]);
   const [isCorrectRequired, setIsCorrectRequired] = useState(false);
   const [isSubjectRequired, setIsSubjectRequired] = useState(false);
+  const [isShowingError, setIsShowingError] = useState(false);
   const navigate = useNavigate();
 
   const onAnswerInputChange = (idChange, value) => {
@@ -39,14 +41,16 @@ const QuestionCreatorBox = () => {
 
   const handleCreateMultipleChoice = async () => {
     const isValid = handleValidate();
-    if (!isValid) return;
-
+    if (!isValid) {
+      setIsShowingError(true);
+      return;
+    }
     const reqBody = {
       topic,
       answers,
+      subject,
       type: questionType
     };
-
     try {
       const res = await QuestionAPI.createMultipleChoice(reqBody);
       navigate(`/question/${res.data.id}`);
@@ -99,6 +103,13 @@ const QuestionCreatorBox = () => {
     if (isSubjectRequired) setIsSubjectRequired(false);
   };
 
+  const handleResetAll = () => {
+    setIsCorrectRequired(false);
+    setIsSubjectRequired(false);
+    setErrors([]);
+    setIsShowingError(false);
+  };
+
   const MainSection = useMemo(() => {
     if (questionType === QUESTION_TYPE.CHOICE) return MultipleChoiceCreator;
     if (questionType === QUESTION_TYPE.CHECK) return CheckboxCreator;
@@ -134,9 +145,15 @@ const QuestionCreatorBox = () => {
             <QuestionTypeSelector />
             <SubjectSelector />
             <Divider />
+            <CollectionSelector />
             <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
               Lưu
             </Button>
+            {isShowingError && (
+              <Button className='w-full h-[56px]' onClick={handleResetAll}>
+                Trở về
+              </Button>
+            )}
           </Col>
         </Row>
       </BlockSectionWrapper>
