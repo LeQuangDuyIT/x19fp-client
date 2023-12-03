@@ -5,7 +5,8 @@ export default {
     extend: {
       boxShadow: {
         'input-blue': '0 0 0 1px rgba(5,145,255,.1)',
-        'input-red': '0 0 0 1px rgba(255,38,5,.08)'
+        'input-red': '0 0 0 1px rgba(255,38,5,.08)',
+        'user-profile': '0 1px 2px 0 rgba(0,0,0,0.2), 0 0 1px 0 rgba(0,0,0,0.2)'
       },
       animation: {
         'head-section-bg-fade-in': 'fade-in 2s ease-in-out',

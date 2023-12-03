@@ -259,7 +259,10 @@ const Signup = () => {
               <Col span={40}>
                 <div className='h-3  '>
                   {' '}
-                  <div className='text-[13px] text-red-500 '> {contextError}</div>
+                  <div className='text-[13px] animate-get-code-success-bg-fade-in text-red-500 '>
+                    {' '}
+                    {contextError}
+                  </div>
                   {!loading && authCode && (
                     <div className=' text-[13px] text-green-500 animate-get-code-success-bg-fade-in '>
                       {' '}
