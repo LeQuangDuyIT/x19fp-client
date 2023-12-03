@@ -1,10 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { Badge, Button, Divider } from 'antd';
 import { FileTextOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoGameControllerOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/redux/user/userSlice';
-import { useNavigate } from 'react-router-dom';
 
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
@@ -46,13 +46,11 @@ const User = () => {
         </Badge>
       </Button>
       <Divider className='bg-slate-100/20 my-0' />
-      <Button
-        type='text'
-        icon={<LogoutOutlined className='text-base' />}
-        className='w-full text-left text-white/60 font-bold hover:text-white'
-        onClick={() => dispatch(logout())}
-      >
-        Đăng xuất
+      <Button type='text' onClick={() => dispatch(logout())}>
+        <div className='w-full flex items-center gap-3 text-white/60 font-bold hover:text-white'>
+          <LogoutOutlined className='text-base' />
+          <span className=''>Đăng xuất</span>
+        </div>
       </Button>
     </div>
   );

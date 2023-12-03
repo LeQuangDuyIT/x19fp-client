@@ -2,17 +2,20 @@ import { useState } from 'react';
 import parser from 'html-react-parser';
 import { Button, Divider, notification } from 'antd';
 import { MdOutlineRadioButtonUnchecked, MdOutlineRadioButtonChecked } from 'react-icons/md';
+import { BsArrowRight } from 'react-icons/bs';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import { alphabet } from '~/utils/constants';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
-const MultipleChoice = ({ question }) => {
+const MultipleChoice = ({ question, readOnly }) => {
   const [choosed, setChoosed] = useState(null);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
   const [notiApi, contextHolder] = notification.useNotification({ stack: 1 });
 
   const onChooseAnswer = (id, index) => {
+    if (readOnly) return;
     if (isResultShow) return;
     if (id === choosed) {
       setChoosed(null);
@@ -45,7 +48,7 @@ const MultipleChoice = ({ question }) => {
 
   return (
     <BlockSectionWrapper>
-      <div className='flex flex-col gap-8 p-8'>
+      <div className='flex flex-col gap-8 p-8 text-base'>
         <div className='min-h-[64px] flex flex-col justify-end'>
           <p className='mb-2'>{parser(question.topic)}</p>
           <Divider className='my-0' />
@@ -57,23 +60,24 @@ const MultipleChoice = ({ question }) => {
             return (
               <div
                 key={answer.id}
-                className='flex items-center gap-4 cursor-pointer'
+                className='w-fit flex items-center gap-4 cursor-pointer'
                 onClick={() => onChooseAnswer(answer.id, index)}
               >
-                {choosed === answer.id ? (
-                  <MdOutlineRadioButtonChecked
-                    className={clsx('text-xl', {
-                      'text-blue-500': !isUnCorrectAnswer,
-                      'text-red-500': isUnCorrectAnswer
-                    })}
-                  />
-                ) : (
-                  <MdOutlineRadioButtonUnchecked
-                    className={clsx('text-xl text-gray-300', {
-                      'hover:text-blue-500': !isResultShow
-                    })}
-                  />
-                )}
+                {!readOnly &&
+                  (choosed === answer.id ? (
+                    <MdOutlineRadioButtonChecked
+                      className={clsx('text-xl', {
+                        'text-blue-500': !isUnCorrectAnswer,
+                        'text-red-500': isUnCorrectAnswer
+                      })}
+                    />
+                  ) : (
+                    <MdOutlineRadioButtonUnchecked
+                      className={clsx('text-xl text-gray-300', {
+                        'hover:text-blue-500': !isResultShow
+                      })}
+                    />
+                  ))}
                 <div
                   className={clsx(
                     'relative flex py-1 before:w-0 before:h-[1px] before:absolute before:left-0 before:bottom-[-1px] before:duration-500',
@@ -101,6 +105,15 @@ const MultipleChoice = ({ question }) => {
               </Button>
             )}
           </div>
+        )}
+        {readOnly && (
+          <Link
+            to={`/question/${question._id}`}
+            className='flex justify-center items-center gap-3 text-center'
+          >
+            <span>Đến trang câu hỏi</span>
+            <BsArrowRight />
+          </Link>
         )}
       </div>
       {contextHolder}

@@ -4,6 +4,7 @@ import Container from '~/components/Container';
 import Header from '~/components/Header';
 import QuestionAPI from '~/services/questionAPI';
 import MultipleChoice from '../Question/_MultipleChoice';
+import CollectionSection from '~/components/CollectionSection';
 
 const MyQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -33,11 +34,15 @@ const MyQuestions = () => {
       <div className='bg-[#f4f5f8] pt-[60px]'>
         <Container>
           <Row gutter={60} className='justify-between min-h-screen'>
-            <Col span={6}></Col>
+            <Col span={6}>
+              <CollectionSection />
+            </Col>
             <Col span={18} className='mx-auto'>
-              {(questions ?? []).map(question => (
-                <MultipleChoice key={question._id} question={question} />
-              ))}
+              <div className='flex flex-col gap-4'>
+                {(questions ?? []).map(question => (
+                  <MultipleChoice key={question._id} question={question} readOnly />
+                ))}
+              </div>
             </Col>
           </Row>
         </Container>

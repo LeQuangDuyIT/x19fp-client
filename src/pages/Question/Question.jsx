@@ -39,7 +39,7 @@ const Question = () => {
               </BlockSectionWrapper>
             </Col>
             <Col span={16} className='mx-auto'>
-              <div className='flex flex-col gap-4 text-base'>
+              <div className='flex flex-col gap-4'>
                 <MultipleChoice question={question} />
                 <BlockSectionWrapper>
                   <Collapse
