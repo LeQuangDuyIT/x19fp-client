@@ -23,13 +23,13 @@ const TestOverviewSection = () => {
 
   return (
     <BlockSectionWrapper>
-      <div className='flex flex-col gap-4 p-4 rounded-md'>
+      <div className='flex flex-col gap-4 py-4 px-6 rounded-md'>
         <ContentField
           transparent
           textarea
           value={overviewValue.title}
           onChange={e => onOverviewInputChange('title', e.target.value)}
-          placeholder='Tiêu đề'
+          placeholder='Đề chưa có tên'
           noQuill
           stylesForNoQuill={{ fontSize: '32px', fontWeight: 'bold' }}
           propsForNoQuill={{ autoSize: { minRows: 1, maxRows: 2 } }}

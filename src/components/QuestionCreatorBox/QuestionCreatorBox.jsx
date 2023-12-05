@@ -10,6 +10,7 @@ import EsayCreator from '../EsayCreator';
 import { QUESTION_TYPE } from '~/utils/constants';
 import QuestionAPI from '~/services/questionAPI';
 import ControlSection from './_ControlSection';
+import SettingButtonBar from './SettingButtonBar';
 
 export const CreateQuestionContext = createContext();
 
@@ -26,7 +27,7 @@ const initalControlValue = {
   isPrivate: false
 };
 
-const QuestionCreatorBox = () => {
+const QuestionCreatorBox = ({ question, showSettingBar }) => {
   const [controlValue, setControlValue] = useState(initalControlValue);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
@@ -158,16 +159,19 @@ const QuestionCreatorBox = () => {
         handleResetAll
       }}
     >
-      <BlockSectionWrapper className='h-auto'>
-        <Row gutter={16} className='p-4'>
-          <Col span={18} className='flex flex-col gap-8'>
-            <MainSection />
-          </Col>
-          <Col span={6} className='flex flex-col gap-2'>
-            <ControlSection />
-          </Col>
-        </Row>
-      </BlockSectionWrapper>
+      <div className='relative'>
+        <BlockSectionWrapper className='h-auto'>
+          <Row gutter={16} className='p-4'>
+            <Col span={18} className='flex flex-col gap-8'>
+              <MainSection />
+            </Col>
+            <Col span={6} className='flex flex-col gap-2'>
+              <ControlSection />
+            </Col>
+          </Row>
+        </BlockSectionWrapper>
+        {showSettingBar && <SettingButtonBar question={question} />}
+      </div>
     </CreateQuestionContext.Provider>
   );
 };

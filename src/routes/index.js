@@ -25,6 +25,7 @@ const publicRoutes = [
 
 const privateRoutes = [
   { path: '/create/:type', component: Create },
+  { path: '/create/test/:id', component: Create },
   { path: '/question/mine', component: MyQuestions }
 ];
 

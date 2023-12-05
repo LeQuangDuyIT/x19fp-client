@@ -1,8 +1,11 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import Container from '~/components/Container';
 import TestCreatorDashboard from '~/pages/Create/TestCreator/_TestCreatorDashboard';
 import TestCreatorController from './_TestCreatorController';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTestById } from '~/redux/test/testAction';
 
 export const CreateTestContext = createContext();
 
@@ -14,8 +17,14 @@ const initalOverviewValue = {
 };
 
 const TestCreator = () => {
+  const { id } = useParams();
   const [overviewValue, setOverviewValue] = useState(initalOverviewValue);
-  const [questionSections, setQuestionSections] = useState(1);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTestById(id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onOverviewInputChange = (name, value) => {
     const newValue = { ...overviewValue, [name]: value };

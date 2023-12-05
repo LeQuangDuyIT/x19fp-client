@@ -5,10 +5,10 @@ import QuestioncCreator from './QuestioncCreator';
 import TestCreator from './TestCreator';
 
 const Create = () => {
-  const { type } = useParams();
+  const { type, id } = useParams();
   let Creator;
-  if (type === END_POINT.CREATE_QUESTION) Creator = QuestioncCreator;
-  if (type === END_POINT.CREATE_TEST) Creator = TestCreator;
+  if (type && type === END_POINT.CREATE_QUESTION) Creator = QuestioncCreator;
+  if (id) Creator = TestCreator;
 
   return (
     <div>
