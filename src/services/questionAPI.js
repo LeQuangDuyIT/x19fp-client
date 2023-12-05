@@ -16,6 +16,10 @@ const QuestionAPI = {
   getMyQuestions: () => {
     const url = '/questions/mine';
     return api.get(url);
+  },
+  deleteQuestionById: id => {
+    const url = `/questions/${id}`;
+    return api.delete(url);
   }
 };
 
