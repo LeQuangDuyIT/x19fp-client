@@ -61,6 +61,18 @@ const UserDetail = () => {
       setLoading(false);
     }
   };
+
+  const onCancleSubmit = () => {
+    try {
+      setLoading(true);
+      dispatch(fetchCurrentUser());
+    } catch (error) {
+      setContextError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <form
       onSubmit={onSubmitHandler}
@@ -129,7 +141,13 @@ const UserDetail = () => {
       </div>
 
       <div className='text-right'>
-        <Button style={{ marginRight: '30px' }} htmlType='submit' type='primary' danger>
+        <Button
+          style={{ marginRight: '30px' }}
+          htmlType='button'
+          type='primary'
+          onClick={onCancleSubmit}
+          danger
+        >
           Hủy bỏ
         </Button>
         <Button disabled={loading ? true : false} htmlType='submit' type='primary'>
