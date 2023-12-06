@@ -1,4 +1,4 @@
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, CopyOutlined } from '@ant-design/icons';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionAPI from '~/services/questionAPI';
@@ -47,6 +47,9 @@ const SettingButtonBar = ({ question }) => {
             className='text-2xl text-gray-400 cursor-pointer hover:text-black'
             onClick={handleInsertQuestion}
           />
+        </Tooltip>
+        <Tooltip title='Nhân bản' placement='right'>
+          <CopyOutlined className='text-2xl text-gray-400 cursor-pointer hover:text-black' />
         </Tooltip>
         <Tooltip title='Xóa' placement='right'>
           <FaRegTrashAlt
