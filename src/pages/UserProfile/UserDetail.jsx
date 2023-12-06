@@ -1,57 +1,35 @@
-import { Button, Input, InputNumber, Radio } from 'antd';
-import { useContext, useEffect, useState } from 'react';
+import { Button, Form, Input, InputNumber, Radio } from 'antd';
+import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DatePickerAntd from '~/components/DatePicker/DatePickerAntd.jsx';
-import LoadingState from '~/components/LoadingState/LoadingState';
 import { StoreContext } from '~/context/storeContext/StoreContext';
 import { fetchCurrentUser } from '~/redux/user/userAction';
 import userAPI from '~/services/userProfileApi';
 
 const UserDetail = () => {
-  useEffect(() => {});
   const { currentUser } = useSelector(state => state.user);
-  const { loading, setLoading, setContextError, dispatch } = useContext(StoreContext);
-  const [firstNameValue, setFirstNameValue] = useState(currentUser.firstName || '');
-  const [lastNameValue, setlastNameValue] = useState(currentUser.lastName || '');
-  const [phoneNumberValue, setphoneNumberValue] = useState(currentUser.phoneNumber || '');
-  const [genderValue, setGenderValue] = useState(currentUser.gender || '');
   const [dayOfBirthValue, setDayOfBirthValue] = useState(currentUser.dayOfBirth || '24/11/2023');
-  const [ageValue, setAgeValue] = useState(currentUser.age || 13);
-  const [accountTypeValue, setAccountTypeValue] = useState(currentUser.accountType || '');
-  const onHandleChangeFirstName = async e => {
-    setFirstNameValue(e.target.value);
+  const { loading, setLoading, setContextError, dispatch } = useContext(StoreContext);
+  const userValue = {
+    firstName: currentUser.firstName,
+    lastName: currentUser.lastName,
+    phoneNumber: currentUser.phoneNumber,
+    gender: currentUser.gender,
+    dayOfBirth: dayOfBirthValue,
+    age: currentUser.age ?? 13,
+    accountType: currentUser.accountType
   };
-  const onHandleChangeLastName = e => {
-    setlastNameValue(e.target.value);
-  };
-  const onHandleChangePhoneNumber = e => {
-    setphoneNumberValue(e.target.value);
-  };
-
-  const onHanleChangeGenderValue = e => {
-    setGenderValue(e.target.value);
-  };
-
-  const onHandleChangeAccountType = e => {
-    setAccountTypeValue(e.target.value);
-  };
-
-  const onHandleChangeAge = value => {
-    setAgeValue(value);
-  };
-
-  const onSubmitHandler = async e => {
-    e.preventDefault();
+  const onSubmitHandler = async values => {
     try {
       setLoading(true);
       const updateUser = {
-        firstName: firstNameValue,
-        lastName: lastNameValue,
-        phoneNumber: phoneNumberValue,
-        gender: genderValue,
-        dayOfBirth: dayOfBirthValue,
-        age: ageValue,
-        accountType: accountTypeValue
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phoneNumber: values.phoneNumber,
+        gender: values.gender,
+        dayOfBirth: values.dayOfBirth,
+        age: values.age,
+        accountType: values.accountType
       };
       await userAPI.updateInfo(currentUser._id, updateUser);
       dispatch(fetchCurrentUser());
@@ -74,54 +52,45 @@ const UserDetail = () => {
   };
 
   return (
-    <form
-      onSubmit={onSubmitHandler}
+    <Form
+      initialValues={userValue}
       className='bg-white p-5 rounded relative  w-full h-auto shadow-user-profile '
+      onFinish={onSubmitHandler}
     >
       <div className='bg-[#f8fafb] px-4 py-2 mb-8 shadow-user-profile rounded '>
         <div className='my-4  w-auto text-xl font-semibold'>Thông tin cơ bản</div>
         <div>
-          <Input
-            style={{ marginBottom: '30px' }}
-            addonBefore='Họ:'
-            value={firstNameValue}
-            onChange={onHandleChangeFirstName}
-          />
-          <Input
-            style={{ marginBottom: '30px' }}
-            addonBefore='Tên:'
-            value={lastNameValue}
-            onChange={onHandleChangeLastName}
-          />
-          <Input
-            style={{ marginBottom: '30px' }}
-            addonBefore='Sđt:'
-            value={phoneNumberValue}
-            onChange={onHandleChangePhoneNumber}
-          />
+          <Form.Item name='firstName' label=''>
+            <Input style={{ marginBottom: '30px' }} addonBefore='Họ:' />
+          </Form.Item>
+          <Form.Item name='lastName' label=''>
+            <Input style={{ marginBottom: '30px' }} addonBefore='Tên:' />
+          </Form.Item>
+          <Form.Item name='phoneNumber' label=''>
+            <Input style={{ marginBottom: '30px' }} addonBefore='Sđt:' />
+          </Form.Item>
           <div className='mb-[30px]'>
-            <span className='text-sm mr-5 '>Giới tính:</span>
-            <Radio.Group
-              onChange={onHanleChangeGenderValue}
-              defaultValue={genderValue}
-              value={genderValue}
-            >
-              <Radio value='Nam'>Nam</Radio>
-              <Radio value='Nữ'>Nữ</Radio>
-              <Radio value='Khác'>Khác</Radio>
-            </Radio.Group>
+            <Form.Item name='gender' label='Giới tính'>
+              <Radio.Group>
+                <Radio value='Nam'>Nam</Radio>
+                <Radio value='Nữ'>Nữ</Radio>
+                <Radio value='Khác'>Khác</Radio>
+              </Radio.Group>
+            </Form.Item>
           </div>
           <div className='text-sm flex items-center gap-40 '>
             <div>
-              <span className=' mr-5 '> Ngày sinh:</span>
-              <DatePickerAntd
-                setDayOfBirthValue={setDayOfBirthValue}
-                dayOfBirthValue={dayOfBirthValue}
-              />
+              <Form.Item name='dayOfBirth' label='Ngày sinh'>
+                <DatePickerAntd
+                  setDayOfBirthValue={setDayOfBirthValue}
+                  dayOfBirthValue={dayOfBirthValue}
+                />
+              </Form.Item>
             </div>
             <div>
-              <span> Tuổi: </span>
-              <InputNumber min={13} max={150} value={ageValue} onChange={onHandleChangeAge} />
+              <Form.Item name='age' label='Tuổi'>
+                <InputNumber min={13} max={150} />
+              </Form.Item>
             </div>
           </div>
         </div>
@@ -129,14 +98,12 @@ const UserDetail = () => {
       <div className='bg-[#f8fafb] mb-8 px-4 py-2 shadow-user-profile rounded '>
         <div className='my-4  w-auto text-xl font-semibold'>Loại tài khoản</div>
         <div>
-          <Radio.Group
-            onChange={onHandleChangeAccountType}
-            defaultValue={setAccountTypeValue}
-            value={accountTypeValue}
-          >
-            <Radio value='Học viên'>Học viên</Radio>
-            <Radio value='Giảng viên'>Giảng viên</Radio>
-          </Radio.Group>
+          <Form.Item name='accountType' label=''>
+            <Radio.Group>
+              <Radio value='Học viên'>Học viên</Radio>
+              <Radio value='Giảng viên'>Giảng viên</Radio>
+            </Radio.Group>
+          </Form.Item>
         </div>
       </div>
 
@@ -154,7 +121,7 @@ const UserDetail = () => {
           Lưu thay đổi
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 

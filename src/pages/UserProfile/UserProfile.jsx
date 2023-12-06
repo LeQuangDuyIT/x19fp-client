@@ -18,4 +18,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-24;
