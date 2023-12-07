@@ -2,6 +2,7 @@ import Home from '~/pages/Home';
 import Authen from '~/pages/Authen';
 import Create from '~/pages/Create';
 import Question from '~/pages/Question';
+import UserProfile from '~/pages/UserProfile/UserProfile';
 import MyQuestions from '~/pages/MyQuestions';
 
 export const END_POINT = {
@@ -25,6 +26,7 @@ const publicRoutes = [
 
 const privateRoutes = [
   { path: '/create/:type', component: Create },
+  { path: '/user-profile', component: UserProfile },
   { path: '/create/test/:id', component: Create },
   { path: '/question/mine', component: MyQuestions }
 ];
