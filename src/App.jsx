@@ -6,6 +6,7 @@ import { TOKEN_TYPES } from './utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from '~/redux/user/userAction';
+import { fetchCollections } from './redux/collection/collectionAction';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,26 +27,8 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userReload]);
 
-  // const fetchCurrentUser = async () => {
-  //   const accessToken = localStorage.getItem(TOKEN_TYPES.ACCESS_TOKEN);
-  //   if (accessToken) {
-  //     try {
-  //       const currentUser = await authApi.fetchCurrentUser();
-  //       const currentUserData = currentUser.data;
-  //       const payload = {
-  //         user: currentUserData
-  //       };
-  //       dispatch(login(payload));
-  //     } catch (error) {
-  //       if (error) {
-  //         throw new error();
-  //       }
-  //     }
-  //   }
-  // };
-
   useEffect(() => {
-    // fetchCurrentUser();
+    dispatch(fetchCollections());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

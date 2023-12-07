@@ -5,19 +5,33 @@ import QuestionImg from '~/assets/symbols/create-question.png';
 import TestImg from '~/assets/symbols/create-test.png';
 import QuizImg from '~/assets/symbols/create-quiz.png';
 import { END_POINT, PATH } from '~/routes';
+import TestAPI from '~/services/testAPI';
 
 const Create = () => {
   const [hovering, setHovering] = useState(null);
   const navigate = useNavigate();
 
+  const handleCreateTest = async () => {
+    const res = await TestAPI.create();
+    navigate(`${PATH.CREATE(END_POINT.CREATE_TEST)}/${res.data.id}`);
+  };
+
   const creatingType = [
     {
       title: 'Câu hỏi, bài tập',
       symbol: QuestionImg,
-      path: PATH.CREATE(END_POINT.CREATE_QUESTION)
+      onClick: () => navigate(PATH.CREATE(END_POINT.CREATE_QUESTION))
     },
-    { title: 'Đề thi, kiểm tra', symbol: TestImg, path: PATH.CREATE(END_POINT.CREATE_TEST) },
-    { title: 'Game trắc nghiệm', symbol: QuizImg, path: PATH.CREATE(END_POINT.CREATE_QUIZ_GAME) }
+    {
+      title: 'Đề thi, kiểm tra',
+      symbol: TestImg,
+      onClick: handleCreateTest
+    },
+    {
+      title: 'Game trắc nghiệm',
+      symbol: QuizImg,
+      onClick: () => navigate(PATH.CREATE(END_POINT.CREATE_QUIZ_GAME))
+    }
   ];
 
   return (
@@ -34,7 +48,7 @@ const Create = () => {
                 'border-[#2563EB]': isHovering
               }
             )}
-            onClick={() => navigate(item.path)}
+            onClick={item.onClick}
             onMouseEnter={() => setHovering(item.title)}
             onMouseLeave={() => setHovering(null)}
           >

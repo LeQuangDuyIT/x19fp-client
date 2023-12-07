@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { FaRegImage } from 'react-icons/fa6';
-import QuillEditor from '../QuillEditor';
+import QuillEditor from './QuillEditor';
 import ClickOutsideObserver from '../ClickOutsideObserver';
+import TextArea from 'antd/es/input/TextArea';
 
 const UploadImageButton = () => (
   <Button
@@ -20,6 +21,7 @@ const UploadImageButton = () => (
 );
 
 const ContentField = ({
+  noQuill,
   value,
   onChange,
   textarea,
@@ -28,7 +30,9 @@ const ContentField = ({
   isError,
   refreshField,
   labelClicked,
-  allowUploadImage
+  allowUploadImage,
+  stylesForNoQuill,
+  propsForNoQuill
 }) => {
   const [isFocusing, setIsFocusing] = useState(false);
   const [isExtendingToolbar, setIsExtendingToolbar] = useState(false);
@@ -47,12 +51,22 @@ const ContentField = ({
     ? 'border-b-[3px] before:h-[3px] before:bottom-[-3px]'
     : 'border-b-[2px] before:h-[2px] before:bottom-[-2px]';
 
+  const inputProps = {
+    value,
+    placeholder,
+    isExtendingToolbar,
+    onChange,
+    onFocus: () => setIsFocusing(true),
+    onBlur: () => setIsFocusing(false),
+    onKeyDown: onInputField
+  };
+
   return (
     <>
       <ClickOutsideObserver onClickOutside={() => setIsExtendingToolbar(false)}>
         <div
-          className={clsx('flex flex-col w-full mb-4', {
-            'mb-[88px] duration-500': isExtendingToolbar
+          className={clsx('flex flex-col w-full mb-4 duration-500', {
+            'mb-[88px]': isExtendingToolbar && !noQuill
           })}
         >
           <div
@@ -69,18 +83,23 @@ const ContentField = ({
               }
             )}
           >
-            <QuillEditor
-              value={value}
-              placeholder={placeholder}
-              isExtendingToolbar={isExtendingToolbar}
-              onChange={onChange}
-              onFocus={() => setIsFocusing(true)}
-              onBlur={() => setIsFocusing(false)}
-              onKeyDown={onInputField}
-              textarea={textarea}
-              labelClicked={labelClicked}
-            />
-            {isExtendingToolbar && allowUploadImage && <UploadImageButton />}
+            {!noQuill && (
+              <>
+                <QuillEditor {...inputProps} textarea={textarea} labelClicked={labelClicked} />
+                {isExtendingToolbar && allowUploadImage && <UploadImageButton />}
+              </>
+            )}
+            {noQuill && (
+              <TextArea
+                {...inputProps}
+                status={isError ? 'error' : undefined}
+                className={clsx('border-none shadow-none rounded-b-none rounded-t-md text-base', {
+                  'bg-blue-50': isFocusing && !isError
+                })}
+                style={stylesForNoQuill}
+                {...propsForNoQuill}
+              />
+            )}
           </div>
           {isError && (
             <div className='mt-1 flex items-center gap-1 text-red-400'>

@@ -4,8 +4,8 @@ import { Button, Popconfirm } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { MdRadioButtonUnchecked, MdCheckCircle } from 'react-icons/md';
 import { alphabet } from '~/utils/constants';
-import ContentField from '../ContentField';
-import { CreateQuestionContext } from '../QuestionCreatorBox';
+import ContentField from '~/components/ContentField';
+import { CreateQuestionContext } from '..';
 
 const MultipleChoiceAnswerField = ({
   index,
@@ -27,7 +27,7 @@ const MultipleChoiceAnswerField = ({
   }, [labelClicked]);
 
   return (
-    <div className='flex items-start gap-1'>
+    <div className='flex items-start gap-1 w-full'>
       <div className='flex items-center gap-4 pt-1'>
         <Button
           className='flex items-center w-fit h-fit rounded-full border-none p-0'
@@ -48,14 +48,16 @@ const MultipleChoiceAnswerField = ({
           {alphabet[index]}.
         </h4>
       </div>
-      <ContentField
-        value={value}
-        onChange={value => onInputChange(id, value)}
-        isError={isError}
-        transparent
-        refreshField={refreshField}
-        labelClicked={labelClicked}
-      />
+      <div className='w-full overflow-hidden'>
+        <ContentField
+          value={value}
+          onChange={value => onInputChange(id, value)}
+          isError={isError}
+          transparent
+          refreshField={refreshField}
+          labelClicked={labelClicked}
+        />
+      </div>
       <div className='pl-1 pt-1'>
         <Popconfirm
           title='Xóa đáp án'

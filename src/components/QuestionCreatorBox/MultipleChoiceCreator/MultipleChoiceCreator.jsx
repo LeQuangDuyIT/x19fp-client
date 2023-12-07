@@ -1,10 +1,20 @@
 import { useContext } from 'react';
-import MultipleChoiceAnswerField from '~/components/MultipleChoiceAnswerField';
-import ContentField from '../ContentField';
-import { CreateQuestionContext } from '../QuestionCreatorBox';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import MultipleChoiceAnswerField from '../MultipleChoiceAnswerField';
+import ContentField from '~/components/ContentField';
+import { CreateQuestionContext } from '..';
+
 const MultipleChoiceCreator = () => {
-  const { topic, answers, errors, onAnswerInputChange, onTopicInputChange, handleRefreshField } =
-    useContext(CreateQuestionContext);
+  const {
+    topic,
+    answers,
+    errors,
+    handleAddAnwer,
+    onAnswerInputChange,
+    onTopicInputChange,
+    handleRefreshField
+  } = useContext(CreateQuestionContext);
 
   return (
     <div>
@@ -31,6 +41,14 @@ const MultipleChoiceCreator = () => {
               refreshField={() => handleRefreshField(answer.id)}
             />
           ))}
+          <Button
+            type='text'
+            icon={<PlusOutlined />}
+            className='w-fit h-[40px] bg-gray-100'
+            onClick={handleAddAnwer}
+          >
+            Thêm đáp án
+          </Button>
         </div>
       </form>
     </div>

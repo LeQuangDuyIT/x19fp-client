@@ -6,7 +6,7 @@ const initialState = {
   isAuthenticated: false,
   error: null,
   currentUser: {},
-  loanding: false,
+  isLoading: false,
   reload: null
 };
 
