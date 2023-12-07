@@ -1,5 +1,5 @@
 import { Button, Form, Input, InputNumber, Radio } from 'antd';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DatePickerAntd from '~/components/DatePicker/DatePickerAntd.jsx';
 import { StoreContext } from '~/context/storeContext/StoreContext';
@@ -10,6 +10,9 @@ const UserDetail = () => {
   const { currentUser } = useSelector(state => state.user);
   const [dayOfBirthValue, setDayOfBirthValue] = useState(currentUser.dayOfBirth || '24/11/2023');
   const { loading, setLoading, setContextError, dispatch } = useContext(StoreContext);
+  useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, []);
   const userValue = {
     firstName: currentUser.firstName,
     lastName: currentUser.lastName,
@@ -19,6 +22,7 @@ const UserDetail = () => {
     age: currentUser.age ?? 13,
     accountType: currentUser.accountType
   };
+
   const onSubmitHandler = async values => {
     try {
       setLoading(true);
@@ -104,6 +108,20 @@ const UserDetail = () => {
               <Radio value='Giảng viên'>Giảng viên</Radio>
             </Radio.Group>
           </Form.Item>
+        </div>
+      </div>
+
+      <div className='bg-[#f8fafb] mb-8 px-4 py-2 shadow-user-profile rounded '>
+        <div className='my-4  w-auto text-xl font-semibold'>Thông tin tài khoản </div>
+        <div>
+          <span className=' block text-gray-400 italic '>
+            {' '}
+            Tài khoản đăng ký: {currentUser.email}{' '}
+          </span>
+          {/* <Form.Item name='passwprd' label=''>
+            <Input style={{ marginBottom: '30px' }} addonBefore='Mật khẩu:' />
+          </Form.Item> */}
+          <span className='block text-gray-400 italic '> Mật khẩu</span>
         </div>
       </div>
 

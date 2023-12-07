@@ -1,7 +1,6 @@
 import SimpleHeader from '~/layouts/SimpleHeader';
 import UserAvatar from './UserAvatar';
 import UserDetail from './UserDetail';
-
 const UserProfile = () => {
   return (
     <div className='bg-[#f8fafb] min-h-screen'>
