@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react';
-import { ClockCircleOutlined } from '@ant-design/icons';
 import { GoBook } from 'react-icons/go';
+import { PiStudent } from 'react-icons/pi';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import ContentField from '~/components/ContentField';
 import { Select } from 'antd';
@@ -19,6 +19,14 @@ const TestOverviewSection = () => {
     { value: 90, label: '90 phút' },
     { value: 180, label: '180 phút' },
     { value: 'unlimit', label: 'Không giới hạn' }
+  ];
+
+  const gradeOptions = [
+    { value: '10', label: 'Lớp 10' },
+    { value: '11', label: 'Lớp 11' },
+    { value: '12', label: 'Lớp 12' },
+    { value: 'THPTQG', label: 'Thi THPTQG' },
+    { value: 'HSG', label: 'Thi Học Sinh Giỏi' }
   ];
 
   return (
@@ -57,15 +65,15 @@ const TestOverviewSection = () => {
             </div>
           </div>
           <div className='flex items-center gap-2'>
-            <ClockCircleOutlined className='text-xl' />
+            <PiStudent className='text-xl' />
             <div className='border-b-[2px] border-b-[#ccc]/60'>
               <Select
-                options={limitTimeOptions}
-                placeholder='Thời gian'
+                options={gradeOptions}
+                placeholder='Đối tượng'
                 bordered={false}
                 className='w-60'
-                value={overviewValue.limitTime}
-                onChange={value => onOverviewInputChange('limitTime', value)}
+                value={overviewValue.grade}
+                onChange={value => onOverviewInputChange('grade', value)}
               />
             </div>
           </div>

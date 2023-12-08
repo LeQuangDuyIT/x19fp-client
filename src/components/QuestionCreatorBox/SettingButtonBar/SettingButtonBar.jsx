@@ -42,7 +42,7 @@ const SettingButtonBar = ({ question }) => {
   return (
     <div className='absolute right-0 bottom-0 translate-x-[calc(100%+16px)] z-10'>
       <div className=' flex flex-col gap-6 p-4 bg-white shadow-2xl rounded-md'>
-        <Tooltip title='Thêm câu hỏi/bài tập' placement='right'>
+        <Tooltip title='Tạo mới' placement='right'>
           <PlusCircleOutlined
             className='text-2xl text-gray-400 cursor-pointer hover:text-black'
             onClick={handleInsertQuestion}

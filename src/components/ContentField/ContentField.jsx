@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Button, Input } from 'antd';
+import { Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { FaRegImage } from 'react-icons/fa6';
 import QuillEditor from './QuillEditor';
@@ -35,11 +35,11 @@ const ContentField = ({
   propsForNoQuill
 }) => {
   const [isFocusing, setIsFocusing] = useState(false);
-  const [isExtendingToolbar, setIsExtendingToolbar] = useState(false);
+  const [isToolbarExtending, setisToolbarExtending] = useState(false);
 
   useEffect(() => {
     if (!isFocusing || isError) return;
-    setIsExtendingToolbar(true);
+    setisToolbarExtending(true);
   }, [isFocusing, isError]);
 
   const onInputField = () => {
@@ -54,7 +54,6 @@ const ContentField = ({
   const inputProps = {
     value,
     placeholder,
-    isExtendingToolbar,
     onChange,
     onFocus: () => setIsFocusing(true),
     onBlur: () => setIsFocusing(false),
@@ -63,10 +62,10 @@ const ContentField = ({
 
   return (
     <>
-      <ClickOutsideObserver onClickOutside={() => setIsExtendingToolbar(false)}>
+      <ClickOutsideObserver onClickOutside={() => setisToolbarExtending(false)}>
         <div
           className={clsx('flex flex-col w-full mb-4 duration-500', {
-            'mb-[88px]': isExtendingToolbar && !noQuill
+            'mb-[88px]': isToolbarExtending && !noQuill
           })}
         >
           <div
@@ -85,8 +84,13 @@ const ContentField = ({
           >
             {!noQuill && (
               <>
-                <QuillEditor {...inputProps} textarea={textarea} labelClicked={labelClicked} />
-                {isExtendingToolbar && allowUploadImage && <UploadImageButton />}
+                <QuillEditor
+                  {...inputProps}
+                  textarea={textarea}
+                  isToolbarExtending={isToolbarExtending}
+                  labelClicked={labelClicked}
+                />
+                {isToolbarExtending && allowUploadImage && <UploadImageButton />}
               </>
             )}
             {noQuill && (

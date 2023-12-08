@@ -20,6 +20,10 @@ const QuestionAPI = {
   deleteQuestionById: id => {
     const url = `/questions/${id}`;
     return api.delete(url);
+  },
+  updateQuestion: (id, body) => {
+    const url = `/questions/${id}`;
+    return api.put(url, body);
   }
 };
 

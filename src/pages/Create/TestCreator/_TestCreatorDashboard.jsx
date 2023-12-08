@@ -10,8 +10,6 @@ const TestCreatorDashboard = () => {
   const { overviewValue, onOverviewInputChange } = useContext(CreateTestContext);
   const [hoveringId, setHoveringId] = useState(null);
 
-  console.log(test);
-
   return (
     <div className='flex flex-col gap-6'>
       <BlockSectionWrapper>
@@ -21,7 +19,11 @@ const TestCreatorDashboard = () => {
       <div className='flex flex-col gap-6'>
         {questions.map(question => (
           <div key={question._id} onMouseEnter={() => setHoveringId(question._id)}>
-            <QuestionCreatorBox question={question} showSettingBar={hoveringId === question._id} />
+            <QuestionCreatorBox
+              isTestCreator
+              question={question}
+              showSettingBar={hoveringId === question._id}
+            />
           </div>
         ))}
       </div>

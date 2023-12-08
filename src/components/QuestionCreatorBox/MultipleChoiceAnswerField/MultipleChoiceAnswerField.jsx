@@ -48,7 +48,7 @@ const MultipleChoiceAnswerField = ({
           {alphabet[index]}.
         </h4>
       </div>
-      <div className='w-full overflow-hidden'>
+      <div className='w-[calc(100%-64px-26px)]'>
         <ContentField
           value={value}
           onChange={value => onInputChange(id, value)}
