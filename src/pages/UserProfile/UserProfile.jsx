@@ -6,8 +6,8 @@ const UserProfile = () => {
     <div className='bg-[#f8fafb] min-h-screen'>
       <SimpleHeader />
       <div className='text-center py-3 font-semibold text-xl '> Thông tin cá nhân </div>
-      <div className='flex relative  max-h-screen '>
-        <div className='mx-auto mt-8 w-[1200px] gap-10 flex'>
+      <div className='flex relative   '>
+        <div className='mx-auto mt-8 w-[1200px] gap-10 pb-5 flex'>
           <UserAvatar />
           <UserDetail />
         </div>
