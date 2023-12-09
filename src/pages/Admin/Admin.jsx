@@ -8,7 +8,7 @@ const Admin = () => {
   return (
     <div className='bg-[#f8fafb] min-h-screen w-full '>
       <SimpleHeader />
-      <Row gutter={20} className='my-8'>
+      <Row gutter={30} className='my-8'>
         <Col className='text-center bg-white rounded-lg shadow-md' span={4}>
           <AdminSideBar />
         </Col>
