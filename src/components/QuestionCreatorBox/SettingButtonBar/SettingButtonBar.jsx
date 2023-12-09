@@ -13,15 +13,16 @@ const SettingButtonBar = ({ question }) => {
   const handleInsertQuestion = async () => {
     const res = await QuestionAPI.initalQuestion();
     const currentIndex = questions.findIndex(item => item._id === question._id);
-    const questionIdArray = questions.map(question => question._id);
+    const questionsArray = questions.map(question => ({ id: question._id, score: question.score }));
 
     const createdQuestion = res.data.data;
-    questionIdArray.splice(currentIndex, 0, createdQuestion._id);
+    questionsArray.splice(currentIndex + 1, 0, { id: createdQuestion._id, score: null });
 
-    const updatedTest = { ...test, questions: questionIdArray };
+    const updatedTest = { ...test, questions: questionsArray };
     const putRes = await TestAPI.updateTestById(test._id, updatedTest);
     if (putRes?.data?.isSuccess) {
-      const newQuestionArray = [...questions, createdQuestion];
+      const newQuestionArray = [...questions];
+      newQuestionArray.splice(currentIndex + 1, 0, { ...createdQuestion, score: null });
       dispatch(setQuestions(newQuestionArray));
     }
   };
@@ -41,19 +42,19 @@ const SettingButtonBar = ({ question }) => {
 
   return (
     <div className='absolute right-0 bottom-0 translate-x-[calc(100%+16px)] z-10'>
-      <div className=' flex flex-col gap-6 p-4 bg-white shadow-2xl rounded-md'>
+      <div className=' flex flex-col gap-6 p-4 bg-[#007aff] shadow-2xl rounded-md'>
         <Tooltip title='Tạo mới' placement='right'>
           <PlusCircleOutlined
-            className='text-2xl text-gray-400 cursor-pointer hover:text-black'
+            className='text-2xl text-white cursor-pointer'
             onClick={handleInsertQuestion}
           />
         </Tooltip>
         <Tooltip title='Nhân bản' placement='right'>
-          <CopyOutlined className='text-2xl text-gray-400 cursor-pointer hover:text-black' />
+          <CopyOutlined className='text-2xl text-white cursor-pointer' />
         </Tooltip>
         <Tooltip title='Xóa' placement='right'>
           <FaRegTrashAlt
-            className='text-2xl text-gray-400 cursor-pointer hover:text-black'
+            className='text-2xl text-white cursor-pointer'
             onClick={handleDeleteQuestion}
           />
         </Tooltip>

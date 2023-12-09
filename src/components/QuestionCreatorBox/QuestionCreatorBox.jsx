@@ -12,6 +12,7 @@ import QuestionAPI from '~/services/questionAPI';
 import ControlSection from './_ControlSection';
 import SettingButtonBar from './SettingButtonBar';
 import useDebounce from '~/hooks/useDebounce';
+import ClickOutsideObserver from '../ClickOutsideObserver';
 
 export const CreateQuestionContext = createContext();
 
@@ -28,7 +29,7 @@ const initalControlValue = {
   isPrivate: false
 };
 
-const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar }) => {
+const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar, handleCloseSettingBar }) => {
   const [controlValue, setControlValue] = useState(initalControlValue);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
@@ -228,7 +229,11 @@ const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar }) => {
             </Col>
           </Row>
         </BlockSectionWrapper>
-        {showSettingBar && <SettingButtonBar question={question} />}
+        {showSettingBar && (
+          <ClickOutsideObserver onClickOutside={handleCloseSettingBar}>
+            <SettingButtonBar question={question} />
+          </ClickOutsideObserver>
+        )}
       </div>
     </CreateQuestionContext.Provider>
   );

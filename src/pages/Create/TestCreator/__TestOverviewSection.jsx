@@ -22,6 +22,7 @@ const TestOverviewSection = () => {
   ];
 
   const gradeOptions = [
+    { value: 'TS10', label: 'Tuyển sinh 10 chuyên' },
     { value: '10', label: 'Lớp 10' },
     { value: '11', label: 'Lớp 11' },
     { value: '12', label: 'Lớp 12' },

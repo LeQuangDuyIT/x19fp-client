@@ -15,8 +15,8 @@ const initalOverviewValue = {
   title: '',
   description: '',
   subject: null,
-  limitTime: null,
-  grade: null
+  grade: null,
+  scores: {}
 };
 
 const TestCreator = () => {
@@ -36,23 +36,35 @@ const TestCreator = () => {
     const res = await dispatch(fetchTestById(id));
     const fetchedTest = res.payload;
     if (!fetchedTest) return;
-    const { title, description, subject, limitTime, grade } = fetchedTest;
-    setOverviewValue({ title, description, subject, limitTime, grade });
+    const { title, description, subject, grade, questions } = fetchedTest;
+
+    let scores = {};
+    questions.forEach(question => {
+      scores[question._id] = question.score;
+    });
+
+    setOverviewValue({ title, description, subject, grade, scores });
   };
 
   useEffect(() => {
-    if (!id || !currentUser) return;
+    if (!id || !currentUser || !overviewValueDebounce) return;
     handleUpdateTest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [overviewValue]);
+  }, [overviewValueDebounce]);
 
   const handleUpdateTest = async () => {
     if (questions.length === 0) return;
-    const questionIds = questions.map(question => question._id);
+
+    const { scores, ...restOverview } = overviewValue;
+
+    const questionObjects = questions.map(question => ({
+      id: question._id,
+      score: scores[question._id]
+    }));
     const updatedTest = {
       ...test,
-      questions: questionIds,
-      ...overviewValueDebounce
+      questions: questionObjects,
+      ...restOverview
     };
     try {
       await TestAPI.updateTestById(test._id, updatedTest);
@@ -66,8 +78,6 @@ const TestCreator = () => {
     const newValue = { ...overviewValue, [name]: value };
     setOverviewValue(newValue);
   };
-
-  console.log(test);
 
   return (
     <CreateTestContext.Provider value={{ overviewValue, onOverviewInputChange }}>
