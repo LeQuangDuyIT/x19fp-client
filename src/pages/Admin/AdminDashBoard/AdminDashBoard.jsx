@@ -4,6 +4,10 @@ import { FaUsers } from 'react-icons/fa6';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { PiExam } from 'react-icons/pi';
 import Search from 'antd/es/input/Search';
+import { useEffect, useState } from 'react';
+import accountAPI from '~/services/userAPI';
+import { useSelector } from 'react-redux';
+import LoadingState from '~/components/LoadingState/LoadingState';
 
 const dashBoard = [
   { title: 'NGƯỜI DÙNG', icon: <FaUsers />, quantity: '12360' },
@@ -12,6 +16,28 @@ const dashBoard = [
   { title: 'MÔN HỌC/BỘ SƯU TẬP', icon: <PiExam />, quantity: '78' }
 ];
 const AdminDashBoard = () => {
+  const [userList, setUserList] = useState('');
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      const getAllUser = await accountAPI.getAllUser();
+      const { data } = getAllUser.data;
+      setUserList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const dateToString = timeStamps => {
+    const date = new Date(timeStamps);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+
+    const formattedDate = date.toLocaleDateString(undefined, options);
+
+    return formattedDate;
+  };
+
   const onHanleSearch = values => {
     console.log(values);
   };
@@ -68,7 +94,7 @@ const AdminDashBoard = () => {
             <Col span={1} className='text-center'>
               <Checkbox />
             </Col>
-            <Col className='text-[13px]' span={7}>
+            <Col className='text-[13px]' span={5}>
               {' '}
               HỌ TÊN{' '}
             </Col>
@@ -76,84 +102,58 @@ const AdminDashBoard = () => {
               {' '}
               TÀI KHOẢN{' '}
             </Col>
-            <Col className='text-[13px]' span={4}>
+            <Col className='text-[13px]' span={5}>
               EMAIL
             </Col>
             <Col className='text-[13px]' span={4}>
               ĐĂNG KÝ
             </Col>
-            <Col className='text-[13px]' span={4}>
+            <Col className='text-[13px]' span={5}>
               ID
             </Col>
           </Row>
         </Col>
         <Col className='leading-10' span={24}>
-          <Row>
-            <Col span={1} className='text-center'>
-              <Checkbox />
-            </Col>
-            <Col span={7}>
-              <div className='flex gap-3'>
-                <div className=' '>
-                  {' '}
-                  <img
-                    className=' w-7 h-7 rounded-full  object-cover'
-                    src='../src/assets/default-avatar/user.png'
-                  />
-                </div>
-                <div className='text-[12px] font-semibold hover:text-blue-500/80 '>
-                  {' '}
-                  Nguyễn Duy Nhân{' '}
-                </div>
-              </div>
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold  ' span={4}>
-              Giảng viên
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold  ' span={4}>
-              {' '}
-              duynhannguyenn@gmail.com{' '}
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold' span={4}>
-              28-11-2023
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold truncate ... ' span={4}>
-              6565b74ea30775e0d8efa74e
-            </Col>
-          </Row>
-          <Row>
-            <Col span={1} className='text-center'>
-              <Checkbox />
-            </Col>
-            <Col span={7}>
-              <div className='flex gap-3'>
-                <div className=' '>
-                  {' '}
-                  <img
-                    className=' w-7 h-7 rounded-full  object-cover'
-                    src='../src/assets/default-avatar/user.png'
-                  />
-                </div>
-                <div className='text-[12px] font-semibold hover:text-blue-500/80 '>
-                  {' '}
-                  Nguyễn Duy Nhân{' '}
-                </div>
-              </div>
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold  ' span={4}>
-              Giảng viên
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold  ' span={4}>
-              {' '}
-              duynhannguyenn@gmail.com{' '}
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold' span={4}>
-              28-11-2023
-            </Col>
-            <Col className='text-[12px] text-gray-400 font-semibold truncate ... ' span={4}>
-              6565b74ea30775e0d8efa74e
-            </Col>
-          </Row>
+          {userList ? (
+            userList.map(account => {
+              return (
+                <Row key={account._id}>
+                  <Col span={1} className='text-center'>
+                    <Checkbox />
+                  </Col>
+                  <Col span={5}>
+                    <div className='flex gap-3'>
+                      <div className=' '>
+                        {' '}
+                        <img
+                          className=' w-7 h-7 rounded-full  object-cover'
+                          src={account.picture ?? '../src/assets/default-avatar/user.png'}
+                        />
+                      </div>
+                      <div className='text-[12px] font-semibold hover:text-blue-500/80 '>
+                        {' '}
+                        {account.lastName} {account.firstName}
+                      </div>
+                    </div>
+                  </Col>
+                  <Col className='text-[12px] text-gray-400 font-semibold  ' span={4}>
+                    {account.accountType}
+                  </Col>
+                  <Col className='text-[12px] text-gray-400 font-semibold  ' span={5}>
+                    {account.email}
+                  </Col>
+                  <Col className='text-[12px] text-gray-400 font-semibold' span={4}>
+                    {dateToString(account.createdAt)}
+                  </Col>
+                  <Col className='text-[12px] text-gray-400 font-semibold truncate ... ' span={5}>
+                    {account._id}
+                  </Col>
+                </Row>
+              );
+            })
+          ) : (
+            <LoadingState />
+          )}
         </Col>
         <Col span={24}>UserTablePagination</Col>
       </Row>
