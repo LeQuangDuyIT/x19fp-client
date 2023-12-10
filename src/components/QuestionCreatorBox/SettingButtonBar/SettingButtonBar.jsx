@@ -41,7 +41,7 @@ const SettingButtonBar = ({ question }) => {
   };
 
   return (
-    <div className='absolute right-0 bottom-0 translate-x-[calc(100%+16px)] z-10'>
+    <div className='absolute right-0 bottom-0 translate-x-[calc(100%+8px)] z-10'>
       <div className=' flex flex-col gap-6 p-4 bg-[#007aff] shadow-2xl rounded-md'>
         <Tooltip title='Tạo mới' placement='right'>
           <PlusCircleOutlined

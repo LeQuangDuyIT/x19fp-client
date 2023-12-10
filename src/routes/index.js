@@ -4,6 +4,7 @@ import Create from '~/pages/Create';
 import Question from '~/pages/Question';
 import UserProfile from '~/pages/UserProfile/UserProfile';
 import MyQuestions from '~/pages/MyQuestions';
+import MyTests from '~/pages/MyTests';
 
 export const END_POINT = {
   CREATE_QUESTION: 'question',
@@ -28,7 +29,8 @@ const privateRoutes = [
   { path: '/create/:type', component: Create },
   { path: '/user-profile', component: UserProfile },
   { path: '/create/test/:id', component: Create },
-  { path: '/question/mine', component: MyQuestions }
+  { path: '/question/mine', component: MyQuestions },
+  { path: '/test/mine', component: MyTests }
 ];
 
 const privateRoutesMapping = privateRoutes.map(route => ({ ...route, isPrivated: true }));

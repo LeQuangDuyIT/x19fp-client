@@ -29,7 +29,14 @@ const initalControlValue = {
   isPrivate: false
 };
 
-const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar, handleCloseSettingBar }) => {
+const QuestionCreatorBox = ({
+  isTestCreator,
+  question,
+  showSettingBar,
+  handleCloseSettingBar,
+  testStaring,
+  handleAddQuestionError
+}) => {
   const [controlValue, setControlValue] = useState(initalControlValue);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
@@ -70,6 +77,13 @@ const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar, handleClo
   };
 
   useEffect(() => {
+    if (testStaring) {
+      handleValidateWithoutMessage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [testStaring]);
+
+  useEffect(() => {
     if (!question) return;
     if (Object.values(question).length === 0) return;
     if (Array.isArray(question.answer)) return;
@@ -83,6 +97,12 @@ const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar, handleClo
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question]);
+
+  useEffect(() => {
+    if (!testStaring) {
+      handleResetAll();
+    }
+  }, [testStaring]);
 
   const onAnswerInputChange = (idChange, value) => {
     const newAnswers = answers.map(answer =>
@@ -141,8 +161,20 @@ const QuestionCreatorBox = ({ isTestCreator, question, showSettingBar, handleClo
     if (!topic || parser(topic) === '') errorFields.push('topic');
 
     const correctAnswer = answers.find(answer => answer.isCorrect);
-
-    return errorFields.length === 0 && correctAnswer && controlValue.subject;
+    if (!correctAnswer) {
+      setIsCorrectRequired(true);
+    }
+    if (!controlValue.subject) {
+      setIsSubjectRequired(true);
+    }
+    if (errorFields.length > 0) setErrors(errorFields);
+    const shouldNexting = errorFields.length === 0 && correctAnswer && controlValue.subject;
+    if (!shouldNexting) {
+      handleAddQuestionError(false);
+    } else {
+      handleAddQuestionError(true);
+    }
+    return shouldNexting;
   };
 
   const handleRefreshField = fieldName => {

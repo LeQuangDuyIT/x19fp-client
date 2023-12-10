@@ -35,7 +35,7 @@ const User = () => {
       <Button
         type='text'
         className='w-full text-left'
-        onClick={() => navigate(`/u/${currentUser?._id}/question`)}
+        onClick={() => navigate('/test/mine')}
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
           <div className='flex items-center gap-3'>

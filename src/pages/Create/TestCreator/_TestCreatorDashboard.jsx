@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 const TestCreatorDashboard = () => {
   const { test, questions } = useSelector(state => state.test);
-  const { overviewValue, onOverviewInputChange } = useContext(CreateTestContext);
+  const { overviewValue, testStaring, handleAddQuestionError } = useContext(CreateTestContext);
   const [hoveringId, setHoveringId] = useState(null);
 
   return (
@@ -25,20 +25,20 @@ const TestCreatorDashboard = () => {
             className='py-3'
           >
             <div className='flex gap-1'>
-              <h3 className='block w-[100px] mb-1 py-1 px-4 bg-[#007aff] rounded-tl-md font-bold text-white'>
-                Câu {index + 1}
+              <h3 className='block w-fit mb-1 py-2 px-4 bg-[#ccc] rounded-t-md text-white'>
+                <span className='font-bold'>Câu {index + 1}: </span>
+                {overviewValue.scores[question._id] && (
+                  <span className='italic'>({overviewValue.scores[question._id]} điểm)</span>
+                )}
               </h3>
-              {overviewValue.scores[question._id] && (
-                <h3 className='block w-[100px] mb-1 py-1 px-4 border-[2px] border-[#007aff] rounded-tr-md font-bold text-[#007aff]'>
-                  {overviewValue.scores[question._id]} điểm
-                </h3>
-              )}
             </div>
             <QuestionCreatorBox
               isTestCreator
               question={question}
               showSettingBar={hoveringId === question._id}
               handleCloseSettingBar={() => setHoveringId(null)}
+              testStaring={testStaring}
+              handleAddQuestionError={handleAddQuestionError}
             />
           </div>
         ))}

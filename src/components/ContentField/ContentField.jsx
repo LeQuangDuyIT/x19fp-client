@@ -98,7 +98,8 @@ const ContentField = ({
                 {...inputProps}
                 status={isError ? 'error' : undefined}
                 className={clsx('border-none shadow-none rounded-b-none rounded-t-md text-base', {
-                  'bg-blue-50': isFocusing && !isError
+                  'bg-blue-50': isFocusing && !isError,
+                  'bg-red-50': isError
                 })}
                 style={stylesForNoQuill}
                 {...propsForNoQuill}

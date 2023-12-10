@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
-import { Col, Row } from 'antd';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import { Col, Modal, Row, message } from 'antd';
 import Container from '~/components/Container';
 import TestCreatorDashboard from '~/pages/Create/TestCreator/_TestCreatorDashboard';
 import TestCreatorController from './_TestCreatorController';
@@ -22,6 +22,8 @@ const initalOverviewValue = {
 const TestCreator = () => {
   const { id } = useParams();
   const [overviewValue, setOverviewValue] = useState(initalOverviewValue);
+  const [testStaring, setTestStaring] = useState(false);
+  const [questionErrors, setQuestionError] = useState([]);
   const { currentUser } = useSelector(state => state.user);
   const { test, questions } = useSelector(state => state.test);
   const dispatch = useDispatch();
@@ -79,8 +81,39 @@ const TestCreator = () => {
     setOverviewValue(newValue);
   };
 
+  const handleStart = () => {
+    setTestStaring(true);
+    setQuestionError([]);
+  };
+
+  const isModalOpen = useMemo(() => {
+    if (!testStaring) return false;
+    let shouldNexting = true;
+    const { topic, subject, grade, scores } = overviewValue;
+    if (topic === '' || !subject || !grade) shouldNexting = false;
+
+    const scoreValues = Object.values(scores);
+    const isScoreEnough = scoreValues.every(value => value !== null);
+    if (!isScoreEnough) shouldNexting = false;
+
+    if (questionErrors.length > 0 && questionErrors.includes(false)) {
+      shouldNexting = false;
+    }
+
+    return shouldNexting;
+  }, [testStaring, overviewValue, questionErrors]);
+
   return (
-    <CreateTestContext.Provider value={{ overviewValue, onOverviewInputChange }}>
+    <CreateTestContext.Provider
+      value={{
+        overviewValue,
+        onOverviewInputChange,
+        testStaring,
+        handleStart: handleStart,
+        handleCancelStart: () => setTestStaring(false),
+        handleAddQuestionError: value => setQuestionError(prev => [...prev, value])
+      }}
+    >
       <div className='bg-[#f4f5f8] pt-[60px]'>
         <Container>
           <Row gutter={60} className='justify-between min-h-screen'>
@@ -93,6 +126,9 @@ const TestCreator = () => {
           </Row>
         </Container>
       </div>
+      <Modal open={isModalOpen} onCancel={() => setTestStaring(false)}>
+        <h4>hahah</h4>
+      </Modal>
     </CreateTestContext.Provider>
   );
 };

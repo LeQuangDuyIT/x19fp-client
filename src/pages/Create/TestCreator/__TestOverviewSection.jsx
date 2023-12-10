@@ -6,9 +6,10 @@ import ContentField from '~/components/ContentField';
 import { Select } from 'antd';
 import { getSubjectOptions } from '~/utils/helper';
 import { CreateTestContext } from './TestCreator';
+import clsx from 'clsx';
 
 const TestOverviewSection = () => {
-  const { overviewValue, onOverviewInputChange } = useContext(CreateTestContext);
+  const { overviewValue, onOverviewInputChange, testStaring } = useContext(CreateTestContext);
 
   const subjectOptions = useMemo(() => getSubjectOptions(), []);
   const limitTimeOptions = [
@@ -42,6 +43,7 @@ const TestOverviewSection = () => {
           noQuill
           stylesForNoQuill={{ fontSize: '32px', fontWeight: 'bold' }}
           propsForNoQuill={{ autoSize: { minRows: 1, maxRows: 2 } }}
+          isError={testStaring && overviewValue.title === ''}
         />
         <ContentField
           transparent
@@ -54,12 +56,19 @@ const TestOverviewSection = () => {
         <div className='flex gap-8 mb-6'>
           <div className='flex items-center gap-2'>
             <GoBook className='text-xl' />
-            <div className='border-b-[2px] border-b-[#ccc]/60'>
+            <div
+              className={clsx('border-b-[2px]', {
+                'border-b-[#ccc]/60': !testStaring || overviewValue.subject,
+                'border-red-500': testStaring && !overviewValue.subject
+              })}
+            >
               <Select
                 options={subjectOptions}
                 placeholder='Môn học'
                 bordered={false}
-                className='w-60'
+                className={clsx('w-60 rounded-t-md', {
+                  'bg-red-50': testStaring && !overviewValue.subject
+                })}
                 value={overviewValue.subject}
                 onChange={value => onOverviewInputChange('subject', value)}
               />
@@ -67,12 +76,19 @@ const TestOverviewSection = () => {
           </div>
           <div className='flex items-center gap-2'>
             <PiStudent className='text-xl' />
-            <div className='border-b-[2px] border-b-[#ccc]/60'>
+            <div
+              className={clsx('border-b-[2px]', {
+                'border-b-[#ccc]/60': !testStaring || overviewValue.grade,
+                'border-red-500': testStaring && !overviewValue.grade
+              })}
+            >
               <Select
                 options={gradeOptions}
                 placeholder='Đối tượng'
                 bordered={false}
-                className='w-60'
+                className={clsx('w-60 rounded-t-md', {
+                  'bg-red-50': testStaring && !overviewValue.grade
+                })}
                 value={overviewValue.grade}
                 onChange={value => onOverviewInputChange('grade', value)}
               />

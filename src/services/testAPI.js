@@ -12,6 +12,10 @@ const TestAPI = {
   updateTestById: (id, body) => {
     const url = `/tests/${id}`;
     return api.put(url, body);
+  },
+  getMyTests: () => {
+    const url = '/tests/mine';
+    return api.get(url);
   }
 };
 
