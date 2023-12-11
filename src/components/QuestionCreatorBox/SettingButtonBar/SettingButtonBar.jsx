@@ -5,6 +5,7 @@ import QuestionAPI from '~/services/questionAPI';
 import TestAPI from '~/services/testAPI';
 import { setQuestions } from '~/redux/test/testSlice';
 import { Tooltip } from 'antd';
+import { fetchTestById } from '~/redux/test/testAction';
 
 const SettingButtonBar = ({ question }) => {
   const { test, questions } = useSelector(state => state.test);
@@ -31,8 +32,11 @@ const SettingButtonBar = ({ question }) => {
     if (questions.length === 1) return;
     const deleteId = question._id;
     const newQuestions = questions.filter(question => question._id !== deleteId);
-    const questionIdArray = newQuestions.map(question => question._id);
-    const newTest = { ...test, questions: questionIdArray };
+    const questionArray = newQuestions.map(question => ({
+      id: question._id,
+      score: question.score
+    }));
+    const newTest = { ...test, questions: questionArray };
     const putRes = await TestAPI.updateTestById(test._id, newTest);
 
     if (putRes?.data?.isSuccess) {

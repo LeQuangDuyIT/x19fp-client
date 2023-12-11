@@ -1,5 +1,5 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { Col, Modal, Row, message } from 'antd';
+import { Col, Row } from 'antd';
 import Container from '~/components/Container';
 import TestCreatorDashboard from '~/pages/Create/TestCreator/_TestCreatorDashboard';
 import TestCreatorController from './_TestCreatorController';
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTestById } from '~/redux/test/testAction';
 import useDebounce from '~/hooks/useDebounce';
 import TestAPI from '~/services/testAPI';
+import TestStartingForm from './_TestStartingForm';
 
 export const CreateTestContext = createContext();
 
@@ -65,8 +66,8 @@ const TestCreator = () => {
     }));
     const updatedTest = {
       ...test,
-      questions: questionObjects,
-      ...restOverview
+      ...restOverview,
+      questions: questionObjects
     };
     try {
       await TestAPI.updateTestById(test._id, updatedTest);
@@ -83,7 +84,7 @@ const TestCreator = () => {
 
   const handleStart = () => {
     setTestStaring(true);
-    setQuestionError([]);
+    setQuestionError([false]);
   };
 
   const isModalOpen = useMemo(() => {
@@ -101,7 +102,7 @@ const TestCreator = () => {
     }
 
     return shouldNexting;
-  }, [testStaring, overviewValue, questionErrors]);
+  }, [testStaring, overviewValue, questionErrors, questions]);
 
   return (
     <CreateTestContext.Provider
@@ -111,7 +112,8 @@ const TestCreator = () => {
         testStaring,
         handleStart: handleStart,
         handleCancelStart: () => setTestStaring(false),
-        handleAddQuestionError: value => setQuestionError(prev => [...prev, value])
+        handleAddQuestionError: value => setQuestionError(prev => [...prev, value]),
+        clearQuestionError: () => setQuestionError([])
       }}
     >
       <div className='bg-[#f4f5f8] pt-[60px]'>
@@ -126,9 +128,7 @@ const TestCreator = () => {
           </Row>
         </Container>
       </div>
-      <Modal open={isModalOpen} onCancel={() => setTestStaring(false)}>
-        <h4>hahah</h4>
-      </Modal>
+      <TestStartingForm open={isModalOpen} onCancel={() => setTestStaring(false)} />
     </CreateTestContext.Provider>
   );
 };

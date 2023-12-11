@@ -12,15 +12,6 @@ const TestOverviewSection = () => {
   const { overviewValue, onOverviewInputChange, testStaring } = useContext(CreateTestContext);
 
   const subjectOptions = useMemo(() => getSubjectOptions(), []);
-  const limitTimeOptions = [
-    { value: 15, label: '15 phút' },
-    { value: 30, label: '30 phút' },
-    { value: 45, label: '45 phút' },
-    { value: 60, label: '60 phút' },
-    { value: 90, label: '90 phút' },
-    { value: 180, label: '180 phút' },
-    { value: 'unlimit', label: 'Không giới hạn' }
-  ];
 
   const gradeOptions = [
     { value: 'TS10', label: 'Tuyển sinh 10 chuyên' },
