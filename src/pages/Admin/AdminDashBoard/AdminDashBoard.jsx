@@ -16,7 +16,10 @@ const dashBoard = [
   { title: 'MÔN HỌC/BỘ SƯU TẬP', icon: <PiExam />, quantity: '78' }
 ];
 const AdminDashBoard = () => {
+  const [defaultUserList, setDefaultUserList] = useState();
   const [userList, setUserList] = useState('');
+  const [searchKeyWord, setSearchKeyWord] = useState('');
+  const [isChecked, setIschecked] = useState(false);
   useEffect(() => {
     fetchData();
   }, []);
@@ -24,6 +27,7 @@ const AdminDashBoard = () => {
     try {
       const getAllUser = await accountAPI.getAllUser();
       const { data } = getAllUser.data;
+      setDefaultUserList(data);
       setUserList(data);
     } catch (error) {
       console.log(error);
@@ -42,7 +46,20 @@ const AdminDashBoard = () => {
     console.log(values);
   };
   const onHanleChangeSearch = e => {
-    console.log(e.target.value);
+    const lowerCaseKeyword = e.target.value.toLowerCase();
+    if (lowerCaseKeyword !== '') {
+      const filterResult = userList.filter(list => {
+        const result = list.lastName.toLowerCase().includes(lowerCaseKeyword);
+        return result;
+      });
+      return setUserList(filterResult);
+    } else {
+      return setUserList(defaultUserList);
+    }
+    // setUserList(filterResult);
+  };
+  const onHanleChangeCheck = () => {
+    setIschecked(!isChecked);
   };
   return (
     <>
@@ -92,7 +109,7 @@ const AdminDashBoard = () => {
         <Col span={24}>
           <Row className='text-gray-400 font-medium leading-10 border-b border-gray-200  '>
             <Col span={1} className='text-center'>
-              <Checkbox />
+              <Checkbox onChange={onHanleChangeCheck} />
             </Col>
             <Col className='text-[13px]' span={5}>
               {' '}
@@ -119,7 +136,7 @@ const AdminDashBoard = () => {
               return (
                 <Row key={account._id}>
                   <Col span={1} className='text-center'>
-                    <Checkbox />
+                    <Checkbox id={account._id} />
                   </Col>
                   <Col span={5}>
                     <div className='flex gap-3'>
