@@ -1,15 +1,17 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { GoBook } from 'react-icons/go';
 import { PiStudent } from 'react-icons/pi';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import ContentField from '~/components/ContentField';
-import { Select } from 'antd';
+import { Popconfirm, Select } from 'antd';
 import { getSubjectOptions } from '~/utils/helper';
 import { CreateTestContext } from './TestCreator';
 import clsx from 'clsx';
 
 const TestOverviewSection = () => {
   const { overviewValue, onOverviewInputChange, testStaring } = useContext(CreateTestContext);
+  const [subjectSelectedValue, setSubjectSelectedValue] = useState(null);
+  const [gradeSelectedValue, setGrandeSelectionValue] = useState(null);
 
   const subjectOptions = useMemo(() => getSubjectOptions(), []);
 
@@ -21,6 +23,18 @@ const TestOverviewSection = () => {
     { value: 'THPTQG', label: 'Thi THPTQG' },
     { value: 'HSG', label: 'Thi Học Sinh Giỏi' }
   ];
+
+  const selectedGradeLebel = useMemo(() => {
+    const filtedOption = gradeOptions.filter(item => item.value === gradeSelectedValue);
+    return filtedOption[0]?.label;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gradeSelectedValue]);
+
+  const selectedGradeArray = useMemo(
+    () => gradeOptions.filter(item => item.value === overviewValue.grade),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [overviewValue.grade]
+  );
 
   return (
     <BlockSectionWrapper>
@@ -53,16 +67,35 @@ const TestOverviewSection = () => {
                 'border-red-500': testStaring && !overviewValue.subject
               })}
             >
-              <Select
-                options={subjectOptions}
-                placeholder='Môn học'
-                bordered={false}
-                className={clsx('w-60 rounded-t-md', {
-                  'bg-red-50': testStaring && !overviewValue.subject
-                })}
-                value={overviewValue.subject}
-                onChange={value => onOverviewInputChange('subject', value)}
-              />
+              <Popconfirm
+                open={subjectSelectedValue !== null}
+                title='Chọn môn học'
+                description={
+                  <p>
+                    Sau khi chọn không thể thay đổi. <br />
+                    Bạn chắc chắn chọn môn{' '}
+                    <span className='font-bold italic'>{subjectSelectedValue}</span>?
+                  </p>
+                }
+                okText='Xác nhận'
+                cancelText='Hủy'
+                onConfirm={() => {
+                  onOverviewInputChange('subject', subjectSelectedValue);
+                  setSubjectSelectedValue(null);
+                }}
+                onCancel={() => setSubjectSelectedValue(null)}
+              >
+                <Select
+                  options={!overviewValue.subject ? subjectOptions : undefined}
+                  placeholder='Môn học'
+                  bordered={false}
+                  className={clsx('w-60 rounded-t-md', {
+                    'bg-red-50': testStaring && !overviewValue.subject
+                  })}
+                  value={overviewValue.subject}
+                  onSelect={value => setSubjectSelectedValue(value)}
+                />
+              </Popconfirm>
             </div>
           </div>
           <div className='flex items-center gap-2'>
@@ -73,16 +106,35 @@ const TestOverviewSection = () => {
                 'border-red-500': testStaring && !overviewValue.grade
               })}
             >
-              <Select
-                options={gradeOptions}
-                placeholder='Đối tượng'
-                bordered={false}
-                className={clsx('w-60 rounded-t-md', {
-                  'bg-red-50': testStaring && !overviewValue.grade
-                })}
-                value={overviewValue.grade}
-                onChange={value => onOverviewInputChange('grade', value)}
-              />
+              <Popconfirm
+                open={gradeSelectedValue !== null}
+                title='Chọn đối tượng'
+                description={
+                  <p>
+                    Sau khi chọn không thể thay đổi. <br />
+                    Bạn chắc chắn chọn đối tượng{' '}
+                    <span className='font-bold italic'>{selectedGradeLebel}</span>?
+                  </p>
+                }
+                okText='Xác nhận'
+                cancelText='Hủy'
+                onConfirm={() => {
+                  onOverviewInputChange('grade', gradeSelectedValue);
+                  setGrandeSelectionValue(null);
+                }}
+                onCancel={() => setGrandeSelectionValue(null)}
+              >
+                <Select
+                  options={!overviewValue.grade ? gradeOptions : selectedGradeArray}
+                  placeholder='Đối tượng'
+                  bordered={false}
+                  className={clsx('w-60 rounded-t-md', {
+                    'bg-red-50': testStaring && !overviewValue.grade
+                  })}
+                  value={overviewValue.grade}
+                  onChange={value => setGrandeSelectionValue(value)}
+                />
+              </Popconfirm>
             </div>
           </div>
         </div>

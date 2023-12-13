@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { GoBook } from 'react-icons/go';
 import { PiStudent } from 'react-icons/pi';
-import { Divider, Form, InputNumber, Select, Switch, Modal, Input } from 'antd';
+import { Divider, Form, InputNumber, Select, Switch, Modal, Input, DatePicker } from 'antd';
 
 const limitTimeOptions = [
   { value: 15, label: '15 phút' },
@@ -15,6 +15,7 @@ const limitTimeOptions = [
 
 const TestStartingForm = ({ open, onCancel }) => {
   const { test, questions } = useSelector(state => state.test);
+  const [form] = Form.useForm();
 
   return (
     <Modal open={open} onCancel={onCancel} okText='Đăng' cancelText='Đóng'>
@@ -37,16 +38,16 @@ const TestStartingForm = ({ open, onCancel }) => {
               <Form.Item className='flex-1' label='Thời gian làm bài'>
                 <Select options={limitTimeOptions} />
               </Form.Item>
-              <Form.Item className='flex-1' label='Thời hạn'>
-                <InputNumber className='w-full' min={0} max={10} />
-              </Form.Item>
-            </div>
-            <div className='w-full flex gap-4'>
               <Form.Item className='flex-1' label='Điểm chuẩn'>
                 <InputNumber className='w-full' min={0} max={10} />
               </Form.Item>
               <Form.Item className='flex-1' label='Số lần được làm lại'>
                 <InputNumber className='w-full' min={0} max={10} />
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item label='Thời gian diễn ra'>
+                <DatePicker.RangePicker showTime allowClear placeholder={['Bắt đầu', 'Kết thúc']} />
               </Form.Item>
             </div>
             <div>
