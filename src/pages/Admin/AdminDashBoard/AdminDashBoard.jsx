@@ -41,11 +41,32 @@ const AdminDashBoard = () => {
 
     return formattedDate;
   };
+  const deBounce = (cb, delay = 1000) => {
+    let timeout;
 
+    return (...args) => {
+      clearTimeout(timeout);
+      setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  };
   const onHanleSearch = values => {
     console.log(values);
   };
-  const onHanleChangeSearch = e => {
+  // const onHanleChangeSearch = e => {
+  //   const lowerCaseKeyword = e.target.value.toLowerCase();
+  //   if (lowerCaseKeyword !== '') {
+  //     const filterResult = userList.filter(list => {
+  //       const result = list.lastName.toLowerCase().includes(lowerCaseKeyword);
+  //       return result;
+  //     });
+  //     return setUserList(filterResult);
+  //   } else {
+  //     return setUserList(defaultUserList);
+  //   }
+  // };
+  const onHanleChangeSearch = deBounce(e => {
     const lowerCaseKeyword = e.target.value.toLowerCase();
     if (lowerCaseKeyword !== '') {
       const filterResult = userList.filter(list => {
@@ -56,8 +77,7 @@ const AdminDashBoard = () => {
     } else {
       return setUserList(defaultUserList);
     }
-    // setUserList(filterResult);
-  };
+  });
   const onHanleChangeCheck = () => {
     setIschecked(!isChecked);
   };
