@@ -7,8 +7,11 @@ import { Popconfirm, Select } from 'antd';
 import { getSubjectOptions } from '~/utils/helper';
 import { CreateTestContext } from './TestCreator';
 import clsx from 'clsx';
+import TestAPI from '~/services/testAPI';
+import { useSelector } from 'react-redux';
 
 const TestOverviewSection = () => {
+  const { test } = useSelector(state => state.test);
   const { overviewValue, onOverviewInputChange, testStaring } = useContext(CreateTestContext);
   const [subjectSelectedValue, setSubjectSelectedValue] = useState(null);
   const [gradeSelectedValue, setGrandeSelectionValue] = useState(null);
@@ -23,6 +26,19 @@ const TestOverviewSection = () => {
     { value: 'THPTQG', label: 'Thi THPTQG' },
     { value: 'HSG', label: 'Thi Học Sinh Giỏi' }
   ];
+
+  const handleUpdateCommonField = async name => {
+    let fields = {};
+    if (name === 'subject') fields.subject = subjectSelectedValue;
+    if (name === 'grade') fields.grade = gradeSelectedValue;
+
+    try {
+      await TestAPI.updateCommonFields(test._id, fields);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
 
   const selectedGradeLebel = useMemo(() => {
     const filtedOption = gradeOptions.filter(item => item.value === gradeSelectedValue);
@@ -79,8 +95,9 @@ const TestOverviewSection = () => {
                 }
                 okText='Xác nhận'
                 cancelText='Hủy'
-                onConfirm={() => {
+                onConfirm={async () => {
                   onOverviewInputChange('subject', subjectSelectedValue);
+                  await handleUpdateCommonField('subject');
                   setSubjectSelectedValue(null);
                 }}
                 onCancel={() => setSubjectSelectedValue(null)}
@@ -93,7 +110,7 @@ const TestOverviewSection = () => {
                     'bg-red-50': testStaring && !overviewValue.subject
                   })}
                   value={overviewValue.subject}
-                  onSelect={value => setSubjectSelectedValue(value)}
+                  onChange={value => setSubjectSelectedValue(value)}
                 />
               </Popconfirm>
             </div>
@@ -118,8 +135,9 @@ const TestOverviewSection = () => {
                 }
                 okText='Xác nhận'
                 cancelText='Hủy'
-                onConfirm={() => {
+                onConfirm={async () => {
                   onOverviewInputChange('grade', gradeSelectedValue);
+                  await handleUpdateCommonField('grade');
                   setGrandeSelectionValue(null);
                 }}
                 onCancel={() => setGrandeSelectionValue(null)}

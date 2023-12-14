@@ -16,6 +16,10 @@ const TestAPI = {
   getMyTests: () => {
     const url = '/tests/mine';
     return api.get(url);
+  },
+  updateCommonFields: (id, body) => {
+    const url = `/tests/common/${id}`;
+    return api.put(url, body);
   }
 };
 
