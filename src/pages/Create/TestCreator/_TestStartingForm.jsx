@@ -3,6 +3,7 @@ import { GoBook } from 'react-icons/go';
 import { PiStudent } from 'react-icons/pi';
 import { Divider, Form, InputNumber, Select, Switch, Modal, Input, DatePicker } from 'antd';
 import TestAPI from '~/services/testAPI';
+import { useEffect } from 'react';
 
 const limitTimeOptions = [
   { value: 15, label: '15 phút' },
@@ -15,17 +16,31 @@ const limitTimeOptions = [
 ];
 
 const TestStartingForm = ({ open, onCancel }) => {
-  const { test, questions } = useSelector(state => state.test);
+  const { test } = useSelector(state => state.test);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (!test?.isActived) return;
+    const fields = {
+      limitTime: test.limitTime,
+      passScore: test.passScore,
+      turns: test.turns,
+      // activingDate: [f, f1],
+      passWord: test.passWord,
+      isReturnResult: test.isReturnResult
+    };
+    form.setFieldsValue(fields);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [test]);
 
   const handleStartTest = async formValue => {
     // eslint-disable-next-line no-unused-vars
     const { questions, ...restTestValue } = test;
     const startedTest = { ...restTestValue, ...formValue, isActived: true };
     try {
-      const res = await TestAPI.updateTestById(test._id, startedTest);
-      console.log(res);
+      await TestAPI.updateTestById(test._id, startedTest);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
