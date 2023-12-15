@@ -170,13 +170,11 @@ const QuestionCreatorBox = ({
     }
     if (errorFields.length > 0) setErrors(errorFields);
     const shouldNexting = errorFields.length === 0 && correctAnswer && controlValue.subject;
-    console.log(correctAnswer, controlValue, '123123123');
     if (!shouldNexting) {
       handleAddQuestionError(false);
     } else {
       handleAddQuestionError(true);
     }
-    console.log(shouldNexting);
     if (shouldNexting) {
       clearQuestionError();
     }

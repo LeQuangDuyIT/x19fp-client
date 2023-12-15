@@ -16,7 +16,7 @@ const initStatistical = [
 ];
 
 const TestCreatorController = () => {
-  const { questions } = useSelector(state => state.test);
+  const { test, questions } = useSelector(state => state.test);
   const [statistical, setStatistical] = useState(initStatistical);
   const { overviewValue, onOverviewInputChange, testStaring, handleStart, handleCancelStart } =
     useContext(CreateTestContext);
@@ -48,20 +48,32 @@ const TestCreatorController = () => {
 
   return (
     <div className='flex flex-col gap-4 sticky right-0 top-8'>
-      <BlockSectionWrapper>
-        <Button type='primary' className='w-full h-[56px] font-bold' onClick={handleStart}>
-          Tổ chức thi/kiểm tra
-        </Button>
-      </BlockSectionWrapper>
-      {testStaring && (
+      {test && !test?.isActived && (
+        <>
+          <BlockSectionWrapper>
+            <Button type='primary' className='w-full h-[56px] font-bold' onClick={handleStart}>
+              Tổ chức thi/kiểm tra
+            </Button>
+          </BlockSectionWrapper>
+          {testStaring && (
+            <BlockSectionWrapper>
+              <Button
+                icon={<ReloadOutlined />}
+                type='text'
+                className='w-full h-[56px] font-bold'
+                onClick={handleCancelStart}
+              >
+                Trở về
+              </Button>
+            </BlockSectionWrapper>
+          )}
+        </>
+      )}
+
+      {test && test?.isActived && (
         <BlockSectionWrapper>
-          <Button
-            icon={<ReloadOutlined />}
-            type='text'
-            className='w-full h-[56px] font-bold'
-            onClick={handleCancelStart}
-          >
-            Trở về
+          <Button type='primary' className='w-full h-[56px] font-bold' onClick={handleStart}>
+            Quản lý tổ chức thi
           </Button>
         </BlockSectionWrapper>
       )}

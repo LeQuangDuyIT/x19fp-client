@@ -17,8 +17,12 @@ const ControlSection = ({ isTestCreator }) => {
   return (
     <>
       <QuestionTypeSelector />
-      <SubjectSelector />
-      <CollectionSelector />
+      {!isTestCreator && (
+        <>
+          <SubjectSelector />
+          <CollectionSelector />
+        </>
+      )}
       <Divider />
       <div className='flex justify-end items-center gap-2'>
         <span>Riêng tư</span>

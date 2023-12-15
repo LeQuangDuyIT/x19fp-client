@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { GoBook } from 'react-icons/go';
 import { PiStudent } from 'react-icons/pi';
 import { Divider, Form, InputNumber, Select, Switch, Modal, Input, DatePicker } from 'antd';
+import TestAPI from '~/services/testAPI';
 
 const limitTimeOptions = [
   { value: 15, label: '15 phút' },
@@ -17,8 +18,26 @@ const TestStartingForm = ({ open, onCancel }) => {
   const { test, questions } = useSelector(state => state.test);
   const [form] = Form.useForm();
 
+  const handleStartTest = async formValue => {
+    // eslint-disable-next-line no-unused-vars
+    const { questions, ...restTestValue } = test;
+    const startedTest = { ...restTestValue, ...formValue, isActived: true };
+    try {
+      const res = await TestAPI.updateTestById(test._id, startedTest);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Modal open={open} onCancel={onCancel} okText='Đăng' cancelText='Đóng'>
+    <Modal
+      open={open}
+      onCancel={onCancel}
+      onOk={() => form.submit()}
+      okText='Đăng'
+      cancelText='Đóng'
+    >
       <div className='flex flex-col gap-4'>
         <h1>{test.title}</h1>
         <div className='flex gap-16'>
@@ -33,30 +52,30 @@ const TestStartingForm = ({ open, onCancel }) => {
         </div>
         <Divider />
         <div>
-          <Form className='w-full' layout='vertical'>
+          <Form form={form} onFinish={handleStartTest} className='w-full' layout='vertical'>
             <div className='w-full flex gap-4'>
-              <Form.Item className='flex-1' label='Thời gian làm bài'>
+              <Form.Item className='flex-1' name='limitTime' label='Thời gian làm bài'>
                 <Select options={limitTimeOptions} />
               </Form.Item>
-              <Form.Item className='flex-1' label='Điểm chuẩn'>
+              <Form.Item className='flex-1' name='passScore' label='Điểm chuẩn'>
                 <InputNumber className='w-full' min={0} max={10} />
               </Form.Item>
-              <Form.Item className='flex-1' label='Số lần được làm lại'>
+              <Form.Item className='flex-1' name='turns' label='Số lần được làm lại'>
                 <InputNumber className='w-full' min={0} max={10} />
               </Form.Item>
             </div>
             <div>
-              <Form.Item label='Thời gian diễn ra'>
+              <Form.Item name='activingDate' label='Thời gian diễn ra'>
                 <DatePicker.RangePicker showTime allowClear placeholder={['Bắt đầu', 'Kết thúc']} />
               </Form.Item>
             </div>
             <div>
-              <Form.Item className='flex-1' label='Mật khẩu truy cập'>
+              <Form.Item className='flex-1' name='passWord' label='Mật khẩu truy cập'>
                 <Input className='w-full' />
               </Form.Item>
             </div>
             <div>
-              <Form.Item label='Trả kết quả ngay'>
+              <Form.Item name='isReturnResult' label='Trả kết quả ngay'>
                 <Switch />
               </Form.Item>
             </div>
