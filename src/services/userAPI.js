@@ -6,8 +6,10 @@ const accountAPI = {
     return api.get(url);
   },
   deleteUser: body => {
-    const url = '/admin/delete-user';
-    return api.delete(url, body);
+    console.log('body', body);
+    const url = `/admin/delete-user/${body}`;
+    console.log(url);
+    return api.delete(url);
   }
 };
 

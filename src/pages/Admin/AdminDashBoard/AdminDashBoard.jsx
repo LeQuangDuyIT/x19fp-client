@@ -8,15 +8,16 @@ import { useEffect, useMemo, useState } from 'react';
 import accountAPI from '~/services/userAPI';
 import LoadingState from '~/components/LoadingState/LoadingState';
 const dashBoard = [
-  { title: 'NGƯỜI DÙNG', icon: <FaUsers />, quantity: '12360' },
-  { title: 'CÂU HỎI/BÀI TẬP', icon: <RiQuestionAnswerLine />, quantity: '5294' },
-  { title: 'ĐỀ THI/BÀI KIỂM TRA', icon: <PiExam />, quantity: '870' },
-  { title: 'MÔN HỌC/BỘ SƯU TẬP', icon: <PiExam />, quantity: '78' }
+  { title: 'NGƯỜI DÙNG', icon: <FaUsers />, quantity: '1' },
+  { title: 'CÂU HỎI/BÀI TẬP', icon: <RiQuestionAnswerLine />, quantity: '1' },
+  { title: 'ĐỀ THI/BÀI KIỂM TRA', icon: <PiExam />, quantity: '1' },
+  { title: 'MÔN HỌC/BỘ SƯU TẬP', icon: <PiExam />, quantity: '1' }
 ];
 const AdminDashBoard = () => {
   const [userList, setUserList] = useState([]);
   const [searchKeyWord, setSearchKeyWord] = useState('');
-  const [isChecked, setIschecked] = useState(false);
+  // const [isChecked, setIschecked] = useState(false);
+  const [selectedUser, setSelectedUser] = useState([]);
   useEffect(() => {
     fetchData();
   }, []);
@@ -56,6 +57,21 @@ const AdminDashBoard = () => {
       }),
     [searchKeyWord, userList]
   );
+  const handleDeleteUser = async () => {
+    try {
+      await accountAPI.deleteUser(selectedUser);
+      // for (let i = 0; i < selectedUser.length; i++) {
+      //   const selectdUserElement = selectedUser[i];
+      //   for (let j = 0; j < userList.length; j++) {
+      //     const userListElement = userList[j];
+      //     if (userListElement._id === selectdUserElement) {
+      //       await accountAPI.deleteUser(userListElement._id);
+      //       await fetchData();
+      //     }
+      //   }
+      // }
+    } catch (error) {}
+  };
   // const filteredUserList = deBounce(
   //   userList.filter(user => {
   //     return user.lastName.toLowerCase().includes(searchKeyWord.toLowerCase());
@@ -63,13 +79,20 @@ const AdminDashBoard = () => {
   //   500
   // );
 
-  const onHanleChangeCheckAll = () => {
-    setIschecked(!isChecked);
+  const onHanleChangeCheckAll = e => {
+    if (e.target.checked) {
+      setSelectedUser(userList.map(item => item._id));
+      return;
+    }
+    setSelectedUser([]);
   };
   const onHanleChangeCheckSingle = (value, id) => {
-    setIschecked(value);
-    console.log(value);
-    console.log(id);
+    const checkIsExist = selectedUser.find(item => item == id);
+    if (!checkIsExist) {
+      setSelectedUser([...selectedUser, id]);
+      return;
+    }
+    setSelectedUser(selectedUser.filter(item => item != id));
   };
   return (
     <>
@@ -107,16 +130,16 @@ const AdminDashBoard = () => {
             <Col className='text-[13px] flex flex-grow  items-center gap-4 ' span={12}>
               <div className=' w-[200px] h-[50px] '>
                 <div className='flex gap-4  items-center justify-center '>
-                  {isChecked && (
+                  {true && (
                     <>
-                      <div>1 Selected</div>
+                      <div>{selectedUser.length} Selected</div>
                       <Popconfirm
                         title='Xóa đáp án'
                         description='Bạn chắc chắn muốn xóa?'
                         okText='Xóa'
                         cancelText='Đóng'
                         okButtonProps={{ danger: true }}
-                        // onConfirm={() => onHanleChangeCheckSingle()}
+                        onConfirm={() => handleDeleteUser()}
                       >
                         <div className='border-[1px] leading-tight cursor-pointer border-red-500 text-red-500 text-center rounded p-3 hover:bg-red-500 hover:text-white transition-all'>
                           Delete
@@ -140,7 +163,10 @@ const AdminDashBoard = () => {
         <Col span={24}>
           <Row className='text-gray-400 font-medium leading-10 border-b border-gray-200  '>
             <Col span={1} className='text-center'>
-              <Checkbox onChange={onHanleChangeCheckAll} />
+              <Checkbox
+                checked={selectedUser?.length == userList.length}
+                onChange={onHanleChangeCheckAll}
+              />
             </Col>
             <Col className='text-[13px]' span={5}>
               {' '}
@@ -168,6 +194,7 @@ const AdminDashBoard = () => {
                 <Row key={account._id}>
                   <Col span={1} className='text-center'>
                     <Checkbox
+                      checked={selectedUser.includes(account?._id)}
                       onChange={e => onHanleChangeCheckSingle(e.target.checked, account._id)}
                       id={account._id}
                     />
