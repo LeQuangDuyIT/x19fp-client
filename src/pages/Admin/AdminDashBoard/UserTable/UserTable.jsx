@@ -4,7 +4,6 @@ import Search from 'antd/es/input/Search';
 import accountAPI from '~/services/userAPI';
 import { Row, Col, Checkbox, Popconfirm, Pagination } from 'antd';
 import LoadingState from '~/components/LoadingState/LoadingState';
-import userAPI from '~/services/userProfileApi';
 
 const UserTable = () => {
   const [userList, setUserList] = useState([]);
@@ -76,7 +75,7 @@ const UserTable = () => {
       page,
       limit: pagination.limit
     };
-    console.log(currentPage);
+
     const userPerPage = await accountAPI.getAllUser(currentPage);
     const { data, paginationData } = userPerPage.data;
 
@@ -85,7 +84,6 @@ const UserTable = () => {
   };
 
   const onShowSizeChange = async (current, pageSize) => {
-    console.log(current, pageSize);
     const page = {
       page: current,
       limit: pageSize
