@@ -9,6 +9,10 @@ const TestAPI = {
     const url = `/tests/${id}`;
     return api.get(url);
   },
+  getTestOverviewById: id => {
+    const url = `/tests/overview/${id}`;
+    return api.get(url);
+  },
   updateTestById: (id, body) => {
     const url = `/tests/${id}`;
     return api.put(url, body);
@@ -20,6 +24,10 @@ const TestAPI = {
   updateCommonFields: (id, body) => {
     const url = `/tests/common/${id}`;
     return api.put(url, body);
+  },
+  doTest: (id, body) => {
+    const url = `/tests/do/${id}`;
+    return api.post(url, body);
   }
 };
 
