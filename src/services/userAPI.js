@@ -8,6 +8,10 @@ const accountAPI = {
   deleteUser: body => {
     const url = `/admin/delete-user/${body}`;
     return api.delete(url);
+  },
+  getStaticsNumber: () => {
+    const url = '/admin/get-user-stattics';
+    return api.get(url);
   }
 };
 

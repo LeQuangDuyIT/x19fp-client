@@ -70,26 +70,15 @@ const UserTable = () => {
     setSelectedUser(selectedUser.filter(item => item != id));
   };
 
-  const onPageChange = async page => {
+  const onPageChange = async (page, pageSize) => {
     const currentPage = {
       page,
-      limit: pagination.limit
+      limit: pageSize
     };
 
     const userPerPage = await accountAPI.getAllUser(currentPage);
     const { data, paginationData } = userPerPage.data;
 
-    setUserList(data);
-    setPagination(paginationData);
-  };
-
-  const onShowSizeChange = async (current, pageSize) => {
-    const page = {
-      page: current,
-      limit: pageSize
-    };
-    const getUsersPerPage = await accountAPI.getAllUser(page);
-    const { data, paginationData } = getUsersPerPage.data;
     setUserList(data);
     setPagination(paginationData);
   };
@@ -211,12 +200,12 @@ const UserTable = () => {
       <Col className=' text-center mb-3 ' span={24}>
         <Pagination
           size='small'
+          onChange={onPageChange}
           defaultCurrent={1}
           defaultPageSize={4}
           total={pagination.totalItems}
           pageSizeOptions={[4, 8, 12]}
-          onShowSizeChange={onShowSizeChange}
-          onChange={onPageChange}
+          y
           showSizeChanger
         />
       </Col>
