@@ -111,8 +111,8 @@ const AdminDashBoard = () => {
       </Row>
       <UserTable />
       <Row>
-        <Col span={24}>
-          <BarChart UserChartData={UserChartData} />
+        <Col span={12}>
+          <BarChart className='w-full' UserChartData={UserChartData} />
         </Col>
       </Row>
     </>
