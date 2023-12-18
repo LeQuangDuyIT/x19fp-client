@@ -8,7 +8,7 @@ import { alphabet } from '~/utils/constants';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-const MultipleChoice = ({ question, readOnly }) => {
+const MultipleChoice = ({ question, readOnly, handleSetAnswer }) => {
   const [choosed, setChoosed] = useState(null);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
@@ -20,9 +20,11 @@ const MultipleChoice = ({ question, readOnly }) => {
     if (id === choosed) {
       setChoosed(null);
       openNotification('info', 'Bỏ chọn');
+      handleSetAnswer(null);
     } else {
       setChoosed(id);
       openNotification('success', `Chọn ${alphabet[index]}`);
+      handleSetAnswer(id, index);
     }
   };
 

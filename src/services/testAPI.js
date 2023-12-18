@@ -24,10 +24,6 @@ const TestAPI = {
   updateCommonFields: (id, body) => {
     const url = `/tests/common/${id}`;
     return api.put(url, body);
-  },
-  doTest: (id, body) => {
-    const url = `/tests/do/${id}`;
-    return api.post(url, body);
   }
 };
 
