@@ -8,7 +8,7 @@ import { alphabet } from '~/utils/constants';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-const MultipleChoice = ({ question, readOnly }) => {
+const MultipleChoice = ({ question, readOnly, handleSetAnswer }) => {
   const [choosed, setChoosed] = useState(null);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
@@ -20,9 +20,11 @@ const MultipleChoice = ({ question, readOnly }) => {
     if (id === choosed) {
       setChoosed(null);
       openNotification('info', 'Bỏ chọn');
+      handleSetAnswer(null);
     } else {
       setChoosed(id);
       openNotification('success', `Chọn ${alphabet[index]}`);
+      handleSetAnswer(id, index);
     }
   };
 
@@ -54,45 +56,46 @@ const MultipleChoice = ({ question, readOnly }) => {
           <Divider className='my-0' />
         </div>
         <div className='flex flex-col gap-4'>
-          {question.answers.map((answer, index) => {
-            const isCorrectAnswer = isResultShow && isCorrect && answer.id === choosed;
-            const isUnCorrectAnswer = isResultShow && !isCorrect && answer.id === choosed;
-            return (
-              <div
-                key={answer.id}
-                className='w-fit flex items-center gap-4 cursor-pointer'
-                onClick={() => onChooseAnswer(answer.id, index)}
-              >
-                {!readOnly &&
-                  (choosed === answer.id ? (
-                    <MdOutlineRadioButtonChecked
-                      className={clsx('text-xl', {
-                        'text-blue-500': !isUnCorrectAnswer,
-                        'text-red-500': isUnCorrectAnswer
-                      })}
-                    />
-                  ) : (
-                    <MdOutlineRadioButtonUnchecked
-                      className={clsx('text-xl text-gray-300', {
-                        'hover:text-blue-500': !isResultShow
-                      })}
-                    />
-                  ))}
+          {Array.isArray(question.answers) &&
+            question.answers.map((answer, index) => {
+              const isCorrectAnswer = isResultShow && isCorrect && answer.id === choosed;
+              const isUnCorrectAnswer = isResultShow && !isCorrect && answer.id === choosed;
+              return (
                 <div
-                  className={clsx(
-                    'relative flex py-1 before:w-0 before:h-[1px] before:absolute before:left-0 before:bottom-[-1px] before:duration-500',
-                    {
-                      'text-red-500 before:bg-red-500 before:w-full': isUnCorrectAnswer,
-                      'text-blue-500 before:bg-blue-500 before:w-full': isCorrectAnswer
-                    }
-                  )}
+                  key={answer.id}
+                  className='w-fit flex items-center gap-4 cursor-pointer'
+                  onClick={() => onChooseAnswer(answer.id, index)}
                 >
-                  <span className='w-6'>{alphabet[index]}.</span>
-                  <span>{parser(answer.content)}</span>
+                  {!readOnly &&
+                    (choosed === answer.id ? (
+                      <MdOutlineRadioButtonChecked
+                        className={clsx('text-xl', {
+                          'text-blue-500': !isUnCorrectAnswer,
+                          'text-red-500': isUnCorrectAnswer
+                        })}
+                      />
+                    ) : (
+                      <MdOutlineRadioButtonUnchecked
+                        className={clsx('text-xl text-gray-300', {
+                          'hover:text-blue-500': !isResultShow
+                        })}
+                      />
+                    ))}
+                  <div
+                    className={clsx(
+                      'relative flex py-1 before:w-0 before:h-[1px] before:absolute before:left-0 before:bottom-[-1px] before:duration-500',
+                      {
+                        'text-red-500 before:bg-red-500 before:w-full': isUnCorrectAnswer,
+                        'text-blue-500 before:bg-blue-500 before:w-full': isCorrectAnswer
+                      }
+                    )}
+                  >
+                    <span className='w-6'>{alphabet[index]}.</span>
+                    <span>{parser(answer.content)}</span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
         {choosed && (
           <div className='flex gap-3'>

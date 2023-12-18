@@ -11,6 +11,8 @@ import { QUESTION_TYPE } from '~/utils/constants';
 import QuestionAPI from '~/services/questionAPI';
 import ControlSection from './_ControlSection';
 import SettingButtonBar from './SettingButtonBar';
+import useDebounce from '~/hooks/useDebounce';
+import ClickOutsideObserver from '../ClickOutsideObserver';
 
 export const CreateQuestionContext = createContext();
 
@@ -27,7 +29,15 @@ const initalControlValue = {
   isPrivate: false
 };
 
-const QuestionCreatorBox = ({ question, showSettingBar }) => {
+const QuestionCreatorBox = ({
+  isTestCreator,
+  question,
+  showSettingBar,
+  handleCloseSettingBar,
+  testStaring,
+  handleAddQuestionError,
+  clearQuestionError
+}) => {
   const [controlValue, setControlValue] = useState(initalControlValue);
   const [topic, setTopic] = useState('');
   const [answers, setAnswers] = useState(initialAnswers);
@@ -36,6 +46,64 @@ const QuestionCreatorBox = ({ question, showSettingBar }) => {
   const [isSubjectRequired, setIsSubjectRequired] = useState(false);
   const [isShowingError, setIsShowingError] = useState(false);
   const navigate = useNavigate();
+
+  const topicDebounce = useDebounce(topic);
+  const answersDebounce = useDebounce(answers);
+  const controlValueDebounce = useDebounce(controlValue);
+
+  useEffect(() => {
+    if (!topicDebounce || !answersDebounce || !controlValue) return;
+    handleUpdateQuestion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topicDebounce, answersDebounce, controlValueDebounce]);
+
+  const handleUpdateQuestion = async () => {
+    if (!question || !question?._id) return;
+    // const isValid = handleValidateWithoutMessage();
+    // if (!isValid) {
+    //   return;
+    // }
+    const updatedQuestion = {
+      ...question,
+      topic,
+      answers,
+      ...controlValue
+    };
+    try {
+      await QuestionAPI.updateQuestion(question._id, updatedQuestion);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (testStaring) {
+      handleValidateWithoutMessage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [testStaring]);
+
+  useEffect(() => {
+    if (!question) return;
+    if (Object.values(question).length === 0) return;
+    if (Array.isArray(question.answer)) return;
+    setAnswers(question.answers);
+    setTopic(question.topic);
+    setControlValue({
+      type: question.type,
+      subject: question.subject,
+      collection: question.collection,
+      isPrivate: question.isPrivate
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [question]);
+
+  useEffect(() => {
+    if (!testStaring) {
+      handleResetAll();
+    }
+  }, [testStaring]);
 
   const onAnswerInputChange = (idChange, value) => {
     const newAnswers = answers.map(answer =>
@@ -85,6 +153,32 @@ const QuestionCreatorBox = ({ question, showSettingBar }) => {
     }
     if (errorFields.length > 0) setErrors(errorFields);
     return errorFields.length === 0 && correctAnswer && controlValue.subject;
+  };
+
+  const handleValidateWithoutMessage = () => {
+    const errorFields = answers
+      .filter(answer => !answer.content || parser(answer.content) === '')
+      .map(answer => answer.id);
+    if (!topic || parser(topic) === '') errorFields.push('topic');
+
+    const correctAnswer = answers.find(answer => answer.isCorrect);
+    if (!correctAnswer) {
+      setIsCorrectRequired(true);
+    }
+    if (!controlValue.subject) {
+      setIsSubjectRequired(true);
+    }
+    if (errorFields.length > 0) setErrors(errorFields);
+    const shouldNexting = errorFields.length === 0 && correctAnswer && controlValue.subject;
+    if (!shouldNexting) {
+      handleAddQuestionError(false);
+    } else {
+      handleAddQuestionError(true);
+    }
+    if (shouldNexting) {
+      clearQuestionError();
+    }
+    return shouldNexting;
   };
 
   const handleRefreshField = fieldName => {
@@ -141,6 +235,7 @@ const QuestionCreatorBox = ({ question, showSettingBar }) => {
   return (
     <CreateQuestionContext.Provider
       value={{
+        isTestCreator,
         controlValue,
         topic,
         answers,
@@ -166,11 +261,15 @@ const QuestionCreatorBox = ({ question, showSettingBar }) => {
               <MainSection />
             </Col>
             <Col span={6} className='flex flex-col gap-2'>
-              <ControlSection />
+              <ControlSection isTestCreator={isTestCreator} />
             </Col>
           </Row>
         </BlockSectionWrapper>
-        {showSettingBar && <SettingButtonBar question={question} />}
+        {showSettingBar && (
+          <ClickOutsideObserver onClickOutside={handleCloseSettingBar}>
+            <SettingButtonBar question={question} />
+          </ClickOutsideObserver>
+        )}
       </div>
     </CreateQuestionContext.Provider>
   );

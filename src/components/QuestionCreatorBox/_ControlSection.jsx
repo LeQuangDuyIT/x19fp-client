@@ -5,9 +5,14 @@ import SubjectSelector from './__SubjectSelector';
 import CollectionSelector from './__CollectionSelector';
 import { CreateQuestionContext } from './QuestionCreatorBox';
 
-const ControlSection = () => {
-  const { isShowingError, handleChangeControlValue, handleCreateMultipleChoice, handleResetAll } =
-    useContext(CreateQuestionContext);
+const ControlSection = ({ isTestCreator }) => {
+  const {
+    controlValue,
+    isShowingError,
+    handleChangeControlValue,
+    handleCreateMultipleChoice,
+    handleResetAll
+  } = useContext(CreateQuestionContext);
 
   return (
     <>
@@ -19,12 +24,15 @@ const ControlSection = () => {
         <span>Riêng tư</span>
         <Switch
           className='w-fit'
+          checked={controlValue.isPrivate}
           onChange={value => handleChangeControlValue('isPrivate', value)}
         />
       </div>
-      <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
-        Lưu
-      </Button>
+      {!isTestCreator && (
+        <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
+          Lưu
+        </Button>
+      )}
       {isShowingError && (
         <Button className='w-full h-[56px]' onClick={handleResetAll}>
           Trở về

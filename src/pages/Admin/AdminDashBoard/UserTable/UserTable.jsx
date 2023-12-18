@@ -84,7 +84,7 @@ const UserTable = () => {
   };
 
   return (
-    <Row className='shadow border-gray-200 border-[1px] rounded-xl '>
+    <Row className='shadow border-gray-200 border-[1px] rounded-xl mb-4 '>
       <Col className='leading-[50px] border-b border-gray-200' span={24}>
         <Row className='items-center text-gray-400 '>
           <Col className='font-semibold pl-4 text-lg text-black' span={12}>

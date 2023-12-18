@@ -11,43 +11,27 @@ import BarChart from '~/components/Chart/BarChart';
 import { months } from '~/utils/constants';
 const AdminDashBoard = () => {
   const [statics, setStatics] = useState({});
-  const [userChartData, setUserChartData] = useState({
-    labels: months,
-    datasets: [
-      {
-        label: 'Người dùng',
-        data: [100, 44, 78, 12, 45, 23, 56, 21, 67, 88, 32, 11],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)'
-        ],
-        borderWidth: 1
-      }
-    ]
-  });
+  const [userInMonth, setUserInMonth] = useState([]);
   useEffect(() => {
     fetchStaticsNumber();
   }, []);
+  const fetchStaticsNumber = async () => {
+    try {
+      const getStaticsNumber = await accountAPI.getStaticsNumber();
+      const { data } = getStaticsNumber.data;
+      setStatics(data);
+      setUserInMonth(data.usersInMonths);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const UserChartData = {
     labels: months,
     datasets: [
       {
-        label: 'Số lượng tài khoản được tạo qua các tháng',
-        data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+        label: 'Người dùng mới  ',
+        data: userInMonth.map(user => user.numberOfUsers) || [],
+
         backgroundColor: [
           'rgba(135, 235, 15, 0.92)',
           'rgba(125, 220, 35, 0.84)',
@@ -72,16 +56,6 @@ const AdminDashBoard = () => {
     { title: 'ĐỀ THI/BÀI KIỂM TRA', icon: <PiExam />, quantity: statics.tests },
     { title: 'MÔN HỌC/BỘ SƯU TẬP', icon: <PiExam />, quantity: statics.collections }
   ];
-
-  const fetchStaticsNumber = async () => {
-    try {
-      const getStaticsNumber = await accountAPI.getStaticsNumber();
-      const { data } = getStaticsNumber.data;
-      setStatics(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -110,9 +84,13 @@ const AdminDashBoard = () => {
         })}
       </Row>
       <UserTable />
-      <Row>
-        <Col span={12}>
-          <BarChart className='w-full' UserChartData={UserChartData} />
+      <Row className='font-semibold  '>
+        <Col className=' border-gray-200 max-h-[500px] border-[1px] rounded-xl shadow  ' span={12}>
+          <span className='pl-7 text-lg leading-10 '> Biểu đồ người dùng mới trong năm 2023 </span>
+          <div className='border-b border-gray-200 '></div>
+          <div className='w-full h-auto p-2'>
+            <BarChart UserChartData={UserChartData} />
+          </div>
         </Col>
       </Row>
     </>

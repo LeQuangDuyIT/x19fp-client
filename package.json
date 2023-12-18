@@ -25,6 +25,7 @@
     "jquery": "3.6.1",
     "katex": "0.16.9",
     "mathquill4quill": "^2.4.0",
+    "moment-timezone": "^0.5.43",
     "nodemailer": "^6.9.7",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",

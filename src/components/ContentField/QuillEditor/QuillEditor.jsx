@@ -37,7 +37,7 @@ const CUSTOM_OPERATORS = [
 const QuillEditor = ({
   value,
   placeholder,
-  isExtendingToolbar,
+  isToolbarExtending,
   onChange,
   onFocus,
   onBlur,
@@ -75,8 +75,8 @@ const QuillEditor = ({
   return (
     <div
       className={clsx(styles.customEditor, styles.customToolbar, {
-        [styles.hiddenToolbar]: !isExtendingToolbar,
-        [styles.showToolbar]: isExtendingToolbar,
+        [styles.hiddenToolbar]: !isToolbarExtending,
+        [styles.showToolbar]: isToolbarExtending,
         [styles.asTextarea]: textarea
       })}
     >
