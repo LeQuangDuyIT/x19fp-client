@@ -2,6 +2,8 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { StoreContext } from '~/context/storeContext/StoreContext';
 import Search from 'antd/es/input/Search';
 import accountAPI from '~/services/userAPI';
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+
 import { Row, Col, Checkbox, Popconfirm, Pagination } from 'antd';
 import LoadingState from '~/components/LoadingState/LoadingState';
 
@@ -10,6 +12,8 @@ const UserTable = () => {
   const [searchKeyWord, setSearchKeyWord] = useState('');
   const [pagination, setPagination] = useState({});
   const [selectedUser, setSelectedUser] = useState([]);
+  const [blueArrow, setBlueArrow] = useState(false);
+  const [grayArrow, setGrayArrow] = useState(false);
   const { setContextError } = useContext(StoreContext);
   useEffect(() => {
     fetchData();
@@ -33,7 +37,6 @@ const UserTable = () => {
 
     return formattedDate;
   };
-
   const filteredUserList = useMemo(
     () =>
       userList.filter(user => {
@@ -41,6 +44,7 @@ const UserTable = () => {
       }),
     [searchKeyWord, userList]
   );
+
   const handleDeleteUser = async () => {
     try {
       if (selectedUser.length === 0) {
@@ -81,6 +85,38 @@ const UserTable = () => {
 
     setUserList(data);
     setPagination(paginationData);
+  };
+
+  const onHanleSortByAccountType = () => {
+    if (grayArrow) {
+      setGrayArrow(!grayArrow);
+      setBlueArrow(!blueArrow);
+      const sortedAscsData = userList.sort((a, b) => {
+        if (a.accountType === 'Giảng viên' && b.accountType !== 'Giảng viên') {
+          return -1;
+        } else if (a.accountType !== 'Giảng viên' && b.accountType === 'Giảng viên') {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      console.log('Asc', sortedAscsData);
+      setUserList(sortedAscsData);
+    } else {
+      setGrayArrow(!grayArrow);
+      setBlueArrow(false);
+      const sortedDesData = userList.sort((a, b) => {
+        if (a.accountType === 'Học viên' && b.accountType !== 'Học viên') {
+          return -1;
+        } else if (a.accountType !== 'Học viên' && b.accountType === 'Học viên') {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      console.log('decs', sortedDesData);
+      setUserList(sortedDesData);
+    }
   };
 
   return (
@@ -136,9 +172,21 @@ const UserTable = () => {
             {' '}
             HỌ TÊN{' '}
           </Col>
-          <Col className='text-[13px]' span={4}>
+          <Col
+            onClick={onHanleSortByAccountType}
+            className=' flex items-center gap-2 text-[13px] cursor-pointer '
+            span={4}
+          >
             {' '}
-            TÀI KHOẢN{' '}
+            <span>TÀI KHOẢN</span>
+            <div>
+              <CaretUpOutlined
+                className={`block text-[10px] ${blueArrow ? 'text-blue-500' : 'text-gray-300'}`}
+              />
+              <CaretDownOutlined
+                className={`block text-[10px] ${grayArrow ? 'text-blue-500' : 'text-gray-300'}`}
+              />
+            </div>
           </Col>
           <Col className='text-[13px]' span={5}>
             EMAIL

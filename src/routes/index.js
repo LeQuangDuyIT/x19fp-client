@@ -32,7 +32,8 @@ const privateRoutes = [
   { path: '/create/:type', component: Create },
   { path: '/user-profile', component: UserProfile },
   { path: '/create/test/:id', component: Create },
-  { path: '/question/mine', component: MyQuestions }
+  { path: '/question/mine', component: MyQuestions },
+  { path: '/admin', component: Admin }
 ];
 
 const privateRoutesMapping = privateRoutes.map(route => ({ ...route, isPrivated: true }));

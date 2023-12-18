@@ -89,7 +89,7 @@ const AdminDashBoard = () => {
           <span className='pl-7 text-lg leading-10 '> Biểu đồ người dùng mới trong năm 2023 </span>
           <div className='border-b border-gray-200 '></div>
           <div className='w-full h-auto p-2'>
-            <BarChart UserChartData={UserChartData} />
+            <BarChart className='w-full' UserChartData={UserChartData} />
           </div>
         </Col>
       </Row>

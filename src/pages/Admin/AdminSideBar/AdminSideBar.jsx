@@ -8,7 +8,7 @@ const AdminSideBar = () => {
   const items = [
     {
       key: '1',
-      label: 'This is panel header 1',
+      label: 'Người dùng',
       children: <p>{text}</p>
     },
     {
