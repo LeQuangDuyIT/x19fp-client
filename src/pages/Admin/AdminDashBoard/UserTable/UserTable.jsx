@@ -9,12 +9,13 @@ import LoadingState from '~/components/LoadingState/LoadingState';
 
 const UserTable = () => {
   const [userList, setUserList] = useState([]);
+  const [selectedUser, setSelectedUser] = useState([]);
   const [searchKeyWord, setSearchKeyWord] = useState('');
   const [pagination, setPagination] = useState({});
-  const [selectedUser, setSelectedUser] = useState([]);
   const [blueArrow, setBlueArrow] = useState(false);
   const [grayArrow, setGrayArrow] = useState(false);
   const { setContextError } = useContext(StoreContext);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -22,13 +23,13 @@ const UserTable = () => {
     try {
       const getAllUser = await accountAPI.getAllUser({});
       const { data, paginationData } = getAllUser.data;
+
       setUserList(data);
       setPagination(paginationData);
     } catch (error) {
       setContextError(error);
     }
   };
-
   const dateToString = timeStamps => {
     const date = new Date(timeStamps);
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -37,13 +38,20 @@ const UserTable = () => {
 
     return formattedDate;
   };
-  const filteredUserList = useMemo(
-    () =>
-      userList.filter(user => {
+  const filteredUserList = useMemo(() => {
+    console.log(grayArrow);
+    if (grayArrow) {
+      console.log(grayArrow);
+      const sortByClick = userList.filter(user => {
         return user.lastName.toLowerCase().includes(searchKeyWord.toLowerCase());
-      }),
-    [searchKeyWord, userList]
-  );
+      });
+      return sortByClick;
+    } else {
+      return userList.filter(user => {
+        return user.lastName.toLowerCase().includes(searchKeyWord.toLowerCase());
+      });
+    }
+  }, [searchKeyWord, userList, grayArrow]);
 
   const handleDeleteUser = async () => {
     try {
@@ -100,7 +108,7 @@ const UserTable = () => {
           return 0;
         }
       });
-      console.log('Asc', sortedAscsData);
+      // console.log('Asc', sortedAscsData);
       setUserList(sortedAscsData);
     } else {
       setGrayArrow(!grayArrow);
@@ -114,7 +122,7 @@ const UserTable = () => {
           return 0;
         }
       });
-      console.log('decs', sortedDesData);
+      // console.log('decs', sortedDesData);
       setUserList(sortedDesData);
     }
   };
