@@ -23,7 +23,6 @@ const UserTable = () => {
     try {
       const getAllUser = await accountAPI.getAllUser({});
       const { data, paginationData } = getAllUser.data;
-
       setUserList(data);
       setPagination(paginationData);
     } catch (error) {
@@ -39,19 +38,34 @@ const UserTable = () => {
     return formattedDate;
   };
   const filteredUserList = useMemo(() => {
-    console.log(grayArrow);
     if (grayArrow) {
-      console.log(grayArrow);
-      const sortByClick = userList.filter(user => {
-        return user.lastName.toLowerCase().includes(searchKeyWord.toLowerCase());
+      const sortedDesData = userList.sort((a, b) => {
+        if (a.accountType === 'Học viên' && b.accountType !== 'Học viên') {
+          return -1;
+        } else if (a.accountType !== 'Học viên' && b.accountType === 'Học viên') {
+          return 1;
+        } else {
+          return 0;
+        }
       });
-      return sortByClick;
-    } else {
-      return userList.filter(user => {
-        return user.lastName.toLowerCase().includes(searchKeyWord.toLowerCase());
-      });
+      return sortedDesData;
     }
-  }, [searchKeyWord, userList, grayArrow]);
+    if (blueArrow) {
+      const sortedAscsData = userList.sort((a, b) => {
+        if (a.accountType === 'Giảng viên' && b.accountType !== 'Giảng viên') {
+          return -1;
+        } else if (a.accountType !== 'Giảng viên' && b.accountType === 'Giảng viên') {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      return sortedAscsData;
+    }
+    return userList.filter(user => {
+      return user.lastName.toLowerCase().includes(searchKeyWord.toLowerCase());
+    });
+  }, [searchKeyWord, userList, grayArrow, blueArrow]);
 
   const handleDeleteUser = async () => {
     try {
@@ -99,31 +113,9 @@ const UserTable = () => {
     if (grayArrow) {
       setGrayArrow(!grayArrow);
       setBlueArrow(!blueArrow);
-      const sortedAscsData = userList.sort((a, b) => {
-        if (a.accountType === 'Giảng viên' && b.accountType !== 'Giảng viên') {
-          return -1;
-        } else if (a.accountType !== 'Giảng viên' && b.accountType === 'Giảng viên') {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-      // console.log('Asc', sortedAscsData);
-      setUserList(sortedAscsData);
     } else {
       setGrayArrow(!grayArrow);
       setBlueArrow(false);
-      const sortedDesData = userList.sort((a, b) => {
-        if (a.accountType === 'Học viên' && b.accountType !== 'Học viên') {
-          return -1;
-        } else if (a.accountType !== 'Học viên' && b.accountType === 'Học viên') {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-      // console.log('decs', sortedDesData);
-      setUserList(sortedDesData);
     }
   };
 
