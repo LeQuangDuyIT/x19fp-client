@@ -4,6 +4,7 @@ import Create from '~/pages/Create';
 import Question from '~/pages/Question';
 import UserProfile from '~/pages/UserProfile/UserProfile';
 import MyQuestions from '~/pages/MyQuestions';
+import Admin from '~/pages/Admin/Admin';
 import MyTests from '~/pages/MyTests';
 import Test from '~/pages/Test';
 
@@ -32,6 +33,7 @@ const privateRoutes = [
   { path: '/user-profile', component: UserProfile },
   { path: '/create/test/:id', component: Create },
   { path: '/question/mine', component: MyQuestions },
+  { path: '/admin', component: Admin }
   { path: '/test/mine', component: MyTests }
 ];
 

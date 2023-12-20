@@ -1,5 +1,5 @@
 import { Button, Form, Input, InputNumber, Radio } from 'antd';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DatePickerAntd from '~/components/DatePicker/DatePickerAntd.jsx';
 import { StoreContext } from '~/context/storeContext/StoreContext';
@@ -7,18 +7,20 @@ import { fetchCurrentUser } from '~/redux/user/userAction';
 import userAPI from '~/services/userProfileApi';
 
 const UserDetail = () => {
+  const [form] = Form.useForm();
   const { currentUser } = useSelector(state => state.user);
   const [dayOfBirthValue, setDayOfBirthValue] = useState(currentUser.dayOfBirth || '24/11/2023');
   const { loading, setLoading, setContextError, dispatch } = useContext(StoreContext);
-  const userValue = {
-    firstName: currentUser.firstName,
-    lastName: currentUser.lastName,
-    phoneNumber: currentUser.phoneNumber,
-    gender: currentUser.gender,
-    dayOfBirth: dayOfBirthValue,
-    age: currentUser.age ?? 13,
-    accountType: currentUser.accountType
-  };
+  useEffect(() => {
+    form.setFieldValue('firstName', currentUser.firstName);
+    form.setFieldValue('lastName', currentUser.lastName);
+    form.setFieldValue('phoneNumber', currentUser.phoneNumber);
+    form.setFieldValue('gender', currentUser.gender);
+    form.setFieldValue('dayOfBirth', currentUser.dayOfBirth);
+    form.setFieldValue('age', currentUser.age);
+    form.setFieldValue('accountType', currentUser.accountType);
+  }, [currentUser]);
+
   const onSubmitHandler = async values => {
     try {
       setLoading(true);
@@ -53,9 +55,9 @@ const UserDetail = () => {
 
   return (
     <Form
-      initialValues={userValue}
-      className='bg-white p-5 rounded relative  w-full h-auto shadow-user-profile '
+      className='bg-white p-5 rounded  w-full h-auto shadow-user-profile '
       onFinish={onSubmitHandler}
+      form={form}
     >
       <div className='bg-[#f8fafb] px-4 py-2 mb-8 shadow-user-profile rounded '>
         <div className='my-4  w-auto text-xl font-semibold'>Thông tin cơ bản</div>
@@ -106,7 +108,19 @@ const UserDetail = () => {
           </Form.Item>
         </div>
       </div>
-
+      <div className='bg-[#f8fafb] mb-8 px-4 py-2 shadow-user-profile rounded '>
+        <div className='my-4  w-auto text-xl font-semibold'>Thông tin tài khoản </div>
+        <div>
+          <span className=' block text-gray-400 italic '>
+            {' '}
+            Tài khoản đăng ký: {currentUser.email}{' '}
+          </span>
+          {/* <Form.Item name='passwprd' label=''>
+            <Input style={{ marginBottom: '30px' }} addonBefore='Mật khẩu:' />
+          </Form.Item> */}
+          <span className='block text-gray-400 italic '> Mật khẩu</span>
+        </div>
+      </div>
       <div className='text-right'>
         <Button
           style={{ marginRight: '30px' }}
