@@ -11,6 +11,7 @@ import { useState } from 'react';
 import StudyGroup from '~/pages/StudyGroup/StudyGroup';
 import StudyGroupSearchbar from '~/pages/StudyGroup/StudyGroupSearchbar/StudyGroupSearchbar';
 import StudyGroupList from '~/pages/StudyGroup/StudyGroupList/StudyGroupList';
+import StudyGroupCreator from '~/pages/StudyGroup/StudyGroupCreator/StudyGroupCreator';
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ const User = () => {
   };
   const handleCancel = () => {
     setPopStudyGroup(false);
+  };
+  const onShowStudyGroup = () => {
+    setPopStudyGroup(true);
   };
   return (
     <div className='flex flex-col gap-y-4 items-start'>
@@ -40,7 +44,7 @@ const User = () => {
         type='text'
         icon={<FaUserGroup />}
         className='w-full text-left text-white/60 font-bold hover:text-white'
-        onClick={() => setPopStudyGroup(!popStudyGroup)}
+        onClick={() => onShowStudyGroup()}
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
           <span className='pr-4'>Quản lí nhóm học tập</span>
@@ -53,14 +57,18 @@ const User = () => {
               footer={[null]}
               width={1500}
             >
-              <div className='flex items-center justify-between'>
-                <div className='w-5/12 s  px-3 pt-5 rounded-md shadow-user-profile   '>
+              <div className='flex items-center gap-5 justify-between'>
+                <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile   '>
                   Danh sách các nhóm
                   <StudyGroupList />{' '}
                 </div>
-                <div className='w-7/12'>
-                  {' '}
-                  <StudyGroupSearchbar />
+                <div className='w-7/12 flex items-center gap-4  px-3 pt-5 rounded-md shadow-user-profile '>
+                  <div className='w-1/2  '>
+                    <StudyGroupSearchbar className='w-full' />
+                  </div>
+                  <div className='w/1/2  '>
+                    <StudyGroupCreator className='w-full' />
+                  </div>
                 </div>
               </div>
             </Modal>

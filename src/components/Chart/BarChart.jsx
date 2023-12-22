@@ -4,7 +4,7 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { memo } from 'react';
 
 const BarChart = ({ UserChartData }) => {
-  return memo(<Bar data={UserChartData} />);
+  return <Bar data={UserChartData} />;
 };
 
-export default BarChart;
+export default memo(BarChart);

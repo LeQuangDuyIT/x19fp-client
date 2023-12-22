@@ -19,6 +19,10 @@ const AuthAPI = {
     const url = '/auth/current-user';
     return api.get(url);
   },
+  getUserByNameOrId: body => {
+    const url = `/auth/find-user/${body}`;
+    return api.get(url);
+  },
   verifyGoogleCount: body => {
     const url = 'auth/verify-google-account';
     return api.post(url, body);
