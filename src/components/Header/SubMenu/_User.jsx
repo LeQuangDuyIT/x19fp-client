@@ -3,7 +3,7 @@ import { FileTextOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoGameControllerOutline } from 'react-icons/io5';
 import { LuUserSquare2 } from 'react-icons/lu';
-
+import { FaUserGroup } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
 import { logout } from '~/redux/user/userSlice';
 import { Link } from 'react-router-dom';
@@ -22,6 +22,15 @@ const User = () => {
         </Link>
       </Button>
       <Divider className='bg-slate-100/20 my-0' />
+      <Button
+        type='text'
+        icon={<FaUserGroup />}
+        className='w-full text-left text-white/60 font-bold hover:text-white'
+      >
+        <Badge count={5} className='text-white/60 font-bold hover:text-white'>
+          <span className='pr-4'>Quản lí nhóm học tập</span>
+        </Badge>
+      </Button>
       <Button
         type='text'
         icon={<RiQuestionAnswerLine />}
