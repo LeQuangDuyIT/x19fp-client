@@ -1,30 +1,33 @@
-import { Input } from 'antd';
 import Search from 'antd/es/input/Search';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import AuthAPI from '~/services/authAPI';
-import accountAPI from '~/services/userAPI';
 
-const StudyGroupSearchbar = () => {
+const StudyGroupSearchbar = ({ size }) => {
   const [findUser, setFindUser] = useState('');
   const [userResult, setUserResult] = useState('');
   const onFindingUser = async e => {
-    console.log(e.target.value);
-    setFindUser(e.target.value);
-    const findingUser = await AuthAPI.getUserByNameOrId(e.target.value);
-    setUserResult(e.target.value);
+    const searchKey = e.target.value;
+    setFindUser(searchKey);
+    try {
+      const findUserByKey = await AuthAPI.getUserByNameOrId(searchKey);
+      const { result } = findUserByKey.data;
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className='text-red-500 w-full'>
       <Search
         value={findUser}
         onChange={e => onFindingUser(e)}
-        size='large'
-        placeholder='Nhập tên người dùng'
+        size={size}
+        placeholder='Nhập tên người dùng hoặc id'
         className=' w-full'
       />
-      <div> {userResult} </div>
+      <div> {findUser} </div>
     </div>
   );
 };
 
-export default memo(StudyGroupSearchbar);
+export default StudyGroupSearchbar;

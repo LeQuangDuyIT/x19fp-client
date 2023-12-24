@@ -3,6 +3,8 @@ import { Badge, Button, Col, Divider, Modal, Row } from 'antd';
 import { FileTextOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoGameControllerOutline } from 'react-icons/io5';
+import { FaUsers } from 'react-icons/fa6';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/redux/user/userSlice';
 import { LuUserSquare2 } from 'react-icons/lu';
@@ -48,33 +50,48 @@ const User = () => {
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
           <span className='pr-4'>Quản lí nhóm học tập</span>
-          {popStudyGroup ? (
-            <Modal
-              title='Quản lí nhóm '
-              open={popStudyGroup}
-              onOk={handleOk}
-              onCancel={handleCancel}
-              footer={[null]}
-              width={1500}
-            >
-              <div className='flex items-center gap-5 justify-between'>
-                <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile   '>
-                  Danh sách các nhóm
-                  <StudyGroupList />{' '}
-                </div>
-                <div className='w-7/12 flex items-center gap-4  px-3 pt-5 rounded-md shadow-user-profile '>
-                  <div className='w-1/2  '>
-                    <StudyGroupSearchbar className='w-full' />
-                  </div>
-                  <div className='w/1/2  '>
+
+          <Modal
+            title='Quản lí nhóm '
+            open={popStudyGroup}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={[null]}
+            width={1500}
+          >
+            <div className='flex  gap-5 justify-between  items-start min-h-[500px] '>
+              <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile max-h-[450px] overflow-auto   '>
+                <div className='mb-2'>Danh sách các nhóm</div>
+                <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '}
+                <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '}
+              </div>
+              <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile min-h-[450px]   '>
+                <div className='w-7/12 flex items-center gap-4 mb-4   '>
+                  <div className='  '>
                     <StudyGroupCreator className='w-full' />
                   </div>
                 </div>
+                <div className=' w-full bg-blue-200/30 shadow-user-profile rounded-md  border-2 border-blue-500/40  '>
+                  <div className=' flex items-center gap-6 px-3 pt-3 text-sm text-center  mb-2 '>
+                    <div className='w-1/3'>
+                      <span> Nhóm hiện tại: </span>
+                      <span className='font-semibold'> 10A2</span>
+                    </div>
+                    <div className='w-1/3 '>
+                      <span className='mr-1 font-semibold '>10/30</span>
+
+                      <FaUsers className=' align-middle ' />
+                    </div>
+                    <div className='w-full'>
+                      <StudyGroupSearchbar size='small' />
+                    </div>
+                  </div>
+                  <div className='border-b border-gray-300'></div>
+                  <div className=' px-3 pt-3'>Học sinh sẽ được thêm</div>
+                </div>
               </div>
-            </Modal>
-          ) : (
-            ''
-          )}
+            </div>
+          </Modal>
         </Badge>
       </Button>
 

@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { FaUsers } from 'react-icons/fa6';
 
 const StudyGroupList = () => {
@@ -7,12 +6,12 @@ const StudyGroupList = () => {
       <div className='p-4 flex justify-between'>
         <div>Lớp 10A2 </div>
         <div className='text-lg  align-middle flex items-center '>
-          <span className='text-sm mr-3 '>10/30</span>
-          <FaUsers className='m-auto' />
+          <span className='text-sm font-semibold text-blue-500 mr-3 '>10</span>
+          <FaUsers className='m-auto text-blue-500 ' />
         </div>
       </div>
     </div>
   );
 };
 
-export default memo(StudyGroupList);
+export default StudyGroupList;

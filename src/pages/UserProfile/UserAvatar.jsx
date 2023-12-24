@@ -51,9 +51,7 @@ const UserAvatar = () => {
             </div>
           </label>
         </div>
-        <span className='text-center text-sm font-semibold  mx-1'>
-          {currentUser.firstName} {currentUser.lastName}
-        </span>
+        <span className='text-center text-sm font-semibold '>@userID:{currentUser._id}</span>
       </div>
       {previewImage && (
         <div className='m-auto absolute shadow-user-profile'>
