@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from '~/redux/user/userAction';
 import { fetchCollections } from './redux/collection/collectionAction';
+import { fetchStudyGroup } from './redux/studyGroup/studyGroupAction';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchCollections());
+    dispatch(fetchStudyGroup());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Badge, Button, Col, Divider, Modal, Row } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Badge, Button, Divider, Modal } from 'antd';
 import { FileTextOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoGameControllerOutline } from 'react-icons/io5';
@@ -10,12 +10,13 @@ import { logout } from '~/redux/user/userSlice';
 import { LuUserSquare2 } from 'react-icons/lu';
 import { FaUserGroup } from 'react-icons/fa6';
 import { useState } from 'react';
-import StudyGroup from '~/pages/StudyGroup/StudyGroup';
 import StudyGroupSearchbar from '~/pages/StudyGroup/StudyGroupSearchbar/StudyGroupSearchbar';
 import StudyGroupList from '~/pages/StudyGroup/StudyGroupList/StudyGroupList';
 import StudyGroupCreator from '~/pages/StudyGroup/StudyGroupCreator/StudyGroupCreator';
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
+  const { data } = useSelector(state => state.group.studyGroup);
+  console.log(data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [popStudyGroup, setPopStudyGroup] = useState(false);
@@ -59,11 +60,14 @@ const User = () => {
             footer={[null]}
             width={1500}
           >
-            <div className='flex  gap-5 justify-between  items-start min-h-[500px] '>
+            <div className='flex gap-5 justify-between  items-start min-h-[500px]'>
               <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile max-h-[450px] overflow-auto   '>
                 <div className='mb-2'>Danh sách các nhóm</div>
-                <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '}
-                <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '}
+                {/* <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '}
+                <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '} */}
+                {data.map(group => {
+                  <StudyGroupList studyGroup={group.studyGroup} />;
+                })}
               </div>
               <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile min-h-[450px]   '>
                 <div className='w-7/12 flex items-center gap-4 mb-4   '>
