@@ -1,23 +1,31 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import studyGroupAPI from '~/services/studyGroupAPI';
+import { useDispatch } from 'react-redux';
+import { fetchStudyGroup } from '~/redux/studyGroup/studyGroupAction';
+import { useState } from 'react';
 const StudyGroupCreator = () => {
+  const [responeseMess, setResponseMess] = useState('');
   const [form] = Form.useForm();
-
+  const dispatch = useDispatch();
   const onHandleSubmit = async values => {
     if (!values) {
       return;
     }
     try {
       const sendGroupToServer = await studyGroupAPI.createGroup(values);
-      const { message } = sendGroupToServer.data;
+      const { status, data } = sendGroupToServer;
+      const response = { status, message: data.message };
+      console.log(sendGroupToServer);
+      setResponseMess(response);
+      dispatch(fetchStudyGroup());
       form.resetFields(['studyGroup']);
     } catch (error) {
-      console.log(error);
+      setResponseMess(error);
     }
   };
   return (
-    <div className='text-red-500 '>
+    <div className=''>
       <Form
         form={form}
         layout='inline'
@@ -49,6 +57,17 @@ const StudyGroupCreator = () => {
           </Button>
         </Form.Item>
       </Form>
+      <div className='min-h-[30px]'>
+        {responeseMess && (
+          <div
+            className={`${
+              responeseMess.status === 200 ? 'text-green-500' : 'text-red-500'
+            }   animate-get-code-success-bg-fade-in   `}
+          >
+            {responeseMess.message}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

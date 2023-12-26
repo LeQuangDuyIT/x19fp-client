@@ -16,7 +16,7 @@ import StudyGroupCreator from '~/pages/StudyGroup/StudyGroupCreator/StudyGroupCr
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
   const { data } = useSelector(state => state.group.studyGroup);
-  console.log(data);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [popStudyGroup, setPopStudyGroup] = useState(false);
@@ -63,14 +63,12 @@ const User = () => {
             <div className='flex gap-5 justify-between  items-start min-h-[500px]'>
               <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile max-h-[450px] overflow-auto   '>
                 <div className='mb-2'>Danh sách các nhóm</div>
-                {/* <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '}
-                <StudyGroupList /> <StudyGroupList /> <StudyGroupList /> <StudyGroupList />{' '} */}
                 {data.map(group => {
-                  <StudyGroupList studyGroup={group.studyGroup} />;
-                })}
+                  return <StudyGroupList key={group._id} studyGroup={group.studyGroup} />;
+                }) || ''}
               </div>
               <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile min-h-[450px]   '>
-                <div className='w-7/12 flex items-center gap-4 mb-4   '>
+                <div className='w-7/12 flex items-center gap-4    '>
                   <div className='  '>
                     <StudyGroupCreator className='w-full' />
                   </div>
