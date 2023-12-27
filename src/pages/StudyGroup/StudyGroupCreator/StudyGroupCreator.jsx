@@ -8,6 +8,21 @@ const StudyGroupCreator = () => {
   const [responeseMess, setResponseMess] = useState('');
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const countDownMessage = () => {
+    setTimeout(() => {
+      setResponseMess('');
+    }, 2000);
+
+    return (
+      <div
+        className={`${
+          responeseMess.status === 200 ? 'text-green-500' : 'text-red-500'
+        }   animate-get-code-success-bg-fade-in   `}
+      >
+        {responeseMess.message}
+      </div>
+    );
+  };
   const onHandleSubmit = async values => {
     if (!values) {
       return;
@@ -16,12 +31,12 @@ const StudyGroupCreator = () => {
       const sendGroupToServer = await studyGroupAPI.createGroup(values);
       const { status, data } = sendGroupToServer;
       const response = { status, message: data.message };
-      console.log(sendGroupToServer);
       setResponseMess(response);
       dispatch(fetchStudyGroup());
       form.resetFields(['studyGroup']);
     } catch (error) {
       setResponseMess(error);
+      form.resetFields(['studyGroup']);
     }
   };
   return (
@@ -57,17 +72,7 @@ const StudyGroupCreator = () => {
           </Button>
         </Form.Item>
       </Form>
-      <div className='min-h-[30px]'>
-        {responeseMess && (
-          <div
-            className={`${
-              responeseMess.status === 200 ? 'text-green-500' : 'text-red-500'
-            }   animate-get-code-success-bg-fade-in   `}
-          >
-            {responeseMess.message}
-          </div>
-        )}
-      </div>
+      <div className='min-h-[30px]'>{responeseMess && countDownMessage()}</div>
     </div>
   );
 };

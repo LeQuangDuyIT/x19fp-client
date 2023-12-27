@@ -15,8 +15,8 @@ import StudyGroupList from '~/pages/StudyGroup/StudyGroupList/StudyGroupList';
 import StudyGroupCreator from '~/pages/StudyGroup/StudyGroupCreator/StudyGroupCreator';
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
-  const { data } = useSelector(state => state.group.studyGroup);
-
+  const { data = [] } = useSelector(state => state.group.studyGroup);
+  const [user, setUser] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [popStudyGroup, setPopStudyGroup] = useState(false);
@@ -29,6 +29,13 @@ const User = () => {
   const onShowStudyGroup = () => {
     setPopStudyGroup(true);
   };
+
+  const getSearchUser = name => {
+    console.log('name', name);
+    const list = name.map((user, index) => <div key={index}> {user} </div>);
+    setUser(list);
+  };
+
   return (
     <div className='flex flex-col gap-y-4 items-start'>
       <Button
@@ -65,7 +72,7 @@ const User = () => {
                 <div className='mb-2'>Danh sách các nhóm</div>
                 {data.map(group => {
                   return <StudyGroupList key={group._id} studyGroup={group.studyGroup} />;
-                }) || ''}
+                })}
               </div>
               <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile min-h-[450px]   '>
                 <div className='w-7/12 flex items-center gap-4    '>
@@ -85,11 +92,14 @@ const User = () => {
                       <FaUsers className=' align-middle ' />
                     </div>
                     <div className='w-full'>
-                      <StudyGroupSearchbar size='small' />
+                      <StudyGroupSearchbar size='small' getSearchUser={getSearchUser} />
                     </div>
                   </div>
                   <div className='border-b border-gray-300'></div>
-                  <div className=' px-3 pt-3'>Học sinh sẽ được thêm</div>
+                  <div className=' px-3 pt-3'>
+                    Học sinh sẽ được thêm
+                    {user && user}
+                  </div>
                 </div>
               </div>
             </div>

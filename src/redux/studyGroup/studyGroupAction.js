@@ -11,7 +11,6 @@ export const fetchStudyGroup = createAsyncThunk(
 
       return fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
       rejectWithValue(error);
     }
   }
