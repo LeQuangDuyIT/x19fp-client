@@ -1,11 +1,24 @@
 import Search from 'antd/es/input/Search';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AuthAPI from '~/services/authAPI';
 
-const StudyGroupSearchbar = ({ size, getSearchUser }) => {
+const StudyGroupSearchbar = ({ size, getSearchUser, setUser }) => {
   const [findUser, setFindUser] = useState('');
   const [userResult, setUserResult] = useState([]);
-  const name = ['Nguyễn Duy Nhân'];
+  const resultPanel = useRef(null);
+  useEffect(() => {
+    const handleClickOutSide = e => {
+      if (resultPanel.current && !resultPanel.current.contains(e.target)) {
+        setUserResult([]);
+        setFindUser('');
+      }
+    };
+    document.addEventListener('click', handleClickOutSide);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutSide);
+    };
+  }, []);
   const onFindingUser = async e => {
     const searchKey = e.target.value;
     setFindUser(searchKey);
@@ -18,6 +31,12 @@ const StudyGroupSearchbar = ({ size, getSearchUser }) => {
     }
   };
 
+  const onSelectStudent = (picture, lastName, firstName, id) => {
+    const userInfor = { picture, lastName, firstName, id };
+
+    setUser(userInfor);
+  };
+
   return (
     <div className=' relative  w-full'>
       <Search
@@ -25,14 +44,18 @@ const StudyGroupSearchbar = ({ size, getSearchUser }) => {
         onChange={e => onFindingUser(e)}
         size={size}
         placeholder='Nhập tên người dùng hoặc id'
-        className='   w-full'
+        className='w-full'
       />
-      <div className=' absolute w-full top-7 ' onClick={() => getSearchUser(name)}>
+      <div
+        ref={resultPanel}
+        className=' absolute w-full top-7 animate-get-code-success-bg-fade-in shadow '
+      >
         {userResult ? (
           userResult.map(user => (
             <div
               key={user._id}
-              className='flex bg-white rounded gap-3 p-2 items-center animate-get-code-success-bg-fade-in shadow  '
+              className='flex bg-white rounded gap-3 p-2 items-center   '
+              onClick={() => onSelectStudent(user.picture, user.lastName, user.firstName, user._id)}
             >
               <div className='animate-get-code-success-bg-fade-in '>
                 <img

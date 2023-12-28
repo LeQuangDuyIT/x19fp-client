@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { fetchStudyGroup } from '~/redux/studyGroup/studyGroupAction';
 import { useState } from 'react';
 const StudyGroupCreator = () => {
-  const [responeseMess, setResponseMess] = useState('');
+  const [responeseMess, setResponseMess] = useState({});
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const countDownMessage = () => {
@@ -24,7 +24,7 @@ const StudyGroupCreator = () => {
     );
   };
   const onHandleSubmit = async values => {
-    if (!values) {
+    if (!form.getFieldValue('studyGroup')) {
       return;
     }
     try {

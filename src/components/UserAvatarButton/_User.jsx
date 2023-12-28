@@ -16,7 +16,7 @@ import StudyGroupCreator from '~/pages/StudyGroup/StudyGroupCreator/StudyGroupCr
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
   const { data = [] } = useSelector(state => state.group.studyGroup);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [popStudyGroup, setPopStudyGroup] = useState(false);
@@ -30,10 +30,37 @@ const User = () => {
     setPopStudyGroup(true);
   };
 
-  const getSearchUser = name => {
-    console.log('name', name);
-    const list = name.map((user, index) => <div key={index}> {user} </div>);
-    setUser(list);
+  const getSearchUser = () => {
+    // return (
+    //   <div id={id} className='flex bg-white rounded gap-3 p-2 items-center'>
+    //     {' '}
+    //     <div className='animate-get-code-success-bg-fade-in '>
+    //       <img
+    //         className=' w-7 h-7 rounded-full  object-cover'
+    //         src={picture || '../src/assets/default-avatar/user.png'}
+    //       />
+    //     </div>
+    //     <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in '>
+    //       {' '}
+    //       {lastName} {firstName}
+    //     </div>
+    //   </div>
+    // );
+    // const list = name.map(user => (
+    //   <div key={user.id} id={id} className='flex bg-white rounded gap-3 p-2 items-center'>
+    //     {' '}
+    //     <div className='animate-get-code-success-bg-fade-in '>
+    //       <img
+    //         className=' w-7 h-7 rounded-full  object-cover'
+    //         src={user.picture || '../src/assets/default-avatar/user.png'}
+    //       />
+    //     </div>
+    //     <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in '>
+    //       {' '}
+    //       {user.lastName} {user.firstName}
+    //     </div>
+    //   </div>
+    // ));
   };
 
   return (
@@ -92,13 +119,17 @@ const User = () => {
                       <FaUsers className=' align-middle ' />
                     </div>
                     <div className='w-full'>
-                      <StudyGroupSearchbar size='small' getSearchUser={getSearchUser} />
+                      <StudyGroupSearchbar
+                        size='small'
+                        getSearchUser={getSearchUser}
+                        setUser={setUser}
+                      />
                     </div>
                   </div>
                   <div className='border-b border-gray-300'></div>
                   <div className=' px-3 pt-3'>
                     Học sinh sẽ được thêm
-                    {user && user}
+                    {/* {user && } */}
                   </div>
                 </div>
               </div>
