@@ -1,11 +1,25 @@
 import Search from 'antd/es/input/Search';
 import { useEffect, useRef, useState } from 'react';
+import useDebounce from '~/hooks/useDebounce';
 import AuthAPI from '~/services/authAPI';
 
-const StudyGroupSearchbar = ({ size, getSearchUser, setUser }) => {
+const StudyGroupSearchbar = ({ size, setUser, user }) => {
   const [findUser, setFindUser] = useState('');
   const [userResult, setUserResult] = useState([]);
   const resultPanel = useRef(null);
+  const debounceSearchValue = useDebounce(findUser);
+  useEffect(() => {
+    const getSearchValue = async () => {
+      try {
+        const findUserByKey = await AuthAPI.getUserByNameOrId(debounceSearchValue);
+        const { result } = findUserByKey.data;
+        setUserResult(result);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getSearchValue();
+  }, [debounceSearchValue]);
   useEffect(() => {
     const handleClickOutSide = e => {
       if (resultPanel.current && !resultPanel.current.contains(e.target)) {
@@ -22,19 +36,15 @@ const StudyGroupSearchbar = ({ size, getSearchUser, setUser }) => {
   const onFindingUser = async e => {
     const searchKey = e.target.value;
     setFindUser(searchKey);
-    try {
-      const findUserByKey = await AuthAPI.getUserByNameOrId(searchKey);
-      const { result } = findUserByKey.data;
-      setUserResult(result);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const onSelectStudent = (picture, lastName, firstName, id) => {
     const userInfor = { picture, lastName, firstName, id };
+    const exitstingUser = user.find(user => user.id === userInfor.id);
 
-    setUser(userInfor);
+    if (!exitstingUser) {
+      return setUser([...user, userInfor]);
+    }
   };
 
   return (
@@ -48,13 +58,13 @@ const StudyGroupSearchbar = ({ size, getSearchUser, setUser }) => {
       />
       <div
         ref={resultPanel}
-        className=' absolute w-full top-7 animate-get-code-success-bg-fade-in shadow '
+        className=' absolute w-full top-7 animate-get-code-success-bg-fade-in shadow max-h-[150px] overflow-auto '
       >
         {userResult ? (
           userResult.map(user => (
             <div
               key={user._id}
-              className='flex bg-white rounded gap-3 p-2 items-center   '
+              className='flex bg-white rounded gap-3 p-2 items-center cursor-pointer  '
               onClick={() => onSelectStudent(user.picture, user.lastName, user.firstName, user._id)}
             >
               <div className='animate-get-code-success-bg-fade-in '>

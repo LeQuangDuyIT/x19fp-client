@@ -3,20 +3,16 @@ import { Badge, Button, Divider, Modal } from 'antd';
 import { FileTextOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { IoGameControllerOutline } from 'react-icons/io5';
-import { FaUsers } from 'react-icons/fa6';
-
+import StudyGroupManagement from '~/pages/StudyGroup/StudyGroupManagement';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '~/redux/user/userSlice';
 import { LuUserSquare2 } from 'react-icons/lu';
 import { FaUserGroup } from 'react-icons/fa6';
 import { useState } from 'react';
-import StudyGroupSearchbar from '~/pages/StudyGroup/StudyGroupSearchbar/StudyGroupSearchbar';
-import StudyGroupList from '~/pages/StudyGroup/StudyGroupList/StudyGroupList';
-import StudyGroupCreator from '~/pages/StudyGroup/StudyGroupCreator/StudyGroupCreator';
+
 const User = () => {
   const { currentUser } = useSelector(state => state.user);
-  const { data = [] } = useSelector(state => state.group.studyGroup);
-  const [user, setUser] = useState({});
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [popStudyGroup, setPopStudyGroup] = useState(false);
@@ -28,39 +24,6 @@ const User = () => {
   };
   const onShowStudyGroup = () => {
     setPopStudyGroup(true);
-  };
-
-  const getSearchUser = () => {
-    // return (
-    //   <div id={id} className='flex bg-white rounded gap-3 p-2 items-center'>
-    //     {' '}
-    //     <div className='animate-get-code-success-bg-fade-in '>
-    //       <img
-    //         className=' w-7 h-7 rounded-full  object-cover'
-    //         src={picture || '../src/assets/default-avatar/user.png'}
-    //       />
-    //     </div>
-    //     <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in '>
-    //       {' '}
-    //       {lastName} {firstName}
-    //     </div>
-    //   </div>
-    // );
-    // const list = name.map(user => (
-    //   <div key={user.id} id={id} className='flex bg-white rounded gap-3 p-2 items-center'>
-    //     {' '}
-    //     <div className='animate-get-code-success-bg-fade-in '>
-    //       <img
-    //         className=' w-7 h-7 rounded-full  object-cover'
-    //         src={user.picture || '../src/assets/default-avatar/user.png'}
-    //       />
-    //     </div>
-    //     <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in '>
-    //       {' '}
-    //       {user.lastName} {user.firstName}
-    //     </div>
-    //   </div>
-    // ));
   };
 
   return (
@@ -94,46 +57,7 @@ const User = () => {
             footer={[null]}
             width={1500}
           >
-            <div className='flex gap-5 justify-between  items-start min-h-[500px]'>
-              <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile max-h-[450px] overflow-auto   '>
-                <div className='mb-2'>Danh sách các nhóm</div>
-                {data.map(group => {
-                  return <StudyGroupList key={group._id} studyGroup={group.studyGroup} />;
-                })}
-              </div>
-              <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile min-h-[450px]   '>
-                <div className='w-7/12 flex items-center gap-4    '>
-                  <div className='  '>
-                    <StudyGroupCreator className='w-full' />
-                  </div>
-                </div>
-                <div className=' w-full bg-blue-200/30 shadow-user-profile rounded-md  border-2 border-blue-500/40  '>
-                  <div className=' flex items-center gap-6 px-3 pt-3 text-sm text-center  mb-2 '>
-                    <div className='w-1/3'>
-                      <span> Nhóm hiện tại: </span>
-                      <span className='font-semibold'> 10A2</span>
-                    </div>
-                    <div className='w-1/3 '>
-                      <span className='mr-1 font-semibold '>10/30</span>
-
-                      <FaUsers className=' align-middle ' />
-                    </div>
-                    <div className='w-full'>
-                      <StudyGroupSearchbar
-                        size='small'
-                        getSearchUser={getSearchUser}
-                        setUser={setUser}
-                      />
-                    </div>
-                  </div>
-                  <div className='border-b border-gray-300'></div>
-                  <div className=' px-3 pt-3'>
-                    Học sinh sẽ được thêm
-                    {/* {user && } */}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <StudyGroupManagement />
           </Modal>
         </Badge>
       </Button>

@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { FaUsers } from 'react-icons/fa6';
 
 const StudyGroupList = ({ studyGroup }) => {

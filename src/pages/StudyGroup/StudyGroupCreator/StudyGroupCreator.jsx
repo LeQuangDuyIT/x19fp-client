@@ -1,5 +1,5 @@
 import { Button, Form, Input, message } from 'antd';
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import studyGroupAPI from '~/services/studyGroupAPI';
 import { useDispatch } from 'react-redux';
 import { fetchStudyGroup } from '~/redux/studyGroup/studyGroupAction';
