@@ -16,12 +16,15 @@ const User = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [popStudyGroup, setPopStudyGroup] = useState(false);
-  const handleOk = () => {
-    setPopStudyGroup(false);
-  };
+
   const handleCancel = () => {
-    setPopStudyGroup(false);
+    try {
+      setPopStudyGroup(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const onShowStudyGroup = () => {
     setPopStudyGroup(true);
   };
@@ -48,16 +51,14 @@ const User = () => {
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
           <span className='pr-4'>Quản lí nhóm học tập</span>
-
           <Modal
             title='Quản lí nhóm '
             open={popStudyGroup}
-            onOk={handleOk}
             onCancel={handleCancel}
             footer={[null]}
             width={1500}
           >
-            <StudyGroupManagement />
+            {popStudyGroup && <StudyGroupManagement />}
           </Modal>
         </Badge>
       </Button>

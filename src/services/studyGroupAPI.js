@@ -8,6 +8,10 @@ const studyGroupAPI = {
   createGroup: body => {
     const url = '/group/create-study-group';
     return api.post(url, body);
+  },
+  addMemberToGroup: (groupId, body) => {
+    const url = `/group/add-members/${groupId}`;
+    return api.post(url, body);
   }
 };
 
