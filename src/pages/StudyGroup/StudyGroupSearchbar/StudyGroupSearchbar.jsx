@@ -58,7 +58,7 @@ const StudyGroupSearchbar = ({ size, setUser, user }) => {
       />
       <div
         ref={resultPanel}
-        className=' absolute z-10 w-full top-7 animate-get-code-success-bg-fade-in shadow max-h-[150px] overflow-auto '
+        className=' absolute z-20 w-full top-7 animate-get-code-success-bg-fade-in shadow max-h-[150px] overflow-auto '
       >
         {userResult ? (
           userResult.map(user => (

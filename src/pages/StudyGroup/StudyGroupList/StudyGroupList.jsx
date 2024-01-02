@@ -1,8 +1,8 @@
+import { memo } from 'react';
 import { FaUsers } from 'react-icons/fa6';
 
 const StudyGroupList = ({ group, onSelectedGroup }) => {
   const { studyGroup, _id, member } = group;
-
   return (
     <div
       onClick={() => onSelectedGroup(_id)}
@@ -18,8 +18,9 @@ const StudyGroupList = ({ group, onSelectedGroup }) => {
         </div>
       </div>
     </div>
-    // </label>
   );
 };
 
-export default StudyGroupList;
+const MemoStudyGroupList = memo(StudyGroupList);
+
+export default MemoStudyGroupList;

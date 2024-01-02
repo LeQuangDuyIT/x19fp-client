@@ -1,17 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import StudyGroupCreator from './StudyGroupCreator/StudyGroupCreator';
-import StudyGroupList from './StudyGroupList/StudyGroupList';
+import MemoStudyGroupList from './StudyGroupList/StudyGroupList';
 import StudyGroupSearchbar from './StudyGroupSearchbar/StudyGroupSearchbar';
 import { FaUsers } from 'react-icons/fa6';
+import { FaUserPlus } from 'react-icons/fa6';
+import { PiUserListFill } from 'react-icons/pi';
 import { Button } from 'antd';
 import studyGroupAPI from '~/services/studyGroupAPI';
+import { fetchStudyGroup } from '~/redux/studyGroup/studyGroupAction';
+import StudyGroupMemberList from './StudyGroupMemberList/StudyGroupMemberList';
 
 const StudyGroupManagement = () => {
   const { data = [] } = useSelector(state => state.group.studyGroup);
   const [user, setUser] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState({});
   const [userAlreadyInGroup, setUserAlreadyInGroup] = useState([]);
+  const [showMember, setShowMember] = useState(false);
+  const dispatch = useDispatch();
   const getSearchUser = () => {
     const selectedUser = user.map(user => (
       <div
@@ -35,10 +41,25 @@ const StudyGroupManagement = () => {
     return selectedUser;
   };
   const showDuplicateUser = () => {
-    const dupplicateUser = userAlreadyInGroup.map(dupUsser => (
-      <div className='text-yellow-600' key={dupUsser.id}>
+    setTimeout(() => {
+      setUserAlreadyInGroup([]);
+    }, 10000);
+
+    const dupplicateUser = userAlreadyInGroup.map(dupUser => (
+      <div className='' key={dupUser.id}>
         {' '}
-        Tài khoản {dupUsser.lastName} {dupUsser.firstName} đã trong nhóm{' '}
+        <span className='text-green-500'>
+          {' '}
+          Thêm thành công nhưng Tài khoản
+          <span
+            className='text-red-500 font-bold underline
+        '
+          >
+            {' '}
+            {dupUser.lastName} {dupUser.firstName}{' '}
+          </span>{' '}
+          đã trong nhóm{' '}
+        </span>
       </div>
     ));
     return dupplicateUser;
@@ -57,20 +78,27 @@ const StudyGroupManagement = () => {
     try {
       const addingUser = await studyGroupAPI.addMemberToGroup(selectedGroup._id, user);
       const { duplicateUser } = addingUser.data;
+      dispatch(fetchStudyGroup());
       setUser([]);
+
       setUserAlreadyInGroup(duplicateUser);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const onShowMember = () => {
+    if (user.length !== 0) {
+      return;
+    }
+    setShowMember(!showMember);
+  };
   return (
     <div className='flex gap-5 justify-between  items-start min-h-[500px]'>
-      <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile max-h-[450px] overflow-auto   '>
+      <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile min-h-[450px] overflow-auto   '>
         <div className='mb-2'>Danh sách các nhóm</div>
         {data.map(group => {
           return (
-            <StudyGroupList
+            <MemoStudyGroupList
               key={group._id}
               group={group}
               onSelectedGroup={onSelectedGroup}
@@ -85,25 +113,31 @@ const StudyGroupManagement = () => {
             <StudyGroupCreator className='w-full' />
           </div>
         </div>
-        <div className=' w-full bg-blue-200/30 shadow-user-profile rounded-md min-h-[320px]  overflow-auto border-2 border-blue-500/40  '>
+        <div className=' relative w-full bg-blue-200/30 shadow-user-profile rounded-md min-h-[345px]  overflow-auto border-2 border-blue-500/40  '>
           {Object.keys(selectedGroup).length !== 0 ? (
             <>
-              <div className=' flex items-center gap-6 px-3 pt-3 text-sm text-center sticky z-1 backdrop-blur-sm shadow-sm top-0 mb-2 '>
-                <div className='w-1/3 max-w-full'>
+              <div className=' flex items-center gap-3 px-3 pt-3 text-sm text-center sticky  backdrop-blur-sm shadow-sm top-0 mb-2 '>
+                <div className='w-2/6 max-w-full'>
                   <span className='w-fit'> Nhóm hiện tại: </span>
                   <span className='font-semibold text-blue-500 w-full max-w-full '>
                     {' '}
                     {selectedGroup.studyGroup}
                   </span>
                 </div>
-                <div className='w-1/3'>
+                <div className='w-2/6'>
                   <span className='mr-1 font-semibold text-blue-500 '>
                     {selectedGroup.member.length}
                   </span>
-
-                  <FaUsers className=' align-middle ' />
+                  <FaUsers className=' align-middle mr-3 ' />
+                  <span className='mr-1 font-semibold text-blue-500'>{user.length}</span>
+                  <FaUserPlus className=' align-middle mr-3 ' />
+                  <PiUserListFill
+                    className='align-middle text-[18px] leading-3 hover:text-blue-500 transition-all '
+                    onClick={() => onShowMember()}
+                  />
                 </div>
-                <div className='w-full'>
+
+                <div className='w-2/4'>
                   <StudyGroupSearchbar
                     size='small'
                     getSearchUser={getSearchUser}
@@ -112,23 +146,26 @@ const StudyGroupManagement = () => {
                   />
                 </div>
               </div>
-              <div className=' px-3 pt-3 max-h-[150px]  '>
+              <div className='  px-3 pt-3 h-[250px]   '>
                 {user && getSearchUser()} {userAlreadyInGroup && showDuplicateUser()}
+                {showMember && <StudyGroupMemberList membetList={selectedGroup.member} />}
               </div>
-              <div className='sticky bottom-0 right-0'>
-                <Button
-                  className=' '
-                  danger
-                  type='primary'
-                  htmlType='button'
-                  onClick={onCancelAddUser}
-                >
-                  Hủy
-                </Button>
-                <Button className=' ' type='primary' htmlType='button' onClick={onAddUserToGroup}>
-                  Lưu thay đổi
-                </Button>
-              </div>{' '}
+              {user.length !== 0 && (
+                <div className=' sticky text-right mr-3'>
+                  <Button
+                    className=' '
+                    danger
+                    type='primary'
+                    htmlType='button'
+                    onClick={onCancelAddUser}
+                  >
+                    Hủy
+                  </Button>
+                  <Button className=' ' type='primary' htmlType='button' onClick={onAddUserToGroup}>
+                    Lưu thay đổi
+                  </Button>
+                </div>
+              )}
             </>
           ) : (
             ''
