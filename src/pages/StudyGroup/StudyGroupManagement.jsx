@@ -50,6 +50,12 @@ const StudyGroupManagement = () => {
     const deleteSelectedUser = user.filter(deleteUser => deleteUser.id !== id);
     setUser(deleteSelectedUser);
   };
+  const onDeleteGroup = async id => {
+    const deleteGroup = await studyGroupAPI.deleteGroup(id);
+    const deleteResponse = deleteGroup.data;
+    setSelectedGroup({});
+    dispatch(fetchStudyGroup());
+  };
 
   const showDuplicateUser = () => {
     setTimeout(() => {
@@ -105,7 +111,7 @@ const StudyGroupManagement = () => {
   };
   return (
     <div className='flex gap-5 justify-between  items-start min-h-[500px]'>
-      <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile min-h-[450px] overflow-auto   '>
+      <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile h-[450px] overflow-auto   '>
         <div className='mb-2'>Danh sách các nhóm</div>
         {data.map(group => {
           return (
@@ -114,17 +120,18 @@ const StudyGroupManagement = () => {
               group={group}
               onSelectedGroup={onSelectedGroup}
               selectedGroup={selectedGroup}
+              onDeleteGroup={onDeleteGroup}
             />
           );
         })}
       </div>
-      <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile min-h-[450px]   '>
+      <div className='w-7/12 px-3 pt-5 rounded-md shadow-user-profile h-[450px]   '>
         <div className='w-7/12 flex items-center gap-4    '>
           <div className='  '>
             <StudyGroupCreator className='w-full' />
           </div>
         </div>
-        <div className=' relative w-full bg-blue-200/30 shadow-user-profile rounded-md min-h-[345px]  overflow-auto border-2 border-blue-500/40  '>
+        <div className=' relative w-full bg-blue-200/30 shadow-user-profile rounded-md h-[330px]  overflow-auto border-2 border-blue-500/40  '>
           {Object.keys(selectedGroup).length !== 0 ? (
             <>
               <div className=' flex items-center gap-3 px-3 pt-3 text-sm text-center sticky  backdrop-blur-sm shadow-sm top-0 mb-2 '>
@@ -154,6 +161,7 @@ const StudyGroupManagement = () => {
                     getSearchUser={getSearchUser}
                     setUser={setUser}
                     user={user}
+                    setShowMember={setShowMember}
                   />
                 </div>
               </div>
@@ -162,7 +170,7 @@ const StudyGroupManagement = () => {
                 {showMember && <StudyGroupMemberList membetList={selectedGroup.member} />}
               </div>
               {user.length !== 0 && (
-                <div className=' sticky text-right mr-3'>
+                <div className=' absolute right-1 bottom-1 mr-3'>
                   <Button
                     className=' '
                     danger
@@ -179,7 +187,9 @@ const StudyGroupManagement = () => {
               )}
             </>
           ) : (
-            ''
+            <div className=' h-full grid place-items-center text-lg'>
+              Hãy tạo nhóm để bắt đầu thêm thành viên tại đây{' '}
+            </div>
           )}
         </div>
       </div>

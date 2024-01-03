@@ -9,6 +9,10 @@ const studyGroupAPI = {
     const url = '/group/create-study-group';
     return api.post(url, body);
   },
+  deleteGroup: groupId => {
+    const url = `/group/delete-group/${groupId}`;
+    return api.delete(url);
+  },
   addMemberToGroup: (groupId, body) => {
     const url = `/group/add-members/${groupId}`;
     return api.post(url, body);

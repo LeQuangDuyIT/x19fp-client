@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import useDebounce from '~/hooks/useDebounce';
 import AuthAPI from '~/services/authAPI';
 
-const StudyGroupSearchbar = ({ size, setUser, user }) => {
+const StudyGroupSearchbar = ({ size, setUser, user, setShowMember }) => {
   const [findUser, setFindUser] = useState('');
   const [userResult, setUserResult] = useState([]);
   const resultPanel = useRef(null);
@@ -13,6 +13,7 @@ const StudyGroupSearchbar = ({ size, setUser, user }) => {
       try {
         const findUserByKey = await AuthAPI.getUserByNameOrId(debounceSearchValue);
         const { result } = findUserByKey.data;
+        setShowMember(false);
         setUserResult(result);
       } catch (error) {
         console.log(error);
