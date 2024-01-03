@@ -64,7 +64,7 @@ const StudyGroupSearchbar = ({ size, setUser, user }) => {
           userResult.map(user => (
             <div
               key={user._id}
-              className='flex bg-white rounded gap-3 p-2 items-center cursor-pointer  '
+              className='flex bg-white rounded gap-3 p-2 hover:bg-blue-500/80 items-center cursor-pointer  '
               onClick={() => onSelectStudent(user.picture, user.lastName, user.firstName, user._id)}
             >
               <div className='animate-get-code-success-bg-fade-in '>
@@ -73,7 +73,7 @@ const StudyGroupSearchbar = ({ size, setUser, user }) => {
                   src={user.picture || '../src/assets/default-avatar/user.png'}
                 />
               </div>
-              <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in '>
+              <div className='text-[12px] font-semibold  animate-get-code-success-bg-fade-in '>
                 {' '}
                 {user.lastName} {user.firstName}
               </div>

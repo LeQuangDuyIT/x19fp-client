@@ -32,14 +32,25 @@ const StudyGroupManagement = () => {
             src={user.picture || '../src/assets/default-avatar/user.png'}
           />
         </div>
-        <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in '>
+        <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in mr-5 '>
           {' '}
           {user.lastName} {user.firstName}
+        </div>
+        <div
+          className='text-sm font-semibold cursor-pointer hover:text-red-500  '
+          onClick={() => onDeleteSelectedUser(user.id)}
+        >
+          X
         </div>
       </div>
     ));
     return selectedUser;
   };
+  const onDeleteSelectedUser = id => {
+    const deleteSelectedUser = user.filter(deleteUser => deleteUser.id !== id);
+    setUser(deleteSelectedUser);
+  };
+
   const showDuplicateUser = () => {
     setTimeout(() => {
       setUserAlreadyInGroup([]);
