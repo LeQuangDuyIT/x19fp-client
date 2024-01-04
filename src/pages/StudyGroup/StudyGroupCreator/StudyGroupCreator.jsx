@@ -1,9 +1,10 @@
 import { Button, Form, Input, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import studyGroupAPI from '~/services/studyGroupAPI';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchStudyGroup } from '~/redux/studyGroup/studyGroupAction';
 import { useState } from 'react';
+import { reloadUser } from '~/redux/user/userSlice';
 const StudyGroupCreator = () => {
   const [responeseMess, setResponseMess] = useState({});
   const [form] = Form.useForm();
@@ -33,6 +34,7 @@ const StudyGroupCreator = () => {
       const response = { status, message: data.message };
       setResponseMess(response);
       dispatch(fetchStudyGroup());
+      dispatch(reloadUser());
       form.resetFields(['studyGroup']);
     } catch (error) {
       setResponseMess(error);
