@@ -18,14 +18,13 @@ const User = () => {
   const [popStudyGroup, setPopStudyGroup] = useState(false);
 
   const handleCancel = () => {
-    try {
-      setPopStudyGroup(false);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log('close');
+    setPopStudyGroup(false);
   };
 
   const onShowStudyGroup = () => {
+    console.log('open');
+
     setPopStudyGroup(true);
   };
 
@@ -51,17 +50,17 @@ const User = () => {
       >
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>
           <span className='pr-4'>Quản lí nhóm học tập</span>
-          <Modal
-            title='Quản lí nhóm '
-            open={popStudyGroup}
-            onCancel={handleCancel}
-            footer={[null]}
-            width={1500}
-          >
-            {popStudyGroup && <StudyGroupManagement />}
-          </Modal>
         </Badge>
       </Button>
+      <Modal
+        title={<span className='text-black'>Quản lí nhóm</span>}
+        open={popStudyGroup}
+        onCancel={handleCancel}
+        footer={[null]}
+        width={1500}
+      >
+        <StudyGroupManagement />
+      </Modal>
 
       <Button type='text' className='w-full text-left' onClick={() => navigate('/question/mine')}>
         <Badge count={5} className='text-white/60 font-bold hover:text-white'>

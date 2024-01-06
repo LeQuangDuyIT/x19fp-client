@@ -23,7 +23,7 @@ const StudyGroupManagement = () => {
       <div
         key={user.id}
         id={user.id}
-        className='flex border-b border-blue-500/40  gap-3 p-2 items-center'
+        className='flex  border-b border-blue-500/40  gap-3 p-2 items-center'
       >
         {' '}
         <div className='animate-get-code-success-bg-fade-in '>
@@ -32,12 +32,12 @@ const StudyGroupManagement = () => {
             src={user.picture || '../src/assets/default-avatar/user.png'}
           />
         </div>
-        <div className='text-[12px] font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in mr-5 '>
+        <div className='text-[12px] flex-grow  font-semibold hover:text-blue-500/80 animate-get-code-success-bg-fade-in  '>
           {' '}
           {user.lastName} {user.firstName}
         </div>
         <div
-          className='text-sm font-semibold cursor-pointer hover:text-red-500  '
+          className='text-sm font-semibold text-right cursor-pointer hover:text-red-500  '
           onClick={() => onDeleteSelectedUser(user.id)}
         >
           X
@@ -110,7 +110,7 @@ const StudyGroupManagement = () => {
     setShowMember(!showMember);
   };
   return (
-    <div className='flex gap-5 justify-between  items-start min-h-[500px]'>
+    <div className='flex gap-5 text-black justify-between  items-start min-h-[500px]'>
       <div className='w-5/12  px-3 pt-5 rounded-md shadow-user-profile h-[450px] overflow-auto   '>
         <div className='mb-2'>Danh sách các nhóm</div>
         {data.map(group => {
@@ -131,7 +131,7 @@ const StudyGroupManagement = () => {
             <StudyGroupCreator className='w-full' />
           </div>
         </div>
-        <div className=' relative w-full bg-blue-200/30 shadow-user-profile rounded-md h-[330px]  overflow-auto border-2 border-blue-500/40  '>
+        <div className=' relative w-full bg-blue-200/30 text-black shadow-user-profile rounded-md h-[330px]  overflow-auto border-2 border-blue-500/40  '>
           {Object.keys(selectedGroup).length !== 0 ? (
             <>
               <div className=' flex items-center gap-3 px-3 pt-3 text-sm text-center sticky  backdrop-blur-sm shadow-sm top-0 mb-2 '>
@@ -155,13 +155,14 @@ const StudyGroupManagement = () => {
                   />
                 </div>
 
-                <div className='w-2/4'>
+                <div className='w-2/4 '>
                   <StudyGroupSearchbar
                     size='small'
                     getSearchUser={getSearchUser}
                     setUser={setUser}
                     user={user}
                     setShowMember={setShowMember}
+                    className='text-black '
                   />
                 </div>
               </div>
@@ -172,7 +173,7 @@ const StudyGroupManagement = () => {
               {user.length !== 0 && (
                 <div className=' absolute right-1 bottom-1 mr-3'>
                   <Button
-                    className=' '
+                    className='mr-3'
                     danger
                     type='primary'
                     htmlType='button'
@@ -180,7 +181,12 @@ const StudyGroupManagement = () => {
                   >
                     Hủy
                   </Button>
-                  <Button className=' ' type='primary' htmlType='button' onClick={onAddUserToGroup}>
+                  <Button
+                    className='bg-blue-500'
+                    type='primary'
+                    htmlType='button'
+                    onClick={onAddUserToGroup}
+                  >
                     Lưu thay đổi
                   </Button>
                 </div>

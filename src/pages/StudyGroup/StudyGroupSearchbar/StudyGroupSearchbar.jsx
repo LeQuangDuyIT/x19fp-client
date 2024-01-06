@@ -20,7 +20,7 @@ const StudyGroupSearchbar = ({ size, setUser, user, setShowMember }) => {
       }
     };
     getSearchValue();
-  }, [debounceSearchValue]);
+  }, [debounceSearchValue, setShowMember]);
   useEffect(() => {
     const handleClickOutSide = e => {
       if (resultPanel.current && !resultPanel.current.contains(e.target)) {
@@ -49,13 +49,13 @@ const StudyGroupSearchbar = ({ size, setUser, user, setShowMember }) => {
   };
 
   return (
-    <div className=' relative  w-full'>
+    <div className=' relative text-black w-full'>
       <Search
         value={findUser}
         onChange={e => onFindingUser(e)}
         size={size}
         placeholder='Nhập tên người dùng hoặc id'
-        className='w-full'
+        rootClassName='search-input border-blue-500 hover:shadow-md w-full placeholder-black'
       />
       <div
         ref={resultPanel}

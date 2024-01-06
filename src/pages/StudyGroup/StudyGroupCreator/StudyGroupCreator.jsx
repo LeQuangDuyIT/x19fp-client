@@ -55,7 +55,10 @@ const StudyGroupCreator = () => {
         onFinish={onHandleSubmit}
       >
         <Form.Item name='studyGroup'>
-          <Input className='border-blue-500' placeholder='Tạo nhóm tại đây' />
+          <Input
+            className='border-blue-500 focus:border-blue-500 placeholder-[#bfbfbf] text-black focus:shadow-sm hover:border-blue-500 hover:shadow-md'
+            placeholder='Tạo nhóm tại đây'
+          />
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -64,7 +67,7 @@ const StudyGroupCreator = () => {
           }}
         >
           <Button
-            className='w-full border-2 border-blue-500 text-center items-center  hover:bg-blue-200  '
+            className='w-full border-2 border-blue-500 text-center items-center text-black  hover:bg-blue-200  '
             htmlType='submit'
             icon={<PlusOutlined />}
             block
