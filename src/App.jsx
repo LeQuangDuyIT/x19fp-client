@@ -23,8 +23,8 @@ const App = () => {
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchCurrentUser());
+      dispatch(fetchStudyGroup());
     }
-    dispatch(fetchStudyGroup());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userReload]);
 
