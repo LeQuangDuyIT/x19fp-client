@@ -28,7 +28,7 @@ const Authen = () => {
       <div className='w-8/12 h-screen'>
         <img className='w-full h-full object-cover ' src={AuthPosterImg} />
       </div>
-      <div className='w-4/12 p-5 flex justify-center items-center '>
+      <div className='w-4/12 p-5 flex justify-center items-center overflow-hidden '>
         <AuthenForm />
       </div>
     </div>

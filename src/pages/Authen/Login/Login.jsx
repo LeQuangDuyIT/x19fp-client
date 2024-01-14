@@ -97,11 +97,11 @@ const Login = () => {
           name='remember'
           valuePropName='checked'
           wrapperCol={{
-            offset: 8,
-            span: 16
+            offset: 4,
+            span: 20
           }}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>Ghi nhớ tài khoản và mật khẩu</Checkbox>
         </Form.Item>
 
         <Form.Item
