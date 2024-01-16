@@ -3,15 +3,8 @@ import { Col, Row } from 'antd';
 import SimpleHeader from '~/layouts/SimpleHeader';
 import AdminDashBoard from './AdminDashBoard/AdminDashBoard';
 import AdminSideBar from './AdminSideBar/AdminSideBar';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { reloadUser } from '~/redux/user/userSlice';
 
 const Admin = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(reloadUser());
-  }, []);
   return (
     <div className='bg-[#f8fafb] min-h-screen w-full '>
       <SimpleHeader />

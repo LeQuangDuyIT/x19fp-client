@@ -1,12 +1,18 @@
 import { Button, Divider, Select } from 'antd';
 import { SearchOutlined, CloseOutlined, BulbOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import homePageAPI from '~/services/homePageAPI';
 
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState('');
-  const onHandleSubmitSearch = e => {
+  const onHandleSubmitSearch = async e => {
     e.preventDefault();
-    console.log(searchValue);
+    try {
+      await homePageAPI.HomeSearch(searchValue);
+      console.log(searchValue);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className='flex justify-between gap-3 h-[54px] lg:w-[65%] mx-auto z-10'>

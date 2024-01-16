@@ -18,13 +18,10 @@ const User = () => {
   const [popStudyGroup, setPopStudyGroup] = useState(false);
 
   const handleCancel = () => {
-    console.log('close');
     setPopStudyGroup(false);
   };
 
   const onShowStudyGroup = () => {
-    console.log('open');
-
     setPopStudyGroup(true);
   };
 

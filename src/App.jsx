@@ -8,12 +8,12 @@ import { useEffect } from 'react';
 import { fetchCurrentUser } from '~/redux/user/userAction';
 import { fetchCollections } from './redux/collection/collectionAction';
 import { fetchStudyGroup } from './redux/studyGroup/studyGroupAction';
+import { reloadUser } from './redux/user/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, reload: userReload } = useSelector(state => state.user);
-  console.log(userReload);
-  console.log(isAuthenticated);
+
   useEffect(() => {
     const accessToken = localStorage.getItem(TOKEN_TYPES.ACCESS_TOKEN);
     if (accessToken) {
@@ -25,13 +25,14 @@ const App = () => {
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchCurrentUser());
-      dispatch(fetchStudyGroup());
     }
+    dispatch(fetchStudyGroup());
+    dispatch(fetchCollections());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userReload]);
 
   useEffect(() => {
-    dispatch(fetchCollections());
+    dispatch(reloadUser());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

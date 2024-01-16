@@ -20,7 +20,7 @@ const AuthAPI = {
     return api.get(url);
   },
   getUserByNameOrId: body => {
-    const url = `/auth/find-user/?user=${body}`;
+    const url = `/auth/find-user/?user=${body}&limit=10`;
 
     return api.get(url);
   },
