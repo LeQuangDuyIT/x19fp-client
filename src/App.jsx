@@ -12,6 +12,8 @@ import { fetchStudyGroup } from './redux/studyGroup/studyGroupAction';
 const App = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, reload: userReload } = useSelector(state => state.user);
+  console.log(userReload);
+  console.log(isAuthenticated);
   useEffect(() => {
     const accessToken = localStorage.getItem(TOKEN_TYPES.ACCESS_TOKEN);
     if (accessToken) {
@@ -30,6 +32,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchCollections());
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
