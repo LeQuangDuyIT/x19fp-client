@@ -1,41 +1,55 @@
-import { Button, Divider, Select } from 'antd';
+import { Button, Divider, Select, notification } from 'antd';
 import { SearchOutlined, CloseOutlined, BulbOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import homePageAPI from '~/services/homePageAPI';
 import { useNavigate } from 'react-router-dom';
-
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = (type, error) => {
+    api[type]({
+      message: 'Oops!! Lỗi ',
+      description: error,
+      duration: 3
+    });
+  };
   const onHandleSubmitSearch = async e => {
     e.preventDefault();
+    if (searchValue === '') {
+      return;
+    }
     try {
       const getSearchValue = await homePageAPI.HomeSearch({ searchValue });
       const { objSearch, result } = getSearchValue.data;
-      const idQuestion = result.findIndex(response => response._id === searchValue);
+      const idEndPoint = result.findIndex(response => response._id === searchValue);
       if (objSearch === 'question') {
-        navigate(`/question/${result[idQuestion]._id}`);
+        return navigate(`/question/${result[idEndPoint]._id}`);
       }
       if (objSearch === 'test') {
-        navigate('');
+        return navigate(`/test/${result[idEndPoint]._id} `);
       }
     } catch (error) {
-      console.log(error);
+      openNotificationWithIcon('error', error.message);
+    } finally {
+      setSearchValue('');
     }
   };
   return (
     <div className='flex justify-between gap-3 h-[54px] lg:w-[65%] mx-auto z-10'>
+      {contextHolder}
       <div className='flex-grow flex justify-between bg-white rounded-md'>
         <Select
-          defaultValue={'lucy'}
+          defaultValue={''}
           options={[
             {
-              value: 'lucy',
-              label: 'Lucy'
+              value: '',
+              label: 'Tìm câu hỏi/bài thi'
             }
           ]}
           bordered={false}
           className='w-[180px] h-full'
+          open={false}
         />
         <Divider type='vertical' className='h-[60%] m-auto bg-slate-200' />
         <form onSubmit={e => onHandleSubmitSearch(e)} className='flex-grow flex justify-between'>
@@ -43,7 +57,7 @@ const SearchBar = () => {
             value={searchValue}
             onChange={e => setSearchValue(e.target.value)}
             className='flex-grow h-full px-4 outline-none text-black focus:outline-none'
-            placeholder='Nhập id câu hỏi hoặc đề thi'
+            placeholder='Nhập id câu hỏi hoặc đề thi (Vd: 65aaca65a0111c6ceb12fbd5 ) '
           />
           <div className='flex gap-4'>
             <CloseOutlined
@@ -60,6 +74,7 @@ const SearchBar = () => {
                   style={{ strokeWidth: '36', stroke: 'white' }}
                 />
               </button>
+              {}
             </div>
           </div>
         </form>
