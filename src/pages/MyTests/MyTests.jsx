@@ -1,14 +1,17 @@
-import { Col, Row } from 'antd';
+import { Col, Modal, Row } from 'antd';
 import CollectionSection from '~/components/CollectionSection';
 import Container from '~/components/Container';
 import Header from '~/components/Header';
 import { useEffect, useState } from 'react';
 import TestAPI from '~/services/testAPI';
 import { useNavigate } from 'react-router-dom';
+import RecordAPI from '~/services/recordAPI';
 
 const MyTests = () => {
   const navigate = useNavigate();
   const [tests, setTests] = useState([]);
+  const [openRecords, setOpenRecords] = useState(false);
+  const [recordsOfTest, setRecordsOfTest] = useState([]);
 
   useEffect(() => {
     fetchTestsOfUser();
@@ -18,13 +21,23 @@ const MyTests = () => {
   const fetchTestsOfUser = async () => {
     try {
       const res = await TestAPI.getMyTests();
-      console.log(res);
       setTests(res.data.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
   };
+
+  const handleShowRecordsOfTest = async testId => {
+    setOpenRecords(true);
+    try {
+      const res = await RecordAPI.getByTestId(testId);
+      setRecordsOfTest(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className='bg-[#2e6bed]'>
@@ -43,8 +56,9 @@ const MyTests = () => {
                 {tests &&
                   tests.length > 0 &&
                   tests.map(test => (
-                    <div key={test._id} onClick={() => navigate(`/create/test/${test._id}`)}>
-                      <h3>{test.title}</h3>
+                    <div key={test._id} className='flex justify-between'>
+                      <h3 onClick={() => navigate(`/create/test/${test._id}`)}>{test.title}</h3>
+                      <a onClick={() => handleShowRecordsOfTest(test._id)}>Bài nộp</a>
                     </div>
                   ))}
               </div>
@@ -52,6 +66,16 @@ const MyTests = () => {
           </Row>
         </Container>
       </div>
+      <Modal title='Danh sách bài nộp' open={openRecords} onCancel={() => setOpenRecords(false)}>
+        <div className='flex flex-col gap-4'>
+          {recordsOfTest.map(record => (
+            <div key={record._id} className='flex flex-col'>
+              <h4>{record.userFullname}</h4>
+              <p>{record.userEmail}</p>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import parser from 'html-react-parser';
 import { Button, Divider, notification } from 'antd';
 import { MdOutlineRadioButtonUnchecked, MdOutlineRadioButtonChecked } from 'react-icons/md';
@@ -8,11 +8,17 @@ import { alphabet } from '~/utils/constants';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-const MultipleChoice = ({ question, readOnly, handleSetAnswer }) => {
+const MultipleChoice = ({ question, readOnly, handleSetAnswer, showResult }) => {
   const [choosed, setChoosed] = useState(null);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
   const [notiApi, contextHolder] = notification.useNotification({ stack: 1 });
+
+  useEffect(() => {
+    if (showResult) {
+      handleGetResult();
+    }
+  }, [showResult]);
 
   const onChooseAnswer = (id, index) => {
     if (readOnly) return;
@@ -24,7 +30,7 @@ const MultipleChoice = ({ question, readOnly, handleSetAnswer }) => {
     } else {
       setChoosed(id);
       openNotification('success', `Chọn ${alphabet[index]}`);
-      handleSetAnswer(id, index);
+      handleSetAnswer({ id, index });
     }
   };
 
@@ -47,6 +53,7 @@ const MultipleChoice = ({ question, readOnly, handleSetAnswer }) => {
     setIsCorrect(false);
     setIsResultShow(false);
   };
+
 
   return (
     <BlockSectionWrapper>
