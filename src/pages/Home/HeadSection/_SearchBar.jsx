@@ -2,14 +2,23 @@ import { Button, Divider, Select } from 'antd';
 import { SearchOutlined, CloseOutlined, BulbOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import homePageAPI from '~/services/homePageAPI';
+import { useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
   const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
   const onHandleSubmitSearch = async e => {
     e.preventDefault();
     try {
-      await homePageAPI.HomeSearch(searchValue);
-      console.log(searchValue);
+      const getSearchValue = await homePageAPI.HomeSearch({ searchValue });
+      const { objSearch, result } = getSearchValue.data;
+      const idQuestion = result.findIndex(response => response._id === searchValue);
+      if (objSearch === 'question') {
+        navigate(`/question/${result[idQuestion]._id}`);
+      }
+      if (objSearch === 'test') {
+        navigate('');
+      }
     } catch (error) {
       console.log(error);
     }
