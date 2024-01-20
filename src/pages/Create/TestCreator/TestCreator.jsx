@@ -128,7 +128,11 @@ const TestCreator = () => {
           </Row>
         </Container>
       </div>
-      <TestStartingForm open={isModalOpen} onCancel={() => setTestStaring(false)} />
+      <TestStartingForm
+        open={isModalOpen}
+        onCancel={() => setTestStaring(false)}
+        handleFetchTest={handleFetchTest}
+      />
     </CreateTestContext.Provider>
   );
 };

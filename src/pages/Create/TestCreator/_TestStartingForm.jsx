@@ -16,7 +16,7 @@ const limitTimeOptions = [
   { value: 'unlimit', label: 'Không giới hạn' }
 ];
 
-const TestStartingForm = ({ open, onCancel }) => {
+const TestStartingForm = ({ open, onCancel, handleFetchTest }) => {
   const { test } = useSelector(state => state.test);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -36,6 +36,7 @@ const TestStartingForm = ({ open, onCancel }) => {
   }, [test]);
 
   const handleStartTest = async formValue => {
+    await handleFetchTest();
     // eslint-disable-next-line no-unused-vars
     const { questions, ...restTestValue } = test;
     const startedTest = { ...restTestValue, ...formValue, isActived: true };
@@ -85,6 +86,11 @@ const TestStartingForm = ({ open, onCancel }) => {
             <div>
               <Form.Item name='activingDate' label='Thời gian diễn ra'>
                 <DatePicker.RangePicker showTime allowClear placeholder={['Bắt đầu', 'Kết thúc']} />
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item className='flex-1' name='studyGroup' label='Gửi tới nhóm'>
+                <Select options={limitTimeOptions} />
               </Form.Item>
             </div>
             <div>
