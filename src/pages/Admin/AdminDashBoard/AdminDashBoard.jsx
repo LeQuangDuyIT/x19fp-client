@@ -88,8 +88,8 @@ const AdminDashBoard = () => {
         <Col className=' border-gray-200 max-h-[500px] border-[1px] rounded-xl shadow  ' span={12}>
           <span className='pl-7 text-lg leading-10 '> Biểu đồ người dùng mới trong năm 2023 </span>
           <div className='border-b border-gray-200 '></div>
-          <div className='w-full h-auto p-2'>
-            <BarChart className='w-full' UserChartData={UserChartData} />
+          <div className='w-full m-auto h-auto p-2'>
+            <BarChart UserChartData={UserChartData} />
           </div>
         </Col>
       </Row>

@@ -10,10 +10,10 @@ const HeadSection = () => {
   const [bgImg, setBgImg] = useState(null);
 
   return (
-    <div className={clsx('relative text-white')}>
+    <div className={clsx('relative')}>
       <Container>
         <Header />
-        <div className='flex flex-col gap-8 mx-auto py-16 mt-8'>
+        <div className='flex flex-col gap-8 mx-auto py-16 text-white mt-8'>
           <div className='flex flex-col gap-4 text-center z-10'>
             <h1 className='text-4xl font-bold'>Ngân hàng đề thi</h1>
             <h2 className='text-xl font-bold'>

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoadingState from '~/components/LoadingState/LoadingState';
 import { StoreContext } from '~/context/storeContext/StoreContext';
-import { login } from '~/redux/user/userSlice';
+import { login, reloadUser } from '~/redux/user/userSlice';
 import authApi from '~/services/authAPI';
 import { TOKEN_TYPES } from '~/utils/constants';
 
@@ -97,11 +97,11 @@ const Login = () => {
           name='remember'
           valuePropName='checked'
           wrapperCol={{
-            offset: 8,
-            span: 16
+            offset: 4,
+            span: 20
           }}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>Ghi nhớ tài khoản và mật khẩu</Checkbox>
         </Form.Item>
 
         <Form.Item
@@ -136,6 +136,7 @@ const Login = () => {
                       user: userData
                     };
                     dispatch(login(payload));
+                    dispatch(reloadUser());
                     navigate('/');
                   }
                 } catch (error) {

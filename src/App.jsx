@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from '~/redux/user/userAction';
 import { fetchCollections } from './redux/collection/collectionAction';
+import { fetchStudyGroup } from './redux/studyGroup/studyGroupAction';
+import { reloadUser } from './redux/user/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,11 +26,14 @@ const App = () => {
     if (isAuthenticated) {
       dispatch(fetchCurrentUser());
     }
+    dispatch(fetchStudyGroup());
+    dispatch(fetchCollections());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userReload]);
 
   useEffect(() => {
-    dispatch(fetchCollections());
+    dispatch(reloadUser());
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

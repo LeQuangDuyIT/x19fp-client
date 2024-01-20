@@ -55,3 +55,11 @@ p {
 .ct-home-head-section-bg {
   @apply bg-gradient-to-br from-blue-600 via-blue-600 to-blue-300;
 }
+
+.search-input * {
+  color: black !important;
+}
+
+.search-input *::placeholder {
+  color: #bfbfbf;
+}

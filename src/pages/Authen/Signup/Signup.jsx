@@ -16,7 +16,7 @@ const Signup = () => {
         span: 24
       },
       sm: {
-        span: 'full'
+        span: 24
       }
     },
     wrapperCol: {
@@ -24,7 +24,7 @@ const Signup = () => {
         span: 24
       },
       sm: {
-        span: 'full'
+        span: 24
       }
     }
   };
@@ -35,14 +35,12 @@ const Signup = () => {
         offset: 0
       },
       sm: {
-        span: 16,
-        offset: 8
+        span: 24,
+        offset: 12
       }
     }
   };
-  const margin = {
-    margin: '0px'
-  };
+
   const getEmail = e => {
     setEmail(e.target.value);
   };
@@ -101,9 +99,6 @@ const Signup = () => {
         initialValues={{
           prefix: '+84'
         }}
-        style={{
-          margin
-        }}
         layout='vertical'
         scrollToFirstError
       >
@@ -138,11 +133,11 @@ const Signup = () => {
           rules={[
             {
               type: 'email',
-              message: 'The input is not valid E-mail!'
+              message: 'Email không hợp lệ'
             },
             {
               required: true,
-              message: 'Please input your E-mail!'
+              message: 'Hẫy nhập email!'
             }
           ]}
         >
@@ -155,7 +150,9 @@ const Signup = () => {
           rules={[
             {
               required: true,
-              message: 'Hãy nhập mật khẩu'
+              pattern:
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^()._-])[A-Za-z\d@$!%*#?&^()._-]{8,24}$/,
+              message: ' Mật khẩu bao gồm 1 chữ in hoa, 1 số, 1 ký tự đặc biệt'
             }
           ]}
           hasFeedback
@@ -171,14 +168,16 @@ const Signup = () => {
           rules={[
             {
               required: true,
-              message: 'Please confirm your password!'
+              pattern:
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^()._-])[A-Za-z\d@$!%*#?&^()._-]{8,24}$/,
+              message: ' Mật khẩu bao gồm 1 chữ in hoa, 1 số, 1 ký tự đặc biệt'
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error('The new password that you entered do not match!'));
+                return Promise.reject(new Error('Mật khẩu không trùng khớp!'));
               }
             })
           ]}
@@ -191,7 +190,7 @@ const Signup = () => {
           rules={[
             {
               required: true,
-              message: 'Please input your phone number!'
+              message: 'Hẫy nhập số điện thoại của bạn !'
             }
           ]}
         >
@@ -224,7 +223,7 @@ const Signup = () => {
           rules={[
             {
               required: true,
-              message: 'Please select gender!'
+              message: 'Hãy chọn giới tính!'
             }
           ]}
         >
@@ -289,25 +288,25 @@ const Signup = () => {
           rules={[
             {
               validator: (_, value) =>
-                value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement'))
+                value ? Promise.resolve() : Promise.reject(new Error('Hãy đồng ý các thỏa thuận'))
             }
           ]}
           {...tailFormItemLayout}
         >
           <Checkbox>
-            I have read the <a href=''>agreement</a>
+            Tôi đã đọc các <a href=''>thỏa thuận</a>
           </Checkbox>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type='primary' htmlType='submit' className='bg-blue-500'>
-            Register
+            Đăng ký
           </Button>
         </Form.Item>
       </Form>
       <div className='text-center text-xs font-bold '>
-        Already have an account ?{' '}
+        Đã có tài khoản ?{' '}
         <Link to='/login' className='text-blue-500 no-underline font-bold'>
-          Login
+          Đăng nhập
         </Link>
       </div>
     </div>

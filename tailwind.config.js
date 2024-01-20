@@ -18,6 +18,9 @@ export default {
           '0%': { opacity: '0' },
           '50%': { opacity: '1' }
         }
+      },
+      backgroundImage: {
+        banner: 'url(../../../assets/bannerBackground/bannerbg.jpg)'
       }
     }
   },

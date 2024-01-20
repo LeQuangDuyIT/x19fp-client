@@ -1,30 +1,60 @@
 import { Collapse } from 'antd';
 const AdminSideBar = () => {
-  const text = `
-    A dog is a type of domesticated animal.
-    Known for its loyalty and faithfulness,
-    it can be found as a welcome guest in many households across the world.
-  `;
+  const userSubTitle = 'Thông tin Người dùng';
+  const subjectSubTitle = ['Toán', 'Vật lý', 'Hóa', 'Lịch sử', 'Sinh học', 'Địa lí'];
+  const examSubTitle = [
+    'Đề thi học sinh giỏi',
+    'Tổng hợp các đề thi THPT 2020-2023',
+    'Cấu trúc dữ liệu giải thuật',
+    'Đề cương môn Mac-lenin',
+    'Ôn tập thi olympia',
+    'Đề thi HS giỏi TPHCM'
+  ];
   const items = [
     {
       key: '1',
       label: 'Người dùng',
-      children: <p>{text}</p>
+      children: (
+        <p className=' p-1 rounded-sm cursor-pointer hover:bg-blue-500 transition-all hover:text-white'>
+          {userSubTitle}
+        </p>
+      )
     },
     {
       key: '2',
-      label: 'This is panel header 2',
-      children: <p>{text}</p>
+      label: 'Môn học/Bộ sưu tập',
+      children: subjectSubTitle.map((subject, index) => (
+        <p
+          className=' p-1 rounded-sm cursor-pointer hover:bg-blue-500 transition-all hover:text-white'
+          key={index}
+        >
+          {subject}
+        </p>
+      ))
     },
     {
       key: '3',
-      label: 'This is panel header 3',
-      children: <p>{text}</p>
+      label: 'Đề thi/Bài kiểm tra',
+      children: examSubTitle.map((exam, index) => (
+        <p
+          className=' p-1 rounded-sm cursor-pointer hover:bg-blue-500 transition-all hover:text-white'
+          key={index}
+        >
+          {exam}
+        </p>
+      ))
     }
   ];
   const onChange = key => {};
   return (
-    <Collapse expandIconPosition='end' items={items} defaultActiveKey={['1']} onChange={onChange} />
+    <div className=' sticky top-0 '>
+      <Collapse
+        expandIconPosition='end'
+        items={items}
+        defaultActiveKey={['1']}
+        onChange={onChange}
+      />
+    </div>
   );
 };
 
