@@ -1,10 +1,18 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from 'antd';
 import BlockSectionWrapper from '~/components/BlockSectionWrapper';
 import { alphabet } from '~/utils/constants';
 import clsx from 'clsx';
 
-const TestDoingController = ({ questions, studentAnswers, handleSubmit }) => {
+const TestDoingController = ({ questions, studentAnswers, handleSubmit, finish }) => {
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    if (finish) {
+      setIsFinished(true);
+    }
+  }, [finish]);
+
   const maxAnswersQuantity = useMemo(() => {
     return questions.reduce((max, question) => {
       if (question.answers.length > max) {
@@ -57,8 +65,14 @@ const TestDoingController = ({ questions, studentAnswers, handleSubmit }) => {
         </div>
       </BlockSectionWrapper>
       <BlockSectionWrapper>
-        <Button type='primary' size='large' className='w-full' onClick={handleSubmit}>
-          Nộp bài
+        <Button
+          type='primary'
+          size='large'
+          className='w-full'
+          onClick={handleSubmit}
+          disabled={isFinished}
+        >
+          {!isFinished ? 'Nộp bài' : 'Đã nộp bài'}
         </Button>
       </BlockSectionWrapper>
     </div>

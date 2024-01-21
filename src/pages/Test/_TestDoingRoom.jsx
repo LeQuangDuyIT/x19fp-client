@@ -88,17 +88,28 @@ const TestDoingRoom = ({ recordData }) => {
           </Col>
           <Col span={7}>
             <div className='sticky top-4 flex flex-col gap-4'>
-              <Countdowner limitTime={recordData.limitTime} createdAt={recordData.createdAt} icon />
+              <Countdowner
+                limitTime={recordData.limitTime}
+                createdAt={recordData.createdAt}
+                stop={finishData}
+                icon
+              />
               <TestDoingController
                 questions={questions}
                 studentAnswers={studentAnswers}
                 handleSubmit={handleSubmit}
+                finish={finishData}
               />
             </div>
           </Col>
         </Row>
       </Container>
-      <Modal open={finishData} onCancel={() => setFinishData(null)}>
+      <Modal
+        open={finishData}
+        okText='Đóng'
+        onOk={() => setFinishData(null)}
+        cancelButtonProps={{ hidden: true }}
+      >
         <div className='flex flex-col gap-8'>
           <div className='text-center'>
             <p className='text-4xl mb-2'>{finishData?.isPassed ? '🎉' : ':(('}</p>

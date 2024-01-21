@@ -1,8 +1,17 @@
 import Countdown from 'react-countdown';
 import BlockSectionWrapper from '../BlockSectionWrapper';
 import { Progress } from 'antd';
+import { useEffect, useRef } from 'react';
 
-const Countdowner = ({ limitTime, createdAt, icon }) => {
+const Countdowner = ({ limitTime, createdAt, icon, stop }) => {
+  const countdownRef = useRef();
+
+  useEffect(() => {
+    if (stop) {
+      countdownRef.current.pause();
+    }
+  }, [stop]);
+
   const renderer = ({ total, minutes, seconds, completed }) => {
     if (completed) {
       return <p>Hết giờ</p>;
@@ -29,6 +38,7 @@ const Countdowner = ({ limitTime, createdAt, icon }) => {
     <BlockSectionWrapper>
       <div className='flex flex-col gap-4 p-4'>
         <Countdown
+          ref={countdownRef}
           date={new Date(createdAt).getTime() + limitTime * 60 * 1000}
           renderer={renderer}
         />
