@@ -34,6 +34,7 @@ const MyTests = () => {
       const res = await RecordAPI.getByTestId(testId);
       setRecordsOfTest(res.data.data);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -69,7 +70,11 @@ const MyTests = () => {
       <Modal title='Danh sách bài nộp' open={openRecords} onCancel={() => setOpenRecords(false)}>
         <div className='flex flex-col gap-4'>
           {recordsOfTest.map(record => (
-            <div key={record._id} className='flex flex-col'>
+            <div
+              key={record._id}
+              className='flex flex-col'
+              onClick={() => navigate(`/record/${record._id}?pw=${record.passWord}`)}
+            >
               <h4>{record.userFullname}</h4>
               <p>{record.userEmail}</p>
             </div>

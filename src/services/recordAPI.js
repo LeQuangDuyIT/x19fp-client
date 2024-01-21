@@ -12,6 +12,10 @@ const RecordAPI = {
   getByTestId: id => {
     const url = `/records/test/${id}`;
     return api.get(url);
+  },
+  getById: (id, body) => {
+    const url = `/records/${id}`;
+    return api.post(url, body);
   }
 };
 
