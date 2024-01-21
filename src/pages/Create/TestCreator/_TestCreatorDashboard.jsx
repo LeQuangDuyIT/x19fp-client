@@ -6,7 +6,7 @@ import QuestionCreatorBox from '~/components/QuestionCreatorBox/QuestionCreatorB
 import { useSelector } from 'react-redux';
 
 const TestCreatorDashboard = () => {
-  const { test, questions } = useSelector(state => state.test);
+  const { questions } = useSelector(state => state.test);
   const { overviewValue, testStaring, handleAddQuestionError, clearQuestionError } =
     useContext(CreateTestContext);
   const [hoveringId, setHoveringId] = useState(null);

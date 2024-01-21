@@ -8,7 +8,7 @@ import { alphabet } from '~/utils/constants';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-const MultipleChoice = ({ question, readOnly, handleSetAnswer, showResult }) => {
+const MultipleChoice = ({ question, readOnly, handleSetAnswer, showResult, isDoingTest }) => {
   const [choosed, setChoosed] = useState(null);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isResultShow, setIsResultShow] = useState(false);
@@ -18,6 +18,7 @@ const MultipleChoice = ({ question, readOnly, handleSetAnswer, showResult }) => 
     if (showResult) {
       handleGetResult();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showResult]);
 
   const onChooseAnswer = (id, index) => {
@@ -53,7 +54,6 @@ const MultipleChoice = ({ question, readOnly, handleSetAnswer, showResult }) => 
     setIsCorrect(false);
     setIsResultShow(false);
   };
-
 
   return (
     <BlockSectionWrapper>
@@ -104,7 +104,7 @@ const MultipleChoice = ({ question, readOnly, handleSetAnswer, showResult }) => 
               );
             })}
         </div>
-        {choosed && (
+        {choosed && !isDoingTest && (
           <div className='flex gap-3'>
             <Button type='primary' disabled={isResultShow} onClick={handleGetResult}>
               Trả lời

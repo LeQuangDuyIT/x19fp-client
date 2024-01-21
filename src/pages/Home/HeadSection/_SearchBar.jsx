@@ -17,9 +17,10 @@ const SearchBar = () => {
         navigate(`/question/${result[idQuestion]._id}`);
       }
       if (objSearch === 'test') {
-        navigate('');
+        navigate(`/test/${result[idQuestion]._id} `);
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -27,11 +28,12 @@ const SearchBar = () => {
     <div className='flex justify-between gap-3 h-[54px] lg:w-[65%] mx-auto z-10'>
       <div className='flex-grow flex justify-between bg-white rounded-md'>
         <Select
-          defaultValue={'lucy'}
+          disabled
+          defaultValue={'default'}
           options={[
             {
-              value: 'lucy',
-              label: 'Lucy'
+              value: 'default',
+              label: 'Tùy chọn'
             }
           ]}
           bordered={false}

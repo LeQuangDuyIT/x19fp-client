@@ -6,11 +6,12 @@ import {
   FaLinkedin,
   FaSquareFacebook
 } from 'react-icons/fa6';
+import Container from '~/components/Container';
 
 const Contact = () => {
   return (
     <div>
-      <div className='  flex w-full  bg-white h-[250px] py-[40px] px-[20px]  '>
+      <Container className='flex w-full  bg-white h-[250px] py-[40px] px-[20px]  '>
         <div className='text-left flex-grow '>
           <ul className=' m-0 p-0 list-none text-left leading-8 font-semibold text-xl text-black  '>
             Thông tin
@@ -91,7 +92,7 @@ const Contact = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </Container>
       <div className='border-t-[2px] border-gray-200 leading-[100px] align-middle text-center text-xs text-gray-400 '>
         Copyright 2023 Testbank
       </div>
