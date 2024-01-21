@@ -1,17 +1,29 @@
-import { Button, Col, Modal, Row } from 'antd';
-import BlockSectionWrapper from '~/components/BlockSectionWrapper';
+import { Col, Modal, Row, message } from 'antd';
 import Container from '~/components/Container';
 import MultipleChoice from '../Question/_MultipleChoice';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import RecordAPI from '~/services/recordAPI';
-import { alphabet } from '~/utils/constants';
-import clsx from 'clsx';
+import TestDoingController from './__TestDoingController';
+import Countdowner from '~/components/Countdowner';
 
 const TestDoingRoom = ({ recordData }) => {
   const { questions } = recordData;
   const [studentAnswers, setStudentAnswers] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [finishData, setFinishData] = useState(null);
+  const [overTime, setOverTime] = useState(false);
+
+  useEffect(() => {
+    if (!recordData?.limitTime) return;
+    const timer = setTimeout(() => {
+      setOverTime(true);
+      handleSubmit();
+    }, recordData.limitTime * 60 * 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recordData.limitTime]);
 
   useEffect(() => {
     if (!questions) return;
@@ -31,6 +43,11 @@ const TestDoingRoom = ({ recordData }) => {
   };
 
   const handleSubmit = async () => {
+    const isValidated = studentAnswers.every(question => question.answer);
+    if (!isValidated) {
+      message.error('Chưa chọn đủ đáp án!');
+      return;
+    }
     setShowResult(true);
     const payload = { ...recordData, studentAnswers };
     try {
@@ -41,16 +58,6 @@ const TestDoingRoom = ({ recordData }) => {
       console.log(error);
     }
   };
-
-  const maxAnswersQuantity = useMemo(() => {
-    return questions.reduce((max, question) => {
-      if (question.answers.length > max) {
-        return question.answers.length;
-      } else {
-        return max;
-      }
-    }, 4);
-  }, [questions]);
 
   return (
     <div className='bg-[#f4f5f8] pt-[60px]'>
@@ -72,6 +79,7 @@ const TestDoingRoom = ({ recordData }) => {
                       handleSetAnswer(question._id, answer, question.score)
                     }
                     showResult={showResult}
+                    readOnly={overTime}
                     isDoingTest
                   />
                 </div>
@@ -79,52 +87,13 @@ const TestDoingRoom = ({ recordData }) => {
             </div>
           </Col>
           <Col span={7}>
-            <div className='sticky top-4 flex flex-col gap-4 mx-auto'>
-              <BlockSectionWrapper title='Bài làm'>
-                <div className='flex flex-col gap-1 p-4'>
-                  <div className='flex gap-1 border-b-[2px] mb-4'>
-                    {Array.from({ length: maxAnswersQuantity + 1 }).map((_, index) => (
-                      <div
-                        key={index}
-                        className='flex items-center justify-center w-[calc(20%-4px*4/5)] h-8 font-bold'
-                      >
-                        {index > 0 ? alphabet[index - 1] : ''}
-                      </div>
-                    ))}
-                  </div>
-                  <div className='flex flex-col gap-1'>
-                    {questions.map((question, questionIndex) => (
-                      <div key={question._id} className='flex gap-1'>
-                        {Array.from({ length: maxAnswersQuantity + 1 }).map((_, answerIndex) => (
-                          <div
-                            key={answerIndex}
-                            className={clsx(
-                              'flex items-center justify-center w-[calc(20%-4px*4/5)] h-10 font-bold',
-                              {
-                                'bg-blue-50 text-green-500 font-bold text-2xl':
-                                  (answerIndex <= question.answers.length) & (answerIndex !== 0)
-                              }
-                            )}
-                          >
-                            {answerIndex === 0
-                              ? `Câu ${questionIndex + 1}`
-                              : studentAnswers &&
-                                question.answers[answerIndex - 1]?.id ===
-                                  studentAnswers[questionIndex]?.answer?.id &&
-                                question.answers[answerIndex - 1]?.id &&
-                                '✔'}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </BlockSectionWrapper>
-              <BlockSectionWrapper>
-                <Button type='primary' size='large' className='w-full' onClick={handleSubmit}>
-                  Nộp bài
-                </Button>
-              </BlockSectionWrapper>
+            <div className='sticky top-4 flex flex-col gap-4'>
+              <Countdowner limitTime={recordData.limitTime} createdAt={recordData.createdAt} icon />
+              <TestDoingController
+                questions={questions}
+                studentAnswers={studentAnswers}
+                handleSubmit={handleSubmit}
+              />
             </div>
           </Col>
         </Row>

@@ -29,6 +29,7 @@
     "nodemailer": "^6.9.7",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
+    "react-countdown": "^2.3.5",
     "react-countup": "^2.0.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",

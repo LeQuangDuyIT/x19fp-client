@@ -1,4 +1,4 @@
-import { Button, Divider, Select } from 'antd';
+import { Button, Divider, Select, message } from 'antd';
 import { SearchOutlined, CloseOutlined, BulbOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import homePageAPI from '~/services/homePageAPI';
@@ -22,6 +22,7 @@ const SearchBar = () => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
+      message.error('Không tìm thấy kết quả!');
     }
   };
   return (
@@ -45,13 +46,15 @@ const SearchBar = () => {
             value={searchValue}
             onChange={e => setSearchValue(e.target.value)}
             className='flex-grow h-full px-4 outline-none text-black focus:outline-none'
-            placeholder='Nhập id câu hỏi hoặc đề thi'
+            placeholder='Nhập ID câu hỏi hoặc đề thi'
           />
           <div className='flex gap-4'>
-            <CloseOutlined
-              onClick={() => setSearchValue('')}
-              className='text-black cursor-pointer opacity-50 hover:opacity-100'
-            />
+            {searchValue.length > 0 && (
+              <CloseOutlined
+                onClick={() => setSearchValue('')}
+                className='text-black cursor-pointer opacity-50 hover:opacity-100'
+              />
+            )}
             <div className='p-1.5'>
               <button
                 type='submit'
