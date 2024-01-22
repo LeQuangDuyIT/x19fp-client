@@ -1,15 +1,29 @@
-import { Button, Col, Modal, Row } from 'antd';
-import BlockSectionWrapper from '~/components/BlockSectionWrapper';
+import { Col, Modal, Row, message } from 'antd';
 import Container from '~/components/Container';
 import MultipleChoice from '../Question/_MultipleChoice';
 import { useEffect, useState } from 'react';
 import RecordAPI from '~/services/recordAPI';
+import TestDoingController from './__TestDoingController';
+import Countdowner from '~/components/Countdowner';
 
 const TestDoingRoom = ({ recordData }) => {
-  const { title, questions } = recordData;
+  const { questions } = recordData;
   const [studentAnswers, setStudentAnswers] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [finishData, setFinishData] = useState(null);
+  const [overTime, setOverTime] = useState(false);
+
+  useEffect(() => {
+    if (!recordData?.limitTime) return;
+    const timer = setTimeout(() => {
+      setOverTime(true);
+      handleSubmit();
+    }, recordData.limitTime * 60 * 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recordData.limitTime]);
 
   useEffect(() => {
     if (!questions) return;
@@ -29,6 +43,11 @@ const TestDoingRoom = ({ recordData }) => {
   };
 
   const handleSubmit = async () => {
+    const isValidated = studentAnswers.every(question => question.answer);
+    if (!isValidated) {
+      message.error('Chưa chọn đủ đáp án!');
+      return;
+    }
     setShowResult(true);
     const payload = { ...recordData, studentAnswers };
     try {
@@ -46,31 +65,51 @@ const TestDoingRoom = ({ recordData }) => {
         <Row gutter={60} className='justify-between min-h-screen'>
           <Col span={17}>
             <div className='flex flex-col gap-6'>
-              {questions.map(question => (
-                <MultipleChoice
-                  key={question._id}
-                  question={question}
-                  handleSetAnswer={answer => handleSetAnswer(question._id, answer, question.score)}
-                  showResult={showResult}
-                />
+              {questions.map((question, index) => (
+                <div key={question._id}>
+                  <div className='flex gap-1'>
+                    <h3 className='block w-fit mb-1 py-2 px-4 bg-[#ccc] rounded-t-md text-white'>
+                      <span className='font-bold'>Câu {index + 1}: </span>
+                      {question.score && <span className='italic'>({question.score} điểm)</span>}
+                    </h3>
+                  </div>
+                  <MultipleChoice
+                    question={question}
+                    handleSetAnswer={answer =>
+                      handleSetAnswer(question._id, answer, question.score)
+                    }
+                    showResult={showResult}
+                    readOnly={overTime}
+                    isDoingTest
+                  />
+                </div>
               ))}
             </div>
           </Col>
-          <Col span={7} className='flex flex-col gap-4 mx-auto'>
-            <BlockSectionWrapper>
-              <div className='p-4'>
-                <h4>dsfdsfsd</h4>
-              </div>
-            </BlockSectionWrapper>
-            <BlockSectionWrapper>
-              <Button type='primary' size='large' className='w-full' onClick={handleSubmit}>
-                Nộp bài
-              </Button>
-            </BlockSectionWrapper>
+          <Col span={7}>
+            <div className='sticky top-4 flex flex-col gap-4'>
+              <Countdowner
+                limitTime={recordData.limitTime}
+                createdAt={recordData.createdAt}
+                stop={finishData}
+                icon
+              />
+              <TestDoingController
+                questions={questions}
+                studentAnswers={studentAnswers}
+                handleSubmit={handleSubmit}
+                finish={finishData}
+              />
+            </div>
           </Col>
         </Row>
       </Container>
-      <Modal open={finishData} onCancel={() => setFinishData(null)}>
+      <Modal
+        open={finishData}
+        okText='Đóng'
+        onOk={() => setFinishData(null)}
+        cancelButtonProps={{ hidden: true }}
+      >
         <div className='flex flex-col gap-8'>
           <div className='text-center'>
             <p className='text-4xl mb-2'>{finishData?.isPassed ? '🎉' : ':(('}</p>

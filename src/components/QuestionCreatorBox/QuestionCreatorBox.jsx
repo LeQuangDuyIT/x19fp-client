@@ -122,8 +122,8 @@ const QuestionCreatorBox = ({
     const reqBody = {
       topic,
       answers,
-      subject,
       type,
+      subject,
       collection,
       isPrivate
     };
@@ -165,11 +165,14 @@ const QuestionCreatorBox = ({
     if (!correctAnswer) {
       setIsCorrectRequired(true);
     }
-    if (!controlValue.subject) {
+    if (!isTestCreator && !controlValue.subject) {
       setIsSubjectRequired(true);
     }
     if (errorFields.length > 0) setErrors(errorFields);
-    const shouldNexting = errorFields.length === 0 && correctAnswer && controlValue.subject;
+    let shouldNexting = errorFields.length === 0 && correctAnswer;
+    if (!isTestCreator && !controlValue.subject) {
+      shouldNexting = false;
+    }
     if (!shouldNexting) {
       handleAddQuestionError(false);
     } else {

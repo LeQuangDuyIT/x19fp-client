@@ -10,7 +10,7 @@ const Banner = () => {
         ) : (
           <>
             <p> Bắt đầu tạo đề thi và giải đề chỉ với vài thao tác </p>
-            <Link className='px-4 py-3  text-white bg-black rounded-md no-underline ' to='/login'>
+            <Link className='px-4 py-3 text-white bg-black rounded-md no-underline ' to='/login'>
               {' '}
               Đăng nhập ngay{' '}
             </Link>

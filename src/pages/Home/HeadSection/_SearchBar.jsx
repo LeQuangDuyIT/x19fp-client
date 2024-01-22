@@ -1,4 +1,4 @@
-import { Button, Divider, Select, notification } from 'antd';
+import { Button, Divider, Select, notification, message } from 'antd';
 import { SearchOutlined, CloseOutlined, BulbOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import homePageAPI from '~/services/homePageAPI';
@@ -60,10 +60,12 @@ const SearchBar = () => {
             placeholder='Nhập id câu hỏi hoặc đề thi (Vd: 65aaca65a0111c6ceb12fbd5 ) '
           />
           <div className='flex gap-4'>
-            <CloseOutlined
-              onClick={() => setSearchValue('')}
-              className='text-black cursor-pointer opacity-50 hover:opacity-100'
-            />
+            {searchValue.length > 0 && (
+              <CloseOutlined
+                onClick={() => setSearchValue('')}
+                className='text-black cursor-pointer opacity-50 hover:opacity-100'
+              />
+            )}
             <div className='p-1.5'>
               <button
                 type='submit'

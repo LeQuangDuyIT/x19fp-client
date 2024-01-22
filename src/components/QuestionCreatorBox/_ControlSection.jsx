@@ -17,17 +17,22 @@ const ControlSection = ({ isTestCreator }) => {
   return (
     <>
       <QuestionTypeSelector />
-      <SubjectSelector />
-      <CollectionSelector />
-      <Divider />
-      <div className='flex justify-end items-center gap-2'>
-        <span>Riêng tư</span>
-        <Switch
-          className='w-fit'
-          checked={controlValue.isPrivate}
-          onChange={value => handleChangeControlValue('isPrivate', value)}
-        />
-      </div>
+      {!isTestCreator && (
+        <>
+          <SubjectSelector />
+          <CollectionSelector />
+          <Divider />
+          <div className='flex justify-end items-center gap-2'>
+            <span>Riêng tư</span>
+            <Switch
+              className='w-fit'
+              checked={controlValue.isPrivate}
+              onChange={value => handleChangeControlValue('isPrivate', value)}
+            />
+          </div>
+        </>
+      )}
+
       {!isTestCreator && (
         <Button type='primary' className='w-full h-[56px]' onClick={handleCreateMultipleChoice}>
           Lưu

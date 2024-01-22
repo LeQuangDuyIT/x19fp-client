@@ -90,8 +90,8 @@ const TestCreator = () => {
   const isModalOpen = useMemo(() => {
     if (!testStaring) return false;
     let shouldNexting = true;
-    const { topic, subject, grade, scores } = overviewValue;
-    if (topic === '' || !subject || !grade) shouldNexting = false;
+    const { title, subject, grade, scores } = overviewValue;
+    if (title === '' || !subject || !grade) shouldNexting = false;
 
     const scoreValues = Object.values(scores);
     const isScoreEnough = scoreValues.every(value => value !== null);
@@ -102,6 +102,7 @@ const TestCreator = () => {
     }
 
     return shouldNexting;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testStaring, overviewValue, questionErrors, questions]);
 
   return (
