@@ -1,9 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { GoBook } from 'react-icons/go';
 import { PiStudent } from 'react-icons/pi';
-import { Divider, Form, InputNumber, Select, Switch, Modal, Input, DatePicker } from 'antd';
+import {
+  Divider,
+  Form,
+  InputNumber,
+  Select,
+  Switch,
+  Modal,
+  Input,
+  DatePicker,
+  message
+} from 'antd';
 import TestAPI from '~/services/testAPI';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { fetchTestById } from '~/redux/test/testAction';
 
 const limitTimeOptions = [
@@ -43,6 +53,8 @@ const TestStartingForm = ({ open, onCancel, handleFetchTest }) => {
     try {
       await TestAPI.updateTestById(test._id, startedTest);
       dispatch(fetchTestById(test._id));
+      onCancel();
+      message.success('Tổ chức thi thành công!');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
