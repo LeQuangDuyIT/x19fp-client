@@ -7,6 +7,7 @@ import MyQuestions from '~/pages/MyQuestions';
 import Admin from '~/pages/Admin/Admin';
 import MyTests from '~/pages/MyTests';
 import Test from '~/pages/Test';
+import QuizGame from '~/pages/QuizGame/QuizGame';
 
 export const END_POINT = {
   CREATE_QUESTION: 'question',
@@ -34,7 +35,8 @@ const privateRoutes = [
   { path: '/create/test/:id', component: Create },
   { path: '/question/mine', component: MyQuestions },
   { path: '/admin', component: Admin },
-  { path: '/test/mine', component: MyTests }
+  { path: '/test/mine', component: MyTests },
+  { path: `/create/${END_POINT.CREATE_QUIZ_GAME}`, component: QuizGame }
 ];
 
 const privateRoutesMapping = privateRoutes.map(route => ({ ...route, isPrivated: true }));
