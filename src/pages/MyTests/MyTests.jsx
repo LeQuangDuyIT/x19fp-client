@@ -46,7 +46,7 @@ const MyTests = () => {
       dataIndex: 'title',
       key: 'title',
       render: (title, record) => (
-        <a onClick={() => navigate(`/create/test/${record._id}`)}>{title}</a>
+        <a onClick={() => navigate(`/create/test/${record.id}`)}>{title}</a>
       )
     },
     {
@@ -169,7 +169,7 @@ const MyTests = () => {
                 className='flex flex-col'
                 onClick={() => navigate(`/record/${record._id}?pw=${record.passWord}`)}
               >
-                <h4>{record.userFullname}</h4>
+                <h4 className='text-blue-500 cursor-pointer'>{record.userFullname}</h4>
                 <p>{record.userEmail}</p>
               </div>
               <div className='flex gap-4'>

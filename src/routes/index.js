@@ -8,6 +8,7 @@ import Admin from '~/pages/Admin/Admin';
 import MyTests from '~/pages/MyTests';
 import Test from '~/pages/Test';
 import Record from '~/pages/Record';
+import QuizRoom from '~/pages/QuizRoom';
 
 export const END_POINT = {
   CREATE_QUESTION: 'question',
@@ -26,7 +27,8 @@ const publicRoutes = [
   { path: PATH.LOGIN, component: Authen },
   { path: PATH.SIGNUP, component: Authen },
   { path: '/question/:id', component: Question },
-  { path: '/test/:id', component: Test }
+  { path: '/test/:id', component: Test },
+  { path: '/quiz/:id', component: QuizRoom }
 ];
 
 const privateRoutes = [

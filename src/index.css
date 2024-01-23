@@ -1,8 +1,7 @@
 /* globals.css */
 @import 'antd/dist/reset.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* fix Tailwind CSS border styles, form Tailwind CSS's preflight */
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap'); /* fix Tailwind CSS border styles, form Tailwind CSS's preflight */
 *,
 ::before,
 ::after {
