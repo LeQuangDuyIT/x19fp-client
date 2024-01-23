@@ -1,4 +1,4 @@
-import { Checkbox, Col, Divider, Modal, Row, Table, message } from 'antd';
+import { Checkbox, Col, Modal, Row, Table, Tag, message } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import CollectionSection from '~/components/CollectionSection';
 import Container from '~/components/Container';
@@ -68,6 +68,11 @@ const MyTests = () => {
       render: limitTime => limitTime && <p>{limitTime} phút</p>
     },
     {
+      title: 'Điểm đậu',
+      dataIndex: 'passScore',
+      key: 'passScore'
+    },
+    {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
@@ -119,7 +124,7 @@ const MyTests = () => {
   const data = useMemo(
     () =>
       tests.map(test => {
-        const { title, _id, passWord, isActived, subject, grade, limitTime } = test;
+        const { title, _id, passWord, isActived, subject, grade, limitTime, passScore } = test;
         return {
           key: _id,
           title,
@@ -128,7 +133,8 @@ const MyTests = () => {
           isActived,
           subject,
           grade,
-          limitTime
+          limitTime,
+          passScore
         };
       }),
     [tests]
@@ -158,13 +164,22 @@ const MyTests = () => {
       <Modal title='Danh sách bài nộp' open={openRecords} onCancel={() => setOpenRecords(false)}>
         <div className='flex flex-col gap-4'>
           {recordsOfTest.map(record => (
-            <div
-              key={record._id}
-              className='flex flex-col'
-              onClick={() => navigate(`/record/${record._id}?pw=${record.passWord}`)}
-            >
-              <h4>{record.userFullname}</h4>
-              <p>{record.userEmail}</p>
+            <div key={record._id} className='flex justify-between'>
+              <div
+                className='flex flex-col'
+                onClick={() => navigate(`/record/${record._id}?pw=${record.passWord}`)}
+              >
+                <h4>{record.userFullname}</h4>
+                <p>{record.userEmail}</p>
+              </div>
+              <div className='flex gap-4'>
+                <p>
+                  {record.totalScore} điểm/{record.correct} câu đúng
+                </p>
+                <Tag color={record.isPassed ? 'green' : 'red'} className='h-fit'>
+                  {record.isPassed ? 'Đậu' : 'Rớt'}
+                </Tag>
+              </div>
             </div>
           ))}
         </div>

@@ -115,7 +115,7 @@ const Login = () => {
           </Button>
         </Form.Item>
         <div className='text-center mb-3 text-sm font-bold items-center '>
-          Bạn chưa có tài khoản ?
+          Bạn chưa có tài khoản?{' '}
           <Link to='/signup' className='text-blue-500 no-underline font-bold'>
             Đăng ký
           </Link>
