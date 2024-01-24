@@ -12,7 +12,7 @@ const Countdowner = ({ limitTime, createdAt, icon, stop }) => {
     }
   }, [stop]);
 
-  const renderer = ({ total, minutes, seconds, completed }) => {
+  const renderer = ({ total, hours, minutes, seconds, completed }) => {
     if (completed) {
       return <p>Hết giờ</p>;
     } else {
@@ -21,7 +21,7 @@ const Countdowner = ({ limitTime, createdAt, icon, stop }) => {
           <div className='flex gap-8 font-bold text-4xl p-4'>
             {icon && <p>⌛</p>}
             <span>
-              {minutes}:{seconds}
+              {hours}:{minutes}:{seconds}
             </span>
           </div>
           <Progress

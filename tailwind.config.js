@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        Grandstander: ['Grandstander', 'cursive']
+      },
       boxShadow: {
         'input-blue': '0 0 0 1px rgba(5,145,255,.1)',
         'input-red': '0 0 0 1px rgba(255,38,5,.08)',
