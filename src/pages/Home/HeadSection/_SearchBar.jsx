@@ -7,13 +7,14 @@ const SearchBar = () => {
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
-  const openNotificationWithIcon = (type, error) => {
+  const openNotificationWithIcon = (type, message, duration = 3) => {
     api[type]({
-      message: 'Oops!! Lỗi ',
-      description: error,
-      duration: 3
+      message: ' Oops!! Lỗi',
+      description: message,
+      duration: duration
     });
   };
+
   const onHandleSubmitSearch = async e => {
     e.preventDefault();
     if (searchValue === '') {

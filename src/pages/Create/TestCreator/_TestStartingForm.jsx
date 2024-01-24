@@ -15,6 +15,7 @@ import {
 import TestAPI from '~/services/testAPI';
 import { useEffect } from 'react';
 import { fetchTestById } from '~/redux/test/testAction';
+import { socket } from '~/components/Socket/Socket';
 
 const limitTimeOptions = [
   { value: 15, label: '15 phút' },
@@ -26,7 +27,7 @@ const limitTimeOptions = [
   { value: 'unlimit', label: 'Không giới hạn' }
 ];
 
-const TestStartingForm = ({ open, onCancel, handleFetchTest }) => {
+const TestStartingForm = ({ open, onCancel, handleFetchTest, currentUser, overviewValue }) => {
   const { test } = useSelector(state => state.test);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -55,6 +56,12 @@ const TestStartingForm = ({ open, onCancel, handleFetchTest }) => {
       dispatch(fetchTestById(test._id));
       onCancel();
       message.success('Tổ chức thi thành công!');
+      socket.emit('send-test-noti', {
+        testId: test._id,
+        testTitle: overviewValue.title,
+        author: currentUser.lastName + ' ' + currentUser.firstName,
+        authorId: currentUser._id
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

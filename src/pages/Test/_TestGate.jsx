@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TestAPI from '~/services/testAPI';
 import RecordAPI from '~/services/recordAPI';
+import { socket } from '~/components/Socket/Socket';
 
-const TestGate = ({ handleSetRecord }) => {
+const TestGate = ({ handleSetRecord, getRoomId }) => {
   const [password, setPassword] = useState('');
   const [testOverview, setTestOverview] = useState(null);
   const { id } = useParams();
@@ -36,6 +37,8 @@ const TestGate = ({ handleSetRecord }) => {
       if (res.data.data) {
         handleSetRecord(res.data.data);
       }
+      getRoomId(testOverview?.userId);
+      socket.emit('enter-room', { roomId: testOverview?.userId });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

@@ -51,7 +51,7 @@ const QuizGame = () => {
           return (
             <label key={list.id} className='' htmlFor={list.id}>
               <div className={`h-[70px] bg-${list.bg} flex items-center  `}>
-                <div className='mr-4'> {list.icon} </div>{' '}
+                <div className='mr-4  '> {list.icon} </div>{' '}
                 <div className='mr-8'>{list.content} </div>
                 <input
                   checked={checkId === list.id}

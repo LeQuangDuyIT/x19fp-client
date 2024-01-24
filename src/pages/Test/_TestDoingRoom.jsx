@@ -5,14 +5,14 @@ import { useEffect, useState } from 'react';
 import RecordAPI from '~/services/recordAPI';
 import TestDoingController from './__TestDoingController';
 import Countdowner from '~/components/Countdowner';
+import { socket } from '~/components/Socket/Socket';
 
-const TestDoingRoom = ({ recordData }) => {
+const TestDoingRoom = ({ recordData, roomId }) => {
   const { questions } = recordData;
   const [studentAnswers, setStudentAnswers] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [finishData, setFinishData] = useState(null);
   const [overTime, setOverTime] = useState(false);
-
   useEffect(() => {
     if (!recordData?.limitTime) return;
     const timer = setTimeout(() => {
@@ -53,6 +53,10 @@ const TestDoingRoom = ({ recordData }) => {
     try {
       const res = await RecordAPI.updateById(recordData._id, payload);
       setFinishData(res.data.data);
+      socket.emit('send-noti-testOwner', {
+        message: 'Đã có thí sinh nộp bài thi',
+        testOwnerId: roomId
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

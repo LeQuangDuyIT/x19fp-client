@@ -102,7 +102,7 @@ const TestCreator = () => {
     }
 
     return shouldNexting;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testStaring, overviewValue, questionErrors, questions]);
 
   return (
@@ -133,6 +133,8 @@ const TestCreator = () => {
         open={isModalOpen}
         onCancel={() => setTestStaring(false)}
         handleFetchTest={handleFetchTest}
+        currentUser={currentUser}
+        overviewValue={overviewValue}
       />
     </CreateTestContext.Provider>
   );
