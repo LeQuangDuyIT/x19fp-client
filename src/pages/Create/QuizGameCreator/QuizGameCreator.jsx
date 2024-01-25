@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import QuizRoomAPI from '~/services/quizRoomAPI';
 import { useNavigate } from 'react-router-dom';
+import { socket } from '~/components/Socket/Socket';
 
 const QuizGameCreator = () => {
   const [roomID, setRoomID] = useState('');
@@ -16,6 +17,7 @@ const QuizGameCreator = () => {
       const res = await QuizRoomAPI.create({ roomID });
       if (res.data.id) {
         navigate(`/quiz/${res.data.id}`);
+        socket.emit('enter-room', { roomId: res.data.id });
       }
     } catch (error) {
       // eslint-disable-next-line no-console
