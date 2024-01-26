@@ -21,6 +21,10 @@ const TestAPI = {
     const url = '/tests/mine';
     return api.get(url);
   },
+  getActiveTests: id => {
+    const url = `/tests/active-tests/${id}`;
+    return api.get(url);
+  },
   updateCommonFields: (id, body) => {
     const url = `/tests/common/${id}`;
     return api.put(url, body);

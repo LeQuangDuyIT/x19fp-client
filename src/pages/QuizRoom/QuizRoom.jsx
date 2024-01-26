@@ -1,19 +1,34 @@
 import { Button, Divider, Form, Input } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { socket } from '~/components/Socket/Socket';
 import SimpleHeader from '~/layouts/SimpleHeader';
+import { addUser } from '~/redux/userInRoom/userInRoomSlice';
 import QuizRoomAPI from '~/services/quizRoomAPI';
 import { alphabet } from '~/utils/constants';
 
 const QuizRoom = () => {
   const { id } = useParams();
   const [roomData, setRoomData] = useState(null);
-
+  const [usersRoom, setUsersRoom] = useState([]);
+  const { usersInRoom } = useSelector(state => state.userInRooms);
+  console.log(usersInRoom);
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector(state => state.user);
+  console.log(currentUser);
   useEffect(() => {
     fetchRoomData();
+    socket.emit('add-user-to-room', { id, currentUser });
+    socket.on('get-user-in-room', user => {
+      if (Object.keys(user).length > 0) {
+        dispatch(addUser(user));
+      }
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentUser]);
 
   const fetchRoomData = async () => {
     try {
@@ -79,6 +94,11 @@ const QuizRoom = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div>
+          {usersInRoom.map(user => {
+            return <span key={user._id}> {user.firstName + ' ' + user.lastName} </span>;
+          })}
         </div>
       </div>
     </>

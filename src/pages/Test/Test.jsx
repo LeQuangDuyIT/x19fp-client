@@ -5,14 +5,15 @@ import TestDoingRoom from './_TestDoingRoom';
 
 const Test = () => {
   const [recordData, setRecordData] = useState(null);
+  const [roomId, setRoomId] = useState(null);
 
   return (
     <>
       <SimpleHeader />
       {recordData ? (
-        <TestDoingRoom recordData={recordData} />
+        <TestDoingRoom recordData={recordData} roomId={roomId} />
       ) : (
-        <TestGate handleSetRecord={data => setRecordData(data)} />
+        <TestGate handleSetRecord={data => setRecordData(data)} getRoomId={setRoomId} />
       )}
     </>
   );
