@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input, InputNumber } from 'antd';
+import { Button, Divider, Form, Input } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { socket } from '~/components/Socket/Socket';
 import SimpleHeader from '~/layouts/SimpleHeader';
 import { addUser } from '~/redux/userInRoom/userInRoomSlice';
 import QuizRoomAPI from '~/services/quizRoomAPI';
+import { alphabet } from '~/utils/constants';
 
 const QuizRoom = () => {
   const { id } = useParams();
@@ -64,7 +65,14 @@ const QuizRoom = () => {
               </Form.Item>
               <Divider className='mt-16' />
               <Form.Item name='time' label='⌛'>
-                <InputNumber placeholder='Thời gian' className='w-fit' />
+                <Input
+                  type='number'
+                  placeholder='Thời gian'
+                  suffix='giây'
+                  className='w-1/2'
+                  min={0}
+                  max={60}
+                />
               </Form.Item>
               <Button type='primary' className='w-full' size='large'>
                 Bắt đầu
@@ -74,6 +82,16 @@ const QuizRoom = () => {
           <div className='basis-3/4'>
             <div>
               <h3>{roomData?.topic}</h3>
+              <div className='flex gap-4 flex-wrap'>
+                {roomData?.answers &&
+                  roomData?.answers.map((answer, index) => (
+                    <div key={answer} className='w-[calc(50%-16px/2)] border p-4'>
+                      <p>
+                        {alphabet[index]}. {answer}
+                      </p>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>
